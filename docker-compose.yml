@@ -1,0 +1,63 @@
+version: "3"
+
+services:
+  mysql_norainventory:
+    image: mysql/mysql-server:5.7
+    restart: always
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=phpmyadmin
+    networks:
+      - norainventory_network
+    volumes:
+      - ./.tmp/mysql:/var/lib/mysql
+
+  phpmyadmin_norainventory:
+    depends_on:
+      - mysql_norainventory
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    networks:
+      - norainventory_network
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=mysql_norainventory
+
+  web_norainventory:
+    image: prestashop/prestashop:1.7.6.9-7.2
+    depends_on:
+      - mysql_norainventory
+    networks:
+      - norainventory_network
+    ports:
+      - 8087:80
+    restart: always
+    volumes:
+      # Core
+      - ./.tmp/prestashop:/var/www/html
+      - ./assets/img-products:/var/www/html/img/p
+
+      # Development
+      - ./src/norainventory:/var/www/html/modules/norainventory
+    environment:
+      - DB_SERVER=mysql_norainventory
+      - DB_PREFIX=fd_1761_
+      - PS_DEV_MODE=${PS_DEV_MODE}
+      - PS_INSTALL_AUTO=1
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - DB_NAME=${DB_NAME}
+      - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
+      - PS_DOMAIN=${PS_DOMAIN}:8087
+      - PS_LANGUAGE=${PS_LANGUAGE}
+      - PS_COUNTRY=${PS_COUNTRY}
+      - PS_FOLDER_INSTALL=installed
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_PASSWD=${ADMIN_PASSWD}
+
+networks:
+  norainventory_network:

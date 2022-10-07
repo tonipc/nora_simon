@@ -1,0 +1,11 @@
+.env
+assets/*
+.tmp/*
+**/*/config_*.xml
+.php_cs.cache
+vendor
+node_modules
+src/norainventory/norainventory
+src/norainventory/views/public/*
+# macOS
+*.DS_Store

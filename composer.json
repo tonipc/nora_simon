@@ -1,0 +1,5 @@
+{
+    "require": {
+        "prestashop/php-coding-standards": "^3.15"
+    }
+}

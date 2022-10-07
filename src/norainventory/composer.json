@@ -1,0 +1,35 @@
+{
+  "name": "jorgevrgs/ps_nora",
+  "description": "Nora inventory and sales",
+  "version": "0.0.1",
+  "license": "EULA",
+  "authors": [
+    {
+      "name": "Jorge Vargas",
+      "email": "jorgevargasla@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0"
+  },
+  "autoload": {
+    "classmap": [],
+    "exclude-from-classmap": []
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Module\\NoraInventory\\Models\\": "models/",
+      "Module\\NoraInventory\\Classes\\": "classes/",
+      "NoraFood\\": "src/",
+      "App\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "prepend-autoloader": false
+  },
+  "type": "prestashop-module",
+  "require-dev": {
+  "phpunit/phpunit": "^8.3"
+  }
+}
