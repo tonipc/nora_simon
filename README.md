@@ -809,3 +809,4 @@ To include some product value in a template, i.e. in the product list to use the
 ## PrestaShop Conding Standards
 
 To maintain coding standards after modify a PHP file run the command `php ./vendor/bin/php-cs-fixer fix _FOLDER_NAME_`.
+##this is a comment
