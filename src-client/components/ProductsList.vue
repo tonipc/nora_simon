@@ -27,11 +27,20 @@
             class="card h-100 product-card"
             :class="isProductSelected(product) ? 'selected' : ''"
           >
-            <product-features
-              class="products-row-features"
-              :features="getProductFeatures(product)"
-            ></product-features>
-
+            <div v-if="product.fijo == 1 || product.new == 1 || product.best_seller == 1" class="product-info">
+              <div v-if="product.new == 1" class="new-product">
+                {{ trans("new_product") }}
+              </div>
+              <div v-else-if="product.fijo == 1" class="fijo-product">
+                {{ trans("fijo") }}
+              </div>
+              <div v-else></div>
+              <div v-if="product.best_seller == 1" class="best-seller">
+                <img src="/modules/norainventory/img/star.png" :title="trans('best_seller')">
+                <span> {{ trans("best_seller") }}</span>
+              </div>
+              <div v-else></div>
+            </div>
             <div class="card-header product-card-header">
               <div
                 class="d-flex justify-content-center product-image"
@@ -65,6 +74,11 @@
               >
                 {{ trunc(product.name) }}
               </h2>
+
+              <product-features
+              class="products-row-features"
+              :features="getProductFeatures(product, 6)"
+              ></product-features>
               
               <div
                   v-for="(attribute, index) in Object.values(product.attributes)"
@@ -74,7 +88,7 @@
                   <span class="attribute-name">{{ attribute.group }}: {{ attribute.name }}</span>
               </div>
 
-              <div class ="product-attribute-upselling"  v-if="product.upselling > 0">
+              <div class="product-attribute-upselling"  v-if="product.upselling > 0">
                   Suplemento adicional {{ parseFloat(product.upselling).toFixed(2)}}€
               </div>
               <!-- eslint-disable vue/no-v-html -->
@@ -131,33 +145,33 @@
         :quantity-in-cart="quantityInCart(selectedProductModal)"
         :is-product-pack="currentMenuDetails.type === 'product_pack'"
         :is-product-selected="isProductSelected(selectedProductModal)"
-        :features="getProductFeatures(selectedProductModal)"
+        :features="getProductFeatures(selectedProductModal, 1)"
         @close="closeProductModal()"
         @add="clickAdd($event)"
         @remove="clickRemove($event)"
       ></product-modal>
     </section>
 
-    <section v-if="isEmpty" class = "empty" id="products">
+    <section v-if="isEmpty" class="empty" id="products">
 
       <!-- Temporal functionality for christmas -->
-      <div class = "weekend_no_products" v-if="currentMenuDetails.id == 6">
-        <h2 style = "color: black;text-align: center;font-size: 30px;font-weight: 900;">{{ trans("weekend_solo") }}</h2>
+      <div class="weekend_no_products" v-if="currentMenuDetails.id == 6">
+        <h2 style="color: black;text-align: center;font-size: 30px;font-weight: 900;">{{ trans("weekend_solo") }}</h2>
         <br>
         <h3>{{ trans("weekend_select") }}</h3>
         <br><br>
         <button
             type="buton"
             class="btn btn-lg date-selector-content-button"
-            @click = "changeToFriday()"
-            style = "background-color: black;color: white;border: 1px solid white;margin-bottom:30px;"
+            @click="changeToFriday()"
+            style="background-color: black;color: white;border: 1px solid white;margin-bottom:30px;"
           >
             {{ trans("weekend_select_date") }}
         </button>
       </div>
       <!-- Temporal functionality for christmas -->
-      <div class = "weekend_no_products" v-if="currentMenuDetails.id == 24">
-        <h2 style = "color: black;text-align: center;font-size: 30px;font-weight: 900;">¿No te aparece ningun plato?</h2>
+      <div class="weekend_no_products" v-if="currentMenuDetails.id == 24">
+        <h2 style="color: black;text-align: center;font-size: 30px;font-weight: 900;">¿No te aparece ningun plato?</h2>
         <br>
         <h3>Selecciona la fecha en la que quieres recibir vuestro pedido y os aparecerán los distintos platos</h3>
         <br>
@@ -168,12 +182,12 @@
             class="btn btn-lg date-selector-content-button"
             data-toggle="modal"
             data-target="#changeDateModal"
-            style = "background-color: black;color: white;border: 1px solid white;margin-bottom:30px;"
+            style="background-color: black;color: white;border: 1px solid white;margin-bottom:30px;"
           >
             SELECCIONAR FECHA
         </button>
         <br><br>
-        Para cualquier otra duda o fecha de cena de navidad, por favor escribir a <a href = "catering@norarealfood.com">catering@norarealfood.com</a>
+        Para cualquier otra duda o fecha de cena de navidad, por favor escribir a <a href="catering@norarealfood.com">catering@norarealfood.com</a>
       </div>
       
     </section>
@@ -258,14 +272,14 @@ export default {
     }
   },
   methods: {
-    getProductFeatures(product) {
+    getProductFeatures(product, id_feature) {
       const productFeatures = product.features;
       const featuresWithValues = this.$store.getters["featuresWithValues"];
 
       let filterdFeatures = _.filter(featuresWithValues, fv =>
         _.find(
           productFeatures,
-          f => f.value === fv.value && f.id_feature === fv.id_feature
+          f => f.value === fv.value && ((id_feature === false && fv.id_feature === f.id_feature) || (fv.id_feature == id_feature))
         )
       );
 
@@ -434,7 +448,7 @@ export default {
 <style lang="scss">
 #product-pack {
   .products-row-features {
-    position: absolute;
+    //position: absolute;
     .features-list {
       margin: 0;
     }

@@ -265,6 +265,7 @@ const store = new Vuex.Store({
 
     /** Is last step boolean */
     isLastStep: state => {
+      console.log('IS LAST STEP: ' + state.currentStep);
       const stepIndex = _.findIndex(
         state.steps,
         step => step.id === state.currentStep
@@ -436,11 +437,24 @@ const store = new Vuex.Store({
       try {
 
         console.log('getProductsByDate');
+        console.log(params);
         const result = await ajax(
           this.state.apiUrl,
           "GET",
           _.extend({ action: "getProductsByDate" }, params)
         );
+
+        _.each(result, product => {
+          const productFeatures = product.features;
+          const featuresWithValues = this.state.featuresWithValues;
+
+          product.fijo = _.filter(featuresWithValues, fv =>
+            _.find(
+              productFeatures,
+              f => f.value === fv.value && f.id_feature === fv.id_feature && fv.id_feature_value == 72
+            )
+          ).length;
+        });
 
         commit("SET_PRODUCTS", result);
       

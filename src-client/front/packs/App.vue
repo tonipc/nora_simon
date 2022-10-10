@@ -80,7 +80,8 @@ export default {
       "menus",
       "options",
       "steps",
-      "showPrices"
+      "showPrices",
+      "products"
     ]),
     currentStep: {
       get() {
@@ -113,24 +114,33 @@ export default {
   },
   watch: {
     currentDate(value) {
+      console.log('Fecha cambiada por el WATCH: ' + value);
+      console.log('El WATCH de fecha, ejecutara los siguientes funciones encontradas en store/index.js, mutations: {}:');
+      console.log('SET_CURRENT_DATE');
+      console.log('RESET_BASKET');
+      console.log('');
       this.$store.commit("SET_CURRENT_DATE", value);
       this.$store.commit("RESET_BASKET");
       this.$store.dispatch("getProducts", {
         date: value
       });
+      console.log(this.products);
     },
 
     currentMenu(value) {
+      console.log('Menu cambiado por el WATCH, ID: ' + value);
       if (value) {
         this.$store.commit("SET_CURRENT_MENU", value);
         this.currentOption = _.result(
           _.first(this.$store.getters.options),
           "id"
         );
+        console.log('Opcion de menu cambiado por el WATCH:' + this.currentOption);
       }
     },
 
     currentOption(value) {
+      console.log('Opcion cambiada por el WATCH, ID: ' + value);
       if (value) {
         this.$store.commit("SET_CURRENT_OPTION", value);
         this.$store.commit("RESET_STEP");
@@ -154,13 +164,15 @@ export default {
     },
 
     isLastStep(value) {
+      console.log('es ultimo paso?: ' + value);
       if (value) {
         this.$router.push({ name: "SummaryPage" });
       }
     }
   },
   mounted: async function() {
-    
+    console.log('MOUNTED: Este bloque se ejecuta solo una vez despues de que el proyecto ya se haya montado');
+    console.log('---------------- MOUNTED ----------------');
     if (!window.$)
     {
       console.log('no window$');
@@ -177,14 +189,16 @@ export default {
     {
       this.currentMenu = _.first(this.$store.state.menus).id;
     }
-    console.log( this.currentMenu);
+    console.log('MENU ID ' + this.currentMenu);
 
-    console.log( "DATE" + this.currentDate);
+    console.log( "DATE " + this.currentDate);
     // this.currentStep = _.first(this.$store.state.steps).id;
 
     await this.$store.dispatch("getProducts", {
       date: this.currentDate
     });
+
+    console.log('---------------- FIN MOUNTED ----------------');
   }
 };
 </script>

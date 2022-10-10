@@ -189,7 +189,8 @@ export default {
       "truncProductTitle"
     ]),
     localeTotalProductsPrice() {
-      return this.totalProductsPrice.toLocaleString(this.defaultLocale, {
+      return (Number.isNaN(this.totalProductsPrice)?0:this.totalProductsPrice)
+      .toLocaleString(this.defaultLocale, {
         style: "currency",
         currency: window.prestashop.currency.iso_code
       });
