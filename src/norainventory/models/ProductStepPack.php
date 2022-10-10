@@ -168,6 +168,8 @@ class ProductStepPack extends ObjectModel
      * @param bool $useTax
      * @param Address $address
      */
+
+     //ahora ya calcula bien las tasas con el precio sin IVA
     public static function getPackPriceWithTaxes(array $product, $useTax = true, Address $address = null)
     {
         $context = Context::getContext();
@@ -186,10 +188,11 @@ class ProductStepPack extends ObjectModel
 
         $taxManager = TaxManagerFactory::getManager($address, $product['id_tax_rules_group'] ?: 0);
         $productTaxCalculator = $taxManager->getTaxCalculator();
-
-        $price = (float) $product['price'];
+        //no price
+        $price = (float) $product['tax_excl'];
         if ($useTax) {
-            $price = $productTaxCalculator->addTaxes((float) $product['price']);
+            //no price
+            $price = $productTaxCalculator->addTaxes((float) $product['tax_excl']);
         }
 
         return $price;
@@ -252,6 +255,9 @@ class ProductStepPack extends ObjectModel
             $sql->where('a.`active` = 1');
         }
 
+        //Weekends al final
+        $sql->orderBy('psp.position');
+
         $row = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql, true, false);
 
         $menus = [];
@@ -275,12 +281,13 @@ class ProductStepPack extends ObjectModel
             }
 
             //Get the price, as it can vary based on group
-            $item['price'] = self::get_group_price($item['id_menu'], $item['price']);
+            $item['tax_excl'] = self::get_group_price($item['id_menu'], $item['price']);
 
-            $priceTaxExc = (float) $item['price'];
+            // dump($item);
 
             $priceAmount = (float) self::getPackPriceWithTaxes($item, $useTax);
-            
+            $priceTaxExc = (float) $item['tax_excl'];
+
             $price = Tools::displayPrice(
                 $priceAmount,
                 $currency
@@ -321,7 +328,7 @@ class ProductStepPack extends ObjectModel
         Gets the price from database for group if needed
     */
 
-    public static function get_group_price($pack_id, $original_price)
+    public static function get_group_price($pack_id, $price)
     {
         //get if there are prices for the menu
         $sql = new DbQuery();
@@ -330,15 +337,28 @@ class ProductStepPack extends ObjectModel
         $sql->innerJoin('product_step_pack_price_group', 'pp','ps.id_product_step_pack_price = pp.id_product_step_pack_price');
         $sql->where('ps.id_product_step_pack'. ' = ' . (int) $pack_id );
 
+        // if($pack_id == 2)
+        //     dump($sql);
+
         $row = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
         
-        $groupId = FrontController::getCurrentCustomerGroups();        
+        // No te da el grupo por defecto del cliente
+        // $groupId = FrontController::getCurrentCustomerGroups(); 
+
+        //este sí
+        $id_default_group = Context::getContext()->customer->id_default_group;
+
+        // echo 'grupo actual';
+        // dump($id_default_group);
         
-        $price = $original_price;
+        // $price = $original_price;
 
         foreach ($row as $val) {
 
-            if ( in_array( $val['id_group'], $groupId) )
+            // if($pack_id == 2 && $val['id_group'] == 201)
+            //     dump($val);
+            // if ( in_array( $val['id_group'], $groupId) )
+            if ($val['id_group'] == $id_default_group)
             {
                 $price = $val['price'];
             }

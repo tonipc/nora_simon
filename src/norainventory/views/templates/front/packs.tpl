@@ -10,7 +10,7 @@
 
   <div id="app"></div>
 
-  <script src="{$vendorChunk}?1.3" async defer></script>
-  <script src="{$commonsChunk}?1.3" async defer></script>
-  <script src="{$pathApp}?1.3" async defer></script>
+  <script src="{$vendorChunk}?1.8" async defer></script>
+  <script src="{$commonsChunk}?1.8" async defer></script>
+  <script src="{$pathApp}?1.8" async defer></script>
 {/block}

@@ -36,6 +36,8 @@ use Module;
 use ObjectModel;
 use Validate;
 use Group;
+//added
+use Customer;
 
 class ProductStockDate extends ObjectModel
 {
@@ -312,25 +314,90 @@ class ProductStockDate extends ObjectModel
     public static function getAvailableDates($fromTomorrow = false)
     {
 
+        //permitimos varias horas de corte
+        $horas_corte = explode(',', Group::getCurrent()->clossing_time);
+
+        //horas_corte de ahora en adelante
+        // dump($horas_corte);
+
+        $id_customer = Context::getContext()->customer->id;
+        $obj_customer = new Customer($id_customer);
+        $addresses = $obj_customer->getSimpleAddresses(Context::getContext()->language->id);
+        // dump($addresses);
+        // dump(Group::getCurrent()->id);
+
+        $next_day = false;
+
+        //lo pruebo con Holded, de TEST. Id 244
+        if(Group::getCurrent()->id == 377 || Group::getCurrent()->id == 378){
+
+            //Sólo es 1 pero debemos recorrerla
+            foreach($addresses as $address){
+
+                if($address['address1'] == 'Plza. Xavier Cugat nº 2, Ed.C Planta 4'){
+                    // dump($address['address1']);
+
+                    //Sant Cugat, 1a hora de corte
+                    //hora y minutos
+                    $hora_de_corte = $horas_corte[0];
+
+                    $now = date('H:i');
+                    $hora_grupo = date('H:i', strtotime($hora_de_corte));
+                    // dump($now);
+                    // dump($hora_grupo);
+
+                    //más sencillito
+                    if($now >= $hora_grupo) {
+                        $next_day = true;
+                    } 
+
+                    // dump('es next day Sant Cugat', $next_day);
+
+                }
+
+                if($address['address1'] == 'C/Martí d’Erm, 8'){
+                    // dump($address['address1']);
+
+                    //hora y minutos
+                    $hora_de_corte = $horas_corte[1];
+
+                    $now = date('H:i');
+                    $hora_grupo = date('H:i', strtotime($hora_de_corte));
+                    // dump($now);
+                    // dump($hora_grupo);
+
+                    //más sencillito
+                    if($now >= $hora_grupo) {
+                        $next_day = true;
+                    }
+                    
+                    // dump('es next day Sant Joan Despi', $next_day);
+                }
+
+
+            }
+            
+            
+        }else{
+            //hora y minutos
+            $hora_de_corte_inicial = $horas_corte[0];
+
+            $now = date('H:i');
+            $hora_grupo = date('H:i', strtotime($hora_de_corte_inicial));
+            // dump($now);
+            // dump($hora_grupo);
+
+            //más sencillito
+            if($now >= $hora_grupo) {
+                $next_day = true;
+            } 
+        }
+
+        // dump('next day es ', $next_day);
+ 
         $sql = new DbQuery();
         $sql->select('available_date');
         $sql->from(self::$definition['table']);
-
-        $hora_corte = explode('.', Group::getCurrent()->clossing_time);
-
-        //Calculate if current hour has passed the scheduled time
-        $next_day = false;
-
-        if(date('H') == $hora_corte[0]) {
-            $minutes_now = round(date('i') / 60, 2);
-            if($minutes_now > ($hora_corte[1]/100)) {
-                $next_day = true;
-            }
-        } else if(date('H') > $hora_corte[0]) {
-            $next_day = true;
-        }
-
-        //$next_day = false;
 
         if ($next_day) {
             // $tomorrow = date("Y-m-d", strtotime('tomorrow'));
@@ -341,11 +408,12 @@ class ProductStockDate extends ObjectModel
             $sql->where('available_date >= DATE(CURDATE())');
         }
 
-
         $sql->groupBy('available_date');
 
+        // dump($sql);
 
         $dates = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql, true, false);
+        // dump($dates);
 
         $result = [];
         if (is_array($dates) && count($dates)) {
@@ -367,7 +435,7 @@ class ProductStockDate extends ObjectModel
         $sql = new DbQuery();
 
         $sql->select(
-            'p.`id_product` AS `id_product`, p.`active` AS `active`,
+            'p.`id_product` AS `id_product`, p.`active` AS `active` cp.id_product as categories,
             pl.`name` AS `name`,
             cl.`name` AS `category_name`,
             pa.`id_product_attribute` AS `id_product_attribute`,
@@ -377,6 +445,9 @@ class ProductStockDate extends ObjectModel
         $sql->from('product', 'p');
         $sql->join('LEFT JOIN `' . _DB_PREFIX_ . 'product_lang` as pl' .
             ' ON (pl.`id_product` = p.`id_product`)');
+
+        $sql->join('LEFT JOIN `' . _DB_PREFIX_ . 'category_product` as cp' .
+            ' ON (cp.`id_product` = p.`id_product)');
 
         $sql->join('LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` as cl' .
             ' ON (cl.`id_category` = p.`id_category_default`)');

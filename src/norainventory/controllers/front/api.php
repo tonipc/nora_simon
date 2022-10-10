@@ -206,6 +206,38 @@ class NoraInventoryApiModuleFrontController extends ModuleFrontController
         ]);
     }
 
+     public function displayAjaxgetValoresNutricionales()
+    {
+
+        $cURLConnection = curl_init();
+
+        // var_dump($_GET['id']);
+
+        curl_setopt($cURLConnection, CURLOPT_URL, 'https://software.gastrokaizen.com/apiv1/getPlatoValorNutricionalByCodigo/'.$_GET['id']);
+        curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+        //Cuenta Norarealfood
+        // curl_setopt($cURLConnection, CURLOPT_HTTPHEADER, array(
+        //     'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRlIjoxODQ0LCJsb2NhbCI6MX0.bZpyqAaB71ZBJkpH-DvYEhTtMgTS778AT4EoILBnBDU'
+        // ));
+        //Cuenta Nora2
+        curl_setopt($cURLConnection, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRlIjo0MDA1LCJsb2NhbCI6MX0.yZ1sTQkFQQ4NjxbAdkZHmEilD76PIZcTg9KgFg8UBkM'
+        ));
+        $phoneList = curl_exec($cURLConnection);
+
+        //var_dump($phoneList);
+
+        curl_close($cURLConnection);
+
+        $jsonArrayResponse = json_decode($phoneList);
+
+        $result = [
+            'status' => 200,
+            'values' => $jsonArrayResponse
+        ];
+
+        $this->renderJsonResponse($result);
+    }
 
     public function displayAjaxTest()
     {

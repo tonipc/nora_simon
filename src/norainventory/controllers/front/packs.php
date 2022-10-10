@@ -58,19 +58,22 @@ class NoraInventoryPacksModuleFrontController extends ModuleFrontController
         $baseUrl = $this->context->link->getBaseLink();
 
         //Logic to show or hide prices based on group
-        $groupId = FrontController::getCurrentCustomerGroups();
+        // $groupId = FrontController::getCurrentCustomerGroups();
+
+        $grupo_defecto_cliente = $this->context->customer->id_default_group;
+
+        //vienen del noraparticularidades
+        $grupos_con_precio_oculto = json_decode(Configuration::get('NORAPARTI_GROUPS_PRECIOSOCULTOS'));
 
         $showPrices = true;
 
-        foreach ($groupId as $group) {
+        // foreach ($groupId as $group) {
 
-            if ( ($group == "142") ||  ($group == "279") ||  ($group == "195") )
-            {
+            // if ( ($group == "142") ||  ($group == "279") ||  ($group == "195") ||  ($group == "129") ||  ($group == "132") ||  ($group == "133") ||  ($group == "134") ||  ($group == "339") ||  ($group == "340")  ||  ($group == "348")  ||  ($group == "349") ||  ($group == "350") )
+            if ( in_array($grupo_defecto_cliente, $grupos_con_precio_oculto) ) {
                  $showPrices = false;
-                 break;
             }
-        }
-
+        // }
 
         Media::addJsDef([
             'noraInventoryData' => [

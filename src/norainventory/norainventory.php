@@ -29,6 +29,9 @@ if (!defined('_PS_VERSION_')) {
 
 require_once _PS_MODULE_DIR_ . 'norainventory/vendor/autoload.php';
 
+//LOGS
+require_once(_PS_MODULE_DIR_. 'noralogs/classes/log.php');
+
 use Module\NoraInventory\Classes\InstallCategories;
 use Module\NoraInventory\Classes\InstallMeta;
 use Module\NoraInventory\Classes\InstallTables;
@@ -75,7 +78,7 @@ class NoraInventory extends Module
                 'button_extra_cancel' => $this->l('Add Nothing'),
                 'change_day' => $this->l('Change Day'),
                 'change_date_info' => $this->l('Our daily menu'),
-                'change_date_title' => $this->l('Chosse the delivery date:'),
+                'change_date_title' => $this->l('Choose the delivery date:'),
                 'change_date_subtitle' => $this->l('Choose the day when you want the menú to be delivered'),
                 'edit' => $this->l('Edit'),
                 'listing_label' => $this->l('Select a product'),
@@ -95,6 +98,14 @@ class NoraInventory extends Module
                 'summary_title' => $this->l('Order'),
                 'summary_subtitle' => $this->l('Menu'),
                 'out_of_stock' => $this->l('Out of stock'),
+                'nutricionales_cien' => $this->l('Nutritional values for 100g:'),
+                'calorias' => $this->l('Calories'),
+                'hidratos' => $this->l('Carbohydrates'),
+                'proteina' => $this->l('Protein'),
+                'grasas' => $this->l('Fats'),
+                'grasas_saturadas' => $this->l('Saturated fats'),
+                'azucares' => $this->l('Sugars'),
+                'traces' => $this->l('Products not free of traces. Store between 0 and 4°C. For immediate consumption.'),
             ],
             'home' => [
                 'id_menu' => (int) Configuration::get($this->name . 'HOMEPAGE_PACK'),
@@ -131,9 +142,12 @@ class NoraInventory extends Module
             'displayNav2',
             'displayTop',
             'displayNavFullWidth',
-
+            //confirmation puede dar problemas
+            // 'displayOrderConfirmation',
+            'actionValidateOrder',
+            //cuando se cancela el pedido
+            'actionOrderStatusUpdate',
             'actionDispatcher',
-
             // Display
             'displayHome'
         ];
@@ -760,48 +774,6 @@ class NoraInventory extends Module
         }
     }
 
-    public function updateStock($date, $quantity, $idProduct, $idProductAttribute = 0)
-    {
-        try {
-            $inventoryId = ProductStockDate::getIdByParams($date, $idProduct, $idProductAttribute);
-
-            $obj = new ProductStockDate($inventoryId);
-
-            if (!Validate::isLoadedObject($obj)) {
-                // Create if stock is available
-                if ($quantity) {
-                    $obj->available_date = pSQL($date);
-                    $obj->id_product = (int) $idProduct;
-                    $obj->id_product_attribute = (int) $idProductAttribute;
-                    $obj->quantity = (int) $quantity;
-                    $obj->save();
-                }
-            } else {
-                // Update
-                /*if ($quantity === 0) {
-                    // Deete
-                    $obj->delete();
-                } else { */
-                    $obj->quantity = $quantity;
-                    $obj->save();
-                //}
-            }
-
-            $byDateStock = (int) ProductStockDate::getStockByProduct($idProduct, $idProductAttribute);
-            $generalStock = (int) StockAvailable::getQuantityAvailableByProduct($idProduct, $idProductAttribute);
-
-            $delta = $byDateStock - $generalStock;
-
-            StockAvailable::updateQuantity((int) $idProduct, (int) $idProductAttribute, $delta);
-
-            return true;
-        } catch (Exception $e) {
-            Logger::AddLog($e->getMessage());
-
-            return false;
-        }
-    }
-
     public function hookActionGetProductPropertiesBefore($params)
     {
         // ...
@@ -1029,6 +1001,7 @@ class NoraInventory extends Module
         return array_map([$this, 'prepareProductForTemplate'], $products);
     }
 
+    /*NO ESTÁ EN ESE HOOK
     public function hookDisplayHome()
     {
         $currentDate = $this->context->cookie->__get('nora_inventory_current_date');
@@ -1164,15 +1137,20 @@ class NoraInventory extends Module
 
         return $this->fetch('module:' . $this->name . '/views/templates/hook/display-home.tpl');
     }
+    */
 
-    // public function hookDisplayOrderConfirmation($params){
-   public function hookActionValidateOrder ($params){
+     //El Hook OrderConfirmation no es el adecuado para restar stock
+    //  public function hookDisplayOrderConfirmation($params){
+    public function hookActionValidateOrder($params) {
         $order = $params['order'];
         $id_order = $order->id;
 
         $products = $order->getProducts();
-        $date = $this->context->cookie->__get('nora_inventory_current_date');
 
+        if(Module::isEnabled("noralogs")){
+            $log = new LogNora();
+        }
+        
         foreach ($products as $product) {
 
             if (Pack::isPack($product['id_product']))
@@ -1191,7 +1169,12 @@ class NoraInventory extends Module
                         $product_pack['id_product_attribute'] = null;
                     }
 
-                    $this->decrementStock($product_pack['id_product'], $product_pack['id_product_attribute'], $date);
+
+                    if($log)
+                        $log->insertLog('Cantidad del pack '.$product_pack['pack_quantity'], false);
+        
+
+                    $this->decrementStock($product_pack['id_product'], $product_pack['id_product_attribute'], $product['delivery_date'], $product_pack['pack_quantity'], $id_order);
                 }
 
             }
@@ -1200,17 +1183,36 @@ class NoraInventory extends Module
                // var_dump($product['product_quantity']);
                 if (!isset($product['id_product_attribute']) )
                 {
+                    if ( isset($product['product_attribute_id']) )
+                    {
+                        $product['id_product_attribute'] = $product['product_attribute_id'];
+                    }
+                    else
+                    {
                         $product['id_product_attribute'] = null;
+                    }
+                        
+                        
                 }
 
-                $this->decrementStock($product['id_product'], $product['id_product_attribute'], $date, intval($product['product_quantity']) );
+                if($log)
+                    $log->insertLog('Cantidad del producto '.$product['product_quantity'], false);
+    
+
+                $this->decrementStock($product['id_product'], $product['id_product_attribute'], $product['delivery_date'], intval($product['product_quantity']), $id_order );
             }
         }
+
         //...some othe code
     }
 
+    //cancel incrementaremos el stock con la clase
+    public function hookActionOrderStatusUpdate($params){
+
+    }
+
     //allows to decrement the product quantity
-    public function decrementStock($id_product, $id_product_attribute, $date, $productQuantity = 1)
+    public function decrementStock($id_product, $id_product_attribute, $date, $productQuantity = 1, $id_order)
     {
         $stock = ProductStockDate::getStockByDate(
             $date,
@@ -1228,10 +1230,101 @@ class NoraInventory extends Module
         }
         else
         { */
-            $this->updateStock($date, $stock-$productQuantity, $id_product, $id_product_attribute);
+
+            if(Module::isEnabled("noralogs")){
+                $log = new LogNora();
+            }
+
+            if($stock){
+                if($log)
+                    $log->insertLog('Para el dia '.$date.' el stock es '.$stock.' y la cantidad a restar es '.$productQuantity, false);
+            }
+
+            //restamos
+            $this->updateStock($date, $stock-$productQuantity, $id_product, $id_product_attribute, $id_order);
         //}
 
-
-
     }
+
+    public function updateStock($date, $quantity, $idProduct, $idProductAttribute = 0, $id_order)
+    {
+        try {
+            $inventoryId = ProductStockDate::getIdByParams($date, $idProduct, $idProductAttribute);
+
+            if(Module::isEnabled("noralogs")){
+                $log = new LogNora();
+            }
+
+            if($inventoryId){
+                if($log)
+                    $log->insertLog('El inventoryId existe es '.$inventoryId, false);
+            }
+          
+            $obj = new ProductStockDate($inventoryId);
+
+            if (!Validate::isLoadedObject($obj)) {
+                // Create if stock is available
+                if ($quantity) {
+                    $obj->available_date = pSQL($date);
+                    $obj->id_product = (int) $idProduct;
+                    $obj->id_product_attribute = (int) $idProductAttribute;
+                    $obj->quantity = (int) $quantity;
+                    $obj->save();
+
+
+                  
+                }
+            } else {
+                // Update
+                /*if ($quantity === 0) {
+                    // Deete
+                    $obj->delete();
+                } else { */
+                    $obj->quantity = $quantity;
+                    $obj->save();
+
+                    $product = new Product($idProduct);
+
+                    //falta añadir delivery_date
+                    if($obj->save()){
+                        if($log)
+                            $log->insertLog('Pedido '.$id_order.'. El stock en la tabla product_stock_date se actualizó con la cantidad '.$quantity.' para el id_product '.$idProduct.' de nombre '.$product->name[1].' , atributo '.$idProductAttribute.' y con fecha de entrega '.$date, false);
+
+                    }else{
+                        if($log)
+                            $log->insertLog('Pedido '.$id_order.'. El stock en la tabla de FECHA NO se actualizó', false);
+                    }
+
+                //}
+            }
+
+        
+            // TABLA DE STOCK DE PRESTA NOS ES IGUAL
+            // $byDateStock = (int) ProductStockDate::getStockByProduct($idProduct, $idProductAttribute);
+            // $generalStock = (int) StockAvailable::getQuantityAvailableByProduct($idProduct, $idProductAttribute);
+
+            // $delta = $byDateStock - $generalStock;
+
+       
+            // StockAvailable::updateQuantity((int) $idProduct, (int) $idProductAttribute, $delta);
+
+            // if(StockAvailable::updateQuantity((int) $idProduct, (int) $idProductAttribute, $delta)){
+
+            //         $product = new Product($idProduct);
+
+            //         if($log)
+            //             $log->insertLog('El stock en stock_available bajó a la cantidad '.$delta.', que es la resta del stock por fecha '.$byDateStock.' y el general '.$generalStock.'. Se restó para el id_product '.$idProduct.' de nombre '.$product->name[1].' y atributo '.$idProductAttribute, false);
+    
+            // }
+
+            return true;
+
+        //PREFIERO UN LOG PARTICULAR, PARA TENERLO CONTROLADITO   
+        } catch (Exception $e) {
+            Logger::AddLog($e->getMessage());
+
+            return false;
+        }
+    }
+
 }
