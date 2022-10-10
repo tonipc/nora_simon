@@ -204,12 +204,16 @@ class ProductStepPack extends ObjectModel
         $idLang = (int) $context->language->id;
         $currency = $context->currency;
 
-        $sqlGroupsWhere = '';
+        $sqlGroupWhere = '';
         $sqlGroupsJoin = '';
         if (Group::isFeatureActive()) {
             $sqlGroupsJoin = 'LEFT JOIN `' . _DB_PREFIX_ . 'product_step_pack_group` pspg ON (pspg.`id_product_step_pack` = psp.`id_product_step_pack`)';
-            $groups = FrontController::getCurrentCustomerGroups();
-            $sqlGroupsWhere = 'pspg.`id_group` ' . (count($groups) ? 'IN (' . implode(',', $groups) . ')' : '=' . (int) Group::getCurrent()->id);
+            // $groups = FrontController::getCurrentCustomerGroups();
+            // $sqlGroupsWhere = 'pspg.`id_group` ' . (count($groups) ? 'IN (' . implode(',', $groups) . ')' : '=' . (int) Group::getCurrent()->id);
+
+            $id_default_group = Context::getContext()->customer->id_default_group;
+            $sqlGroupWhere = 'pspg.`id_group` = '.$id_default_group;
+
         }
 
         $sql = new DbQuery();
@@ -247,7 +251,7 @@ class ProductStepPack extends ObjectModel
 
         // Groups
         $sql->join($sqlGroupsJoin);
-        $sql->where($sqlGroupsWhere);
+        $sql->where($sqlGroupWhere);
 
         if ($onlyActive) {
             $sql->where('psp.`active` = 1');

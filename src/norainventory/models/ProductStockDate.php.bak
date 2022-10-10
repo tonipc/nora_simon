@@ -70,7 +70,7 @@ class ProductStockDate extends ObjectModel
             'id_product_stock_date' => ['type' => self::TYPE_INT, 'validate' => 'isInt'],
             'id_product' => ['type' => self::TYPE_INT, 'validate' => 'isInt'],
             'id_product_attribute' => ['type' => self::TYPE_INT, 'validate' => 'isInt'],
-            'quantity' => ['type' => self::TYPE_INT, 'validate' => 'isInt'],
+            'quantity' => ['type' => self::TYPE_INT, 'validate' => 'isUnsignedInt'],
             'available_date' => ['type' => self::TYPE_DATE, 'validate' => 'isDateFormat'],
 
             // Timestamps
@@ -156,7 +156,7 @@ class ProductStockDate extends ObjectModel
  //           $cart->deleteProduct($row['id_product'], $row['id_product_attribute'], $row['id_customization']);
 }*/
 
-        // Delete previous stock -> Podría cambiarse por una query directa DELETE FROM `' . _DB_PREFIX_ . 'product_stock_date` WHERE available_date <= DATE(CURDATE())
+        // Delete previous stock -> Podría cambiarse por una query directa DELETE FROM `nora_product_stock_date` WHERE available_date <= DATE(CURDATE())
         /*$sql = new DbQuery();
         $sql->select('*');
         $sql->from(self::$definition['table']);
@@ -189,24 +189,13 @@ class ProductStockDate extends ObjectModel
             return [];
         }
 
-        $qty_days_new = (int) Configuration::get('PS_NB_DAYS_NEW_PRODUCT');
-
-        $best_seller = 'IFNULL(ps.`sale_nbr` = (SELECT MAX(ps1.`sale_nbr`)
-        FROM ' . _DB_PREFIX_ . 'product_sale ps1
-        LEFT JOIN ' . _DB_PREFIX_ . 'product_stock_date a1
-        ON (a1.id_product = ps1.id_product)
-        WHERE a.`available_date` = "' . pSQL(date('Y-m-d', strtotime($date))) . '"), 0) as `best_seller`';
-
         $sql = new DbQuery();
 
          $idLang = Context::getContext()->language->id;
         $sql->select('a.*,
         p.id_product, p.out_of_stock, p.id_category_default, p.ean13, p.minimal_quantity, p.unit_price_ratio,
         pl.`name`, pl.`link_rewrite`,
-        cl.`name` AS `category_name`,
-        (p.date_add >= DATE_SUB(CURDATE(), INTERVAL ' . $qty_days_new . ' DAY)) as `new`,'
-        . $best_seller
-        );
+        cl.`name` AS `category_name`');
 
         $sql->from(self::$definition['table'], 'a');
 
@@ -220,9 +209,6 @@ class ProductStockDate extends ObjectModel
 
         $sql->join('LEFT JOIN `' . _DB_PREFIX_ . 'manufacturer` as ma' .
             ' ON (p.`id_manufacturer` = ma.`id_manufacturer`)');
-
-        $sql->join('LEFT JOIN `' . _DB_PREFIX_ . 'product_sale` as ps' .
-        ' ON (a.`id_product` = ps.`id_product`)');
 
         $sql->where('a.`available_date` = "' . pSQL(date('Y-m-d', strtotime($date))) . '"');
 
@@ -244,8 +230,7 @@ class ProductStockDate extends ObjectModel
         }
 
         // $sql->groupBy('a.id_product', 'a.id_product_attribute');
-        $sql->orderBy('`best_seller` DESC, ma.`name` ASC');
-        // $sql->orderBy('`best_seller` DESC', 'ma.`name` ASC');
+        $sql->orderBy('ma.`name`', 'asc');
 
         $products = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql, true, false);
 
@@ -296,8 +281,7 @@ class ProductStockDate extends ObjectModel
 
         $stock = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql, true, false);
 
-        //puede ser negativo
-        return $stock;
+        return (int) $stock;
     }
 
     /**

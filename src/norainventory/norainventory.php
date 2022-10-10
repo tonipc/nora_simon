@@ -1,28 +1,29 @@
 <?php
+
 /**
-* 2007-2021 PrestaShop
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@prestashop.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-* versions in the future. If you wish to customize PrestaShop for your
-* needs please refer to http://www.prestashop.com for more information.
-*
-*  @author    PrestaShop SA <contact@prestashop.com>
-*  @copyright 2007-2021 PrestaShop SA
-*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
-*/
+ * 2007-2021 PrestaShop
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+ * versions in the future. If you wish to customize PrestaShop for your
+ * needs please refer to http://www.prestashop.com for more information.
+ *
+ *  @author    PrestaShop SA <contact@prestashop.com>
+ *  @copyright 2007-2021 PrestaShop SA
+ *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ *  International Registered Trademark & Property of PrestaShop SA
+ */
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -30,7 +31,10 @@ if (!defined('_PS_VERSION_')) {
 require_once _PS_MODULE_DIR_ . 'norainventory/vendor/autoload.php';
 
 //LOGS
-require_once(_PS_MODULE_DIR_. 'noralogs/classes/log.php');
+require_once(_PS_MODULE_DIR_ . 'noralogs/classes/log.php');
+
+// CLASSES
+require_once(_PS_MODULE_DIR_ . 'norainventory/classes/OrderManager.php');
 
 use Module\NoraInventory\Classes\InstallCategories;
 use Module\NoraInventory\Classes\InstallMeta;
@@ -44,6 +48,8 @@ use PrestaShopLogger as Logger;
 // use StockAvailable;
 
 // use PrestaShop\PrestaShop\Core\Domain\Product\Stock\ValueObject\OutOfStockType;
+
+use Module\NoraInventory\Classes\PrintPDF;
 
 class NoraInventory extends Module
 {
@@ -106,6 +112,12 @@ class NoraInventory extends Module
                 'grasas_saturadas' => $this->l('Saturated fats'),
                 'azucares' => $this->l('Sugars'),
                 'traces' => $this->l('Products not free of traces. Store between 0 and 4°C. For immediate consumption.'),
+                'weekend_solo' => $this->l('Weekends solo se sirve los viernes'),
+                'weekend_select' => $this->l('Selecciona una fecha que corresponda a un viernes para ver los platos:'),
+                'weekend_select_date' => $this->l('SELECCIONAR FECHA'),
+                'new_product' => $this->l('NEW'),
+                'best_seller' => $this->l('Best seller'),
+                'fijo' => $this->l('FIJO'),
             ],
             'home' => [
                 'id_menu' => (int) Configuration::get($this->name . 'HOMEPAGE_PACK'),
@@ -227,8 +239,7 @@ class NoraInventory extends Module
     public function disable($force_all = false)
     {
         return parent::disable($force_all)
-            && InstallTabs::uninstall()
-        ;
+            && InstallTabs::uninstall();
     }
 
     /**
@@ -241,21 +252,20 @@ class NoraInventory extends Module
         return $this->tabs;
     }
 
-    /**
-     * Load the configuration form
-     */
+ 
     public function getContent()
     {
         /*
          * If values have been submitted in the form, process.
          */
-        if (((bool) Tools::isSubmit('submitStepperModule')) == true) {
-            $this->postProcess();
-        }
+        // if (((bool) Tools::isSubmit('submitStepperModule')) == true) {
+        //     $this->postProcess();
+        // }
 
         $this->context->smarty->assign('module_dir', $this->_path);
         $this->context->smarty->assign(
-            'norainventoryCronTaskUrl', $this->context->link->getModuleLink($this->name, 'api', [
+            'norainventoryCronTaskUrl',
+            $this->context->link->getModuleLink($this->name, 'api', [
                 'apiToken' => $this->getToken('apiToken', true),
                 'ajax' => 1,
                 'action' => 'cronJob',
@@ -265,14 +275,13 @@ class NoraInventory extends Module
 
         $output = $this->context->smarty->fetch($this->local_path . 'views/templates/admin/configure.tpl');
 
-        $output .= $this->renderForm();
+        // $output .= $this->renderForm();
 
         return $output;
     }
 
-    /**
-     * Create the form that will be displayed in the configuration of your module.
-     */
+    //ESTO YA NO SE USA, EN HOOK HOME NO NECESITAMOS ESTAS VARIABLES
+    /*
     protected function renderForm()
     {
         $helper = new HelperForm();
@@ -290,7 +299,7 @@ class NoraInventory extends Module
         $helper->token = Tools::getAdminTokenLite('AdminModules');
 
         $helper->tpl_vars = [
-            'fields_value' => $this->getConfigFormValues(), /* Add values for your inputs */
+            'fields_value' => $this->getConfigFormValues(),
             'languages' => $this->context->controller->getLanguages(),
             'id_language' => $this->context->language->id,
         ];
@@ -298,9 +307,6 @@ class NoraInventory extends Module
         return $helper->generateForm([$this->getConfigForm()]);
     }
 
-    /**
-     * Create the structure of your form.
-     */
     protected function getConfigForm()
     {
         $allMenus = ProductStepPack::getDetailedPacks();
@@ -365,9 +371,6 @@ class NoraInventory extends Module
         ];
     }
 
-    /**
-     * Set values for the inputs.
-     */
     protected function getConfigFormValues()
     {
         $titleLang = [];
@@ -383,9 +386,6 @@ class NoraInventory extends Module
         ];
     }
 
-    /**
-     * Save form data.
-     */
     protected function postProcess()
     {
         $form_values = $this->getConfigFormValues();
@@ -404,14 +404,17 @@ class NoraInventory extends Module
             }
         }
     }
+    */
 
     /**
      * Add the CSS & JavaScript files you want to be loaded in the BO.
      */
     public function hookBackOfficeHeader()
     {
-        if (Tools::getValue('configure') == $this->name ||
-        Tools::getValue('module_name') == $this->name) {
+        if (
+            Tools::getValue('configure') == $this->name ||
+            Tools::getValue('module_name') == $this->name
+        ) {
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin-pack-get-content.js');
         }
     }
@@ -458,7 +461,7 @@ class NoraInventory extends Module
             ],
         ]);
 
-        $this->context->controller->addCSS($this->getPathUri().'views/css/front.css');
+        $this->context->controller->addCSS($this->getPathUri() . 'views/css/front.css');
     }
 
     public function hookDisplayHeaderCategory()
@@ -480,9 +483,11 @@ class NoraInventory extends Module
     public function hookActionCartSave()
     {
         try {
-            if (Tools::getValue('controller') === 'cart'
-            && Validate::isLoadedObject($this->context->cart)
-            && Tools::getValue('action') === 'update') {
+            if (
+                Tools::getValue('controller') === 'cart'
+                && Validate::isLoadedObject($this->context->cart)
+                && Tools::getValue('action') === 'update'
+            ) {
                 // GET
                 $idProduct = (int) Tools::getValue('id_product');
 
@@ -657,9 +662,11 @@ class NoraInventory extends Module
 
     public function hookDisplayTop()
     {
-        if ($this->context->controller->php_self ||
-        (!empty($this->context->controller->page_name) &&
-        $this->context->controller->page_name !== 'module-norainventory-packs')) {
+        if (
+            $this->context->controller->php_self ||
+            (!empty($this->context->controller->page_name) &&
+                $this->context->controller->page_name !== 'module-norainventory-packs')
+        ) {
             return $this->context->smarty->fetch('module:norainventory/views/templates/hook/change-date.tpl');
         }
     }
@@ -685,7 +692,7 @@ class NoraInventory extends Module
      */
     public function hookActionCartUpdateQuantityBefore($params)
     {
-       // Logger::AddLog('hookActionCartUpdateQuantityBefore' . json_encode($params));
+        // Logger::AddLog('hookActionCartUpdateQuantityBefore' . json_encode($params));
     }
 
     /**
@@ -795,9 +802,11 @@ class NoraInventory extends Module
         $idProduct = $params['id_product'];
         $product = new Product($idProduct);
 
-        if (Validate::isLoadedObject($product) &&
-        Pack::isPack($idProduct) &&
-        $product->id_category_default == Configuration::get('NORAINVENTORY_DEFAULT_CATEGORY')) {
+        if (
+            Validate::isLoadedObject($product) &&
+            Pack::isPack($idProduct) &&
+            $product->id_category_default == Configuration::get('NORAINVENTORY_DEFAULT_CATEGORY')
+        ) {
             $product->delete();
         }
     }
@@ -820,8 +829,7 @@ class NoraInventory extends Module
 
         if ($isCart) {
 
-            if (isset($params['product']['id_customization']))
-            {
+            if (isset($params['product']['id_customization'])) {
                 $idCustomization = (int) $params['product']['id_customization'];
                 $sql = new DbQuery();
                 $sql->select('value');
@@ -867,7 +875,7 @@ class NoraInventory extends Module
      * @param string $text
      * @param bool $static
      */
-    public function getToken($text, bool $static=false)
+    public function getToken($text, bool $static = false)
     {
         $array = [$text];
 
@@ -938,7 +946,7 @@ class NoraInventory extends Module
 		LEFT JOIN `' . _DB_PREFIX_ . 'feature_lang` fl ON (f.`id_feature` = fl.`id_feature` AND fl.`id_lang` = ' . (int) $idLang . ')
 		LEFT JOIN `' . _DB_PREFIX_ . 'feature_value` fv ON (fv.`id_feature` = f.`id_feature`)
 		LEFT JOIN `' . _DB_PREFIX_ . 'feature_value_lang` fvl ON (fvl.`id_feature_value` = fv.`id_feature_value` AND fvl.`id_lang` = ' . (int) $idLang . ')
-        '. (empty($ids) ? '' : 'WHERE fvl.id_feature_value IN (' . implode(',', array_map('intval', $ids)) . ')') .'
+        ' . (empty($ids) ? '' : 'WHERE fvl.id_feature_value IN (' . implode(',', array_map('intval', $ids)) . ')') . '
 		ORDER BY f.`position` ASC');
 
         return $features;
@@ -946,7 +954,7 @@ class NoraInventory extends Module
 
     public function getFeaturesToFilter()
     {
-         //GET the ids of feature 6, that is the general features values
+        //GET the ids of feature 6, that is the general features values
         $features = Db::getInstance()->executeS('
         SELECT f.id_feature_value
         FROM `' . _DB_PREFIX_ . 'feature_value` f
@@ -954,7 +962,7 @@ class NoraInventory extends Module
 
         $ids = [];
         foreach ($features as $feature) {
-            array_push($ids, intval($feature['id_feature_value']) );
+            array_push($ids, intval($feature['id_feature_value']));
         }
         // Get 'id_feature_value' ids to use in the feature list section
         //$ids = [4, 1, 3, 65, 66];
@@ -1139,22 +1147,27 @@ class NoraInventory extends Module
     }
     */
 
-     //El Hook OrderConfirmation no es el adecuado para restar stock
+    //El Hook OrderConfirmation no es el adecuado para restar stock
     //  public function hookDisplayOrderConfirmation($params){
-    public function hookActionValidateOrder($params) {
+    public function hookActionValidateOrder($params)
+    {
         $order = $params['order'];
         $id_order = $order->id;
 
+        // Asignar id_assign_address_address
+        $order->setAssignAddressAddress();
+
         $products = $order->getProducts();
 
-        if(Module::isEnabled("noralogs")){
+        if (Module::isEnabled("noralogs")) {
             $log = new LogNora();
         }
-        
+
         foreach ($products as $product) {
 
-            if (Pack::isPack($product['id_product']))
-            {
+
+            //Pack
+            if (Pack::isPack($product['id_product'])) {
                 //Get pack products
                 $products_inPack =  Pack::getItemTable(
                     $product['id_product'],
@@ -1164,51 +1177,140 @@ class NoraInventory extends Module
                 foreach ($products_inPack as $product_pack) {
                     # code...
                     //Avoid warning that can occur when product has no attribute
-                    if (!isset($product_pack['id_product_attribute']) )
-                    {
+                    if (!isset($product_pack['id_product_attribute'])) {
                         $product_pack['id_product_attribute'] = null;
                     }
 
+                    $quantity = $product_pack['pack_quantity'] > 1 ? $product_pack['pack_quantity'] : $product['product_quantity'];
 
-                    if($log)
-                        $log->insertLog('Cantidad del pack '.$product_pack['pack_quantity'], false);
-        
+                    if ($log)
 
-                    $this->decrementStock($product_pack['id_product'], $product_pack['id_product_attribute'], $product['delivery_date'], $product_pack['pack_quantity'], $id_order);
+                        $log->insertLog('Cantidad del pack ' . $quantity, false);
+
+
+                    $this->decrementStock($product_pack['id_product'], $product_pack['id_product_attribute'], $product['delivery_date'], $quantity, $id_order);
                 }
-
-            }
-            else
-            {
-               // var_dump($product['product_quantity']);
-                if (!isset($product['id_product_attribute']) )
-                {
-                    if ( isset($product['product_attribute_id']) )
-                    {
+            } else {
+                if (!isset($product['id_product_attribute'])) {
+                    if (isset($product['product_attribute_id'])) {
                         $product['id_product_attribute'] = $product['product_attribute_id'];
-                    }
-                    else
-                    {
+                    } else {
                         $product['id_product_attribute'] = null;
                     }
-                        
-                        
                 }
 
-                if($log)
-                    $log->insertLog('Cantidad del producto '.$product['product_quantity'], false);
-    
+                if ($log)
 
-                $this->decrementStock($product['id_product'], $product['id_product_attribute'], $product['delivery_date'], intval($product['product_quantity']), $id_order );
+                    $log->insertLog('Cantidad del producto ' . $product['product_quantity'], false);
+
+
+                $this->decrementStock($product['id_product'], $product['id_product_attribute'], $product['delivery_date'], $product['product_quantity'], $id_order);
             }
         }
 
         //...some othe code
     }
 
-    //cancel incrementaremos el stock con la clase
-    public function hookActionOrderStatusUpdate($params){
+    //Cancelados
+    public function hookActionOrderStatusUpdate($params)
+    {
 
+        $cancelOrderStatus = Configuration::get('PS_OS_CANCELED');
+
+        $orderStatus = $params['newOrderStatus']->id;
+        $id_order = $params['id_order'];
+        $obj_order = new Order($id_order);
+
+        $id_customer = $obj_order->id_customer;
+
+        //excepción
+        $id_customers_sin_suma_stock = Configuration::get('NORAPARTI_IDS_CUSTOMER_INTERNOS');
+
+        $array_id_customers_sin_suma_stock = explode(',', $id_customers_sin_suma_stock);
+        if ( in_array($id_customer, $array_id_customers_sin_suma_stock) )
+            return;
+
+        if ($cancelOrderStatus == $orderStatus) {
+
+            if (Module::isEnabled("noralogs")) {
+                $log = new LogNora();
+            }
+
+            $products = $obj_order->getProducts();
+
+            foreach ($products as $product) {
+
+                //PACK
+                if (Pack::isPack($product['id_product'])) {
+                    //Get pack products
+                    $products_inPack =  Pack::getItemTable(
+                        $product['id_product'],
+                        1
+                    );
+
+                    foreach ($products_inPack as $product_pack) {
+                        //Avoid warning that can occur when product has no attribute
+                        if (!isset($product_pack['id_product_attribute'])) {
+                            $product_pack['id_product_attribute'] = null;
+                        }
+
+                        $quantity = $product_pack['pack_quantity'] > 1 ? $product_pack['pack_quantity'] : $product['product_quantity'];
+
+                        if ($log)
+                        
+                            $log->insertLog('CANCELADO. Cantidad del pack ' . $quantity, false);
+
+
+                        $this->sumaStock($product_pack['id_product'], $product_pack['id_product_attribute'], $product['delivery_date'], $quantity, $id_order, 0);
+                    }
+                }
+                //No pack
+                else {
+                    if (!isset($product['id_product_attribute'])) {
+                        if (isset($product['product_attribute_id'])) {
+                            $product['id_product_attribute'] = $product['product_attribute_id'];
+                        } else {
+                            $product['id_product_attribute'] = null;
+                        }
+                    }
+
+                    if ($log)
+                        $log->insertLog('CANCELADO. Cantidad del producto ' . $product['product_quantity'], false);
+
+
+                    $this->sumaStock($product['id_product'], $product['id_product_attribute'], $product['delivery_date'], $product['product_quantity'], $id_order, 0);
+                }
+            } //end foreach
+
+
+        }
+    }
+
+    public function sumaStock($id_product, $id_product_attribute, $date, $productQuantity = 1, $id_order, $is_suborder = 0)
+    {
+        //debe hacerse el mismo dia, sino no existirá
+        $stock = ProductStockDate::getStockByDate(
+            $date,
+            $id_product,
+            !empty($id_product_attribute)
+                ? $id_product_attribute
+                : 0
+        );
+
+        if (Module::isEnabled("noralogs")) {
+            $log = new LogNora();
+        }
+
+        // $product = new Product($id_product);
+        $product_name = Product::getProductName($id_product, $id_product_attribute, 1); 
+
+        if ($stock) {
+            if ($log)
+                $log->insertLog(($is_suborder ? 'SUBORDER ' : null).'CANCELADO Para el dia ' . $date . ' el stock es ' . $stock . ' y la cantidad a SUMAR en este caso es ' . $productQuantity . ' para el id_product ' . $id_product . ' de nombre ' . $product_name, false);
+        }
+
+        //suma el stock para Cancelled
+        $this->updateStock($date, $stock + $productQuantity, $id_product, $id_product_attribute, $id_order);
     }
 
     //allows to decrement the product quantity
@@ -1217,10 +1319,10 @@ class NoraInventory extends Module
         $stock = ProductStockDate::getStockByDate(
             $date,
             $id_product,
-                !empty($id_product_attribute)
-                    ? $id_product_attribute
-                    : 0
-            );
+            !empty($id_product_attribute)
+                ? $id_product_attribute
+                : 0
+        );
 
         /*if ($stock-$productQuantity <= 0)
         {
@@ -1231,17 +1333,17 @@ class NoraInventory extends Module
         else
         { */
 
-            if(Module::isEnabled("noralogs")){
-                $log = new LogNora();
-            }
+        if (Module::isEnabled("noralogs")) {
+            $log = new LogNora();
+        }
 
-            if($stock){
-                if($log)
-                    $log->insertLog('Para el dia '.$date.' el stock es '.$stock.' y la cantidad a restar es '.$productQuantity, false);
-            }
+        if ($stock) {
+            if ($log)
+                $log->insertLog('Para el dia ' . $date . ' el stock es ' . $stock . ' y la cantidad a restar es ' . $productQuantity, false);
+        }
 
-            //restamos
-            $this->updateStock($date, $stock-$productQuantity, $id_product, $id_product_attribute, $id_order);
+        //restamos
+        $this->updateStock($date, $stock - $productQuantity, $id_product, $id_product_attribute, $id_order);
         //}
 
     }
@@ -1251,15 +1353,15 @@ class NoraInventory extends Module
         try {
             $inventoryId = ProductStockDate::getIdByParams($date, $idProduct, $idProductAttribute);
 
-            if(Module::isEnabled("noralogs")){
+            if (Module::isEnabled("noralogs")) {
                 $log = new LogNora();
             }
 
-            if($inventoryId){
-                if($log)
-                    $log->insertLog('El inventoryId existe es '.$inventoryId, false);
+            if ($inventoryId) {
+                if ($log)
+                    $log->insertLog('El inventoryId existe es ' . $inventoryId, false);
             }
-          
+
             $obj = new ProductStockDate($inventoryId);
 
             if (!Validate::isLoadedObject($obj)) {
@@ -1270,9 +1372,6 @@ class NoraInventory extends Module
                     $obj->id_product_attribute = (int) $idProductAttribute;
                     $obj->quantity = (int) $quantity;
                     $obj->save();
-
-
-                  
                 }
             } else {
                 // Update
@@ -1280,32 +1379,31 @@ class NoraInventory extends Module
                     // Deete
                     $obj->delete();
                 } else { */
-                    $obj->quantity = $quantity;
-                    $obj->save();
+                $obj->quantity = $quantity;
+                $obj->save();
 
-                    $product = new Product($idProduct);
+                // $product = new Product($idProduct);
+                $product_name = Product::getProductName($idProduct, $idProductAttribute, 1); 
 
-                    //falta añadir delivery_date
-                    if($obj->save()){
-                        if($log)
-                            $log->insertLog('Pedido '.$id_order.'. El stock en la tabla product_stock_date se actualizó con la cantidad '.$quantity.' para el id_product '.$idProduct.' de nombre '.$product->name[1].' , atributo '.$idProductAttribute.' y con fecha de entrega '.$date, false);
-
-                    }else{
-                        if($log)
-                            $log->insertLog('Pedido '.$id_order.'. El stock en la tabla de FECHA NO se actualizó', false);
-                    }
+                if ($obj->save()) {
+                    if ($log)
+                        $log->insertLog('Pedido ' . $id_order . '. El stock en la tabla product_stock_date se actualizó con la cantidad ' . $quantity . ' para el id_product ' . $idProduct . ' de nombre ' . $product_name . ' , atributo ' . $idProductAttribute . ' y con fecha de entrega ' . $date, false);
+                } else {
+                    if ($log)
+                        $log->insertLog('Pedido ' . $id_order . '. El stock en la tabla de FECHA NO se actualizó', false);
+                }
 
                 //}
             }
 
-        
+
             // TABLA DE STOCK DE PRESTA NOS ES IGUAL
             // $byDateStock = (int) ProductStockDate::getStockByProduct($idProduct, $idProductAttribute);
             // $generalStock = (int) StockAvailable::getQuantityAvailableByProduct($idProduct, $idProductAttribute);
 
             // $delta = $byDateStock - $generalStock;
 
-       
+
             // StockAvailable::updateQuantity((int) $idProduct, (int) $idProductAttribute, $delta);
 
             // if(StockAvailable::updateQuantity((int) $idProduct, (int) $idProductAttribute, $delta)){
@@ -1314,17 +1412,91 @@ class NoraInventory extends Module
 
             //         if($log)
             //             $log->insertLog('El stock en stock_available bajó a la cantidad '.$delta.', que es la resta del stock por fecha '.$byDateStock.' y el general '.$generalStock.'. Se restó para el id_product '.$idProduct.' de nombre '.$product->name[1].' y atributo '.$idProductAttribute, false);
-    
+
             // }
 
             return true;
 
-        //PREFIERO UN LOG PARTICULAR, PARA TENERLO CONTROLADITO   
+            //PREFIERO UN LOG PARTICULAR, PARA TENERLO CONTROLADITO
         } catch (Exception $e) {
             Logger::AddLog($e->getMessage());
 
             return false;
         }
+    }
+
+    //imprime pedidos de hoy y cambio estado de pedido en adminController
+    public function ajaxProcessImprimePedidosDiaHoy()
+	{
+        //Sólo el primer id_order_detail
+        $sql = 'SELECT od.id_order_detail
+                FROM ' . _DB_PREFIX_ . 'order_detail od
+                LEFT JOIN ' . _DB_PREFIX_ . 'orders o ON o.id_order = od.id_order
+                LEFT JOIN ' . _DB_PREFIX_ . 'customized_data cd ON cd.id_customization = od.id_customization
+                LEFT JOIN ' . _DB_PREFIX_ . 'order_detail_status ods ON ods.id_order_detail = od.id_order_detail
+                WHERE cd.value = CURRENT_DATE() 
+                AND ods.id_order_detail_status NOT IN(5,6) 
+                AND ods.printed = 0
+                GROUP BY o.id_order
+                ';
+
+        // echo $sql;
+
+        $result = Db::getInstance()->executeS($sql);
+        // dump($result);
+
+        if ($result) {
+
+            // $grupos_a_ordenar = array();
+            $order_details_list = [];
+
+            //Get ticked
+            foreach ($result as $id) {
+
+                $id = $id['id_order_detail'];
+
+                // $data = $this->generateGroup($id);
+
+                $data = OrderManager::generateData($id);
+                $suborders_pedido = implode(",", $data);
+
+                $update =  'UPDATE `nora_order_detail_status` SET `printed`= 1 WHERE id_order_detail IN('.$suborders_pedido.') ';
+                Db::getInstance()->execute($update);
+
+                //Añadimos en grupos a ordenar la info sacada de data
+                // $grupos_a_ordenar[] =  $data;
+
+                //Queremos los id_order_detail para generar el pdf
+                array_push($order_details_list, new OrderDetail($id));
+
+            }
+
+            // $info = $this->dameGruposDrivers();
+
+            // //Recorremos todos los grupos y ordenamos
+            // foreach ($info as $grupos) {
+            //   $grupos_a_ordenar = $this->bubble_sort_hacked($grupos_a_ordenar, $grupos);
+            // }
+            // $grupos_a_ordenar = array_filter($grupos_a_ordenar);
+            // foreach ($grupos_a_ordenar as $pedidos) {
+
+            //   array_push($order_details_list, new OrderDetail($pedidos[2]));
+
+            // }
+
+            // dump($order_details_list);
+
+            $pdf = new PrintPDF($order_details_list, PrintPDF::TEMPLATE_QUOTE, $this->context->smarty);
+            $pdf->render();
+        
+        }else{
+            echo 'Ya no hay más pedidos en el dia de hoy para imprimir';
+            die;
+        }
+
+        $admin_nora_orders = $this->context->link->getAdminLink('AdminNoraInventoryOrder', true);
+        Tools::redirect($admin_nora_orders);
+
     }
 
 }
