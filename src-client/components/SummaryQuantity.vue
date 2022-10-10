@@ -70,6 +70,7 @@ export default {
     clickAddQuantity() {
       this.$emit("input", this.value + 1);
     },
+    
     clickRemoveQuantity() {
       this.$emit("input", this.value > 0 ? this.value - 1 : 0);
     }

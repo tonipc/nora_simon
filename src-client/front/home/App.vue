@@ -32,6 +32,7 @@ export default {
     margin-block-end: 50px;
   }
 
+
   .homepage-title {
     max-width: 600px;
     margin-inline: auto;

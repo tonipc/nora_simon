@@ -167,10 +167,35 @@ export default {
       return window.prestashop.urls;
     },
     mappedProducts() {
+
+      console.log(this.currentCategory);
+      
+      var currentCategory = this.currentCategory;
+
+      return this.products.filter(function(p) { 
+
+        var found = false;
+
+        var keys = Object.keys(p.categories_all);
+
+        console.log(keys)
+        console.log(p)
+        for (var i = 0; i < keys.length; i++)
+        {
+          if (p.categories_all[keys[i]].id_category == currentCategory)
+          {
+            found = true;
+          }
+        }
+
+        return found; 
+
+      });
+      /*
       return _.filter(
         this.products,
         p => String(this.currentCategory) === String(p.id_category_default)
-      );
+      ); */
     }
   },
   watch: {

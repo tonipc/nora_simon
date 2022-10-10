@@ -140,8 +140,20 @@
 
     <section v-if="isEmpty" class = "empty" id="products">
 
+      <!-- Temporal functionality for christmas -->
       <div class = "weekend_no_products" v-if="currentMenuDetails.id == 6">
-        Weekends solo se sirve los viernes
+        <h2 style = "color: black;text-align: center;font-size: 30px;font-weight: 900;">{{ trans("weekend_solo") }}</h2>
+        <br>
+        <h3>{{ trans("weekend_select") }}</h3>
+        <br><br>
+        <button
+            type="buton"
+            class="btn btn-lg date-selector-content-button"
+            @click = "changeToFriday()"
+            style = "background-color: black;color: white;border: 1px solid white;margin-bottom:30px;"
+          >
+            {{ trans("weekend_select_date") }}
+        </button>
       </div>
       <!-- Temporal functionality for christmas -->
       <div class = "weekend_no_products" v-if="currentMenuDetails.id == 24">
@@ -174,6 +186,7 @@
 <script>
 import _ from "lodash";
 import { mapGetters } from "vuex";
+import VueEvents from 'vue-events'
 
 import FeaturesList from "@/components/FeaturesList.vue";
 import ProductAttributes from "@/components/ProductAttributes.vue";
@@ -212,7 +225,8 @@ export default {
       selectedProductModal: {},
       displayProductModal: false,
       hasProducts: false,
-      productCounter: 0
+      productCounter: 0,
+      selectedDate: ""
     };
   },
   computed: {
@@ -287,6 +301,17 @@ export default {
     },
     clickGoToNextStep() {
       this.$store.commit("SET_NEXT_STEP");
+    },
+    changeToFriday()
+    {
+      this.$store.state.swiper.slideTo( this.$store.state.nextFridayIndex) 
+      this.$events.fire('dateChangeEvent', this.$store.state.nextFriday);
+      
+      this.$store.commit("SET_CURRENT_DATE", this.$store.state.nextFriday);
+      this.$store.commit("RESET_BASKET");
+      this.$store.dispatch("getProducts", {
+        date: this.$store.state.nextFriday
+      });
     },
     clickOpenProductModal(product) {
       this.displayProductModal = true;

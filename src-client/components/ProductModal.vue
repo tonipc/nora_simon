@@ -55,7 +55,7 @@
                   v-html="product.description_short"
                 ></div>
                 <div class = "nutritional_title"  v-if = "nutritionalInfo"> 
-                    Valores nutricionales para 100g:
+                     {{ trans("nutricionales_cien") }}
                 </div>
                 <div class = "valores_nutricionales" v-if = "nutritionalInfo" >
                   <div class = "nutritional">
@@ -63,7 +63,7 @@
                       {{nutritionalInfo.values.calorias.toFixed(2)}}
                     </div>
                     <div class ="nutriTitle">
-                      Calorias
+                       {{ trans("calorias") }}
                     </div>
                   </div>
                   <div class = "nutritional">
@@ -71,7 +71,7 @@
                       {{nutritionalInfo.values.hidratos.toFixed(2)}}g
                     </div>
                     <div class ="nutriTitle">
-                      Hidratos de carbono
+                       {{ trans("hidratos") }}
                     </div>
                   </div>
                   <div class = "nutritional">
@@ -79,7 +79,7 @@
                       {{nutritionalInfo.values.proteinas.toFixed(2)}}g
                     </div>
                     <div class ="nutriTitle">
-                      Proteína
+                       {{ trans("proteina") }}
                     </div>
                   </div>
                   <div class = "nutritional">
@@ -87,7 +87,7 @@
                       {{nutritionalInfo.values.grasas.toFixed(2)}}g
                     </div>
                     <div class ="nutriTitle">
-                      Grasas
+                       {{ trans("grasas") }}
                     </div>
                   </div>
                    <div class = "nutritional">
@@ -95,7 +95,7 @@
                       {{nutritionalInfo.values.grasas_saturadas.toFixed(2)}}g
                     </div>
                     <div class ="nutriTitle">
-                      Grasas saturadas
+                       {{ trans("grasas_saturadas") }}
                     </div>
                   </div>
                   <div class = "nutritional">
@@ -103,7 +103,7 @@
                       {{nutritionalInfo.values.hidratos.toFixed(2)}}g
                     </div>
                     <div class ="nutriTitle">
-                      Azucares
+                       {{ trans("azucares") }}
                     </div>
                   </div>
                 </div>

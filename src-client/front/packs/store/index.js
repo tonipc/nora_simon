@@ -1,8 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import _ from "lodash";
+import VueEvents from 'vue-events';
 
 Vue.use(Vuex);
+Vue.use(VueEvents);
+
 const { noraInventoryData } = window;
 
 const {
@@ -94,6 +97,9 @@ const store = new Vuex.Store({
     currentOption: 0,
     currentStep: 0,
     upsellingValue: 0,
+    nextFriday: "",
+    nextFridayIndex: 0,
+    swiper: {},
 
     // MENU
     // Medio menu
