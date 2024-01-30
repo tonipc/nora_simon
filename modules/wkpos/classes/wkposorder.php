@@ -105,7 +105,8 @@ class WkPosOrder extends ObjectModel
             LEFT JOIN `' . _DB_PREFIX_ . 'order_state_lang` odsl ON (ods.`id_order_state` = odsl.`id_order_state`)
             WHERE outl.`id_wkpos_outlet` = ' . (int) $idWkPosOutlet .
             // ' AND odsl.`id_lang` = '.(int)Configuration::get('PS_LANG_DEFAULT');
-            ' AND odsl.`id_lang` = ' . (int) $context->language->id;
+            ' AND odsl.`id_lang` = ' . (int) $context->language->id .
+            ' AND DATE(pord.order_date) = CURRENT_DATE()';
         if ($idOrder) {
             $sql .= ' AND pord.`id_order` = ' . (int) $idOrder;
             $order = Db::getInstance()->getRow($sql);

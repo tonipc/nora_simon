@@ -115,9 +115,9 @@
                                             data-bind="textInput: $root.contentModel.customerPhone, css: { '': $root.contentModel.customerPhone() == '' }">
                                     </div>
                                 </div>
+
+                                {* 
                                 <div class="clearfix form-group">
-                                    {* <p class="info-text col-md-6"></p>
-                                    <p class="info-text col-md-6">{l s='(Date of birth)' mod='wkpos'}</p> *}
                                     <div class="col-md-12"><label for="days">{l s='Date of birth' mod='wkpos'}</label>
                                     </div>
                                     <div class="col-sm-3">
@@ -150,12 +150,15 @@
                                             {/foreach}
                                         </select>
                                     </div>
-                                </div>
-                                <div class="clearfix col-md-12">
+                                </div> 
+                                *}
+
+                                {* <div class="clearfix col-md-12">
                                     <input type="checkbox" class="newsletter" id="newsletter" name="newsletter"
                                         data-bind="checked: $root.contentModel.newsLetter">
                                     <label for="newsletter">{l s='Sign up for newsletter' mod='wkpos'}</label>
-                                </div>
+                                </div> *}
+
                                 {if Configuration::get('WKPOS_CUSTOMER_GROUP')}
                                     <div class="customer-group form-group col-md-12">
                                         <h4></h4>
