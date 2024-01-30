@@ -142,6 +142,8 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                 $this->ajaxRender(json_encode($productDetails));
             }
 
+            // dump($productDetails);
+
             return $productDetails;
         }
     }
@@ -370,6 +372,8 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                 $this->ajaxRender(json_encode($posOrder));
             }
 
+            // dump($posOrder);
+
             return $posOrder;
         }
     }
@@ -442,15 +446,16 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                     $objCustomer->passwd = Tools::encrypt(Tools::getValue('customer_passwd'));
                 }
 
-                if (Tools::getValue('birthday') == '0-0-0' || Tools::getValue('birthday') == ' - - ' || Tools::getValue('birthday') == '0-0-0' || Tools::getValue('birthday') == '--') {
-                } else {
-                    $objCustomer->birthday = Tools::getValue('birthday');
-                }
-                if (Tools::getValue('news_letter') == 'true') {
-                    $objCustomer->newsletter = 1;
-                } else {
-                    $objCustomer->newsletter = 0;
-                }
+                // if (Tools::getValue('birthday') == '0-0-0' || Tools::getValue('birthday') == ' - - ' || Tools::getValue('birthday') == '0-0-0' || Tools::getValue('birthday') == '--') {
+                // } else {
+                //     $objCustomer->birthday = Tools::getValue('birthday');
+                // }
+                // if (Tools::getValue('news_letter') == 'true') {
+                //     $objCustomer->newsletter = 1;
+                // } else {
+                //     $objCustomer->newsletter = 0;
+                // }
+
                 $objCustomer->id_gender = (int) Tools::getValue('title');
 
                 $groups = Tools::getValue('groupAccess');
@@ -502,6 +507,7 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
      */
     public function displayAjaxAddNewAddress()
     {
+        //le forzamos una dirección, la nuestra
         if (Tools::getValue('posToken') == $this->module->secure_key) {
             $firstName = trim(Tools::getValue('first_name'));
             $idAddress = trim(Tools::getValue('id_address'));

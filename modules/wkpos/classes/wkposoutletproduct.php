@@ -298,9 +298,10 @@ class WkPosOutletProduct extends ObjectModel
                 }
                 $taxRate = [];
                 $productNameLength = Configuration::get('WKPOS_PRODUCT_NAME_LENGTH');
-                $displayProductName = Tools::strlen($item['name']) > $productNameLength ?
-                    Tools::substr($item['name'], 0, $productNameLength) . '...' :
-                    $item['name'];
+                // $displayProductName = Tools::strlen($item['name']) > $productNameLength ?
+                //     Tools::substr($item['name'], 0, $productNameLength) . '...' :
+                //     $item['name'];
+                $displayProductName = $item['name'];
 
                 $coverImage = Product::getCover($item['id_product']);
                 if (isset($item['link_rewrite'], $coverImage['id_image'])) {

@@ -92,7 +92,7 @@ class WkPosOrder extends ObjectModel
             ord.`total_discounts`, ord.`total_products_wt`,
             ord.`total_paid_tax_incl`, pord.`order_date`, addr.`address1`, ord.`current_state`,
             addr.`address2`, addr.`city`, addr.`postcode`,
-            ord.`reference`, ord.`payment`, pord.`id_wkpos_outlet_employee`,
+            ord.id_order as `reference`, ord.`payment`, pord.`id_wkpos_outlet_employee`,
             pord.`offline_reference`, ord.`id_customer`, pord.`id_wkpos_order`,
             odc.`shipping_cost_tax_excl`, odc.`shipping_cost_tax_incl`, ord.`current_state`, odsl.`name`
             FROM `' . _DB_PREFIX_ . 'wkpos_order` pord
