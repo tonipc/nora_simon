@@ -1,0 +1,134 @@
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.txt
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to a newer
+ * versions in the future. If you wish to customize this module for your
+ * needs please refer to CustomizationPolicy.txt file inside our module for more information.
+ *
+ * @author Webkul IN
+ * @copyright Since 2010 Webkul
+ * @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+
+.wkpos-sales,
+.wkpos-order,
+.wkpos-cart,
+.wkpos-net-profit {
+  font-size: 15px;
+  text-align: center;
+  padding: 10px !important;
+}
+
+.font-20 {
+  font-size: 20px;
+}
+
+.width-25 {
+  width: 25px;
+}
+
+.wkpos-order > span {
+  padding-top: 35px !important;
+  background: #1f77b4;
+}
+
+.wkpos-sales > span {
+  padding-top: 35px !important;
+  background: #ff7f0e;
+}
+.wkpos-cart > span {
+  padding-top: 35px !important;
+  background: #2ca02c;
+}
+.wkpos-net-profit > span {
+  padding-top: 35px !important;
+  background: #6b399c;
+}
+
+#wkpos-sales,
+#wkpos-order,
+#wkpos-cart,
+#wkpos-net-profit {
+  background: white;
+}
+
+#wkpos-sales,
+#wkpos-order,
+#wkpos-cart,
+#wkpos-net-profit {
+  font-weight: 600;
+  padding-top: 5px;
+  line-height: 2.2;
+}
+
+.wk-dashboard-details:hover > div {
+  background: #00aff0 !important;
+  color: #fff;
+}
+
+.wkpos-sales:hover > div,
+.wkpos-sales.active > div {
+  background: #ff9e47 !important;
+  color: #fff;
+}
+.wkpos-order:hover > div,
+.wkpos-order.active > div {
+  background: #599bd9 !important;
+  color: #fff;
+}
+.wkpos-cart:hover > div,
+.wkpos-cart.active > div {
+  background: #4cc443 !important;
+  color: #fff;
+}
+.wkpos-net-profit:hover > div,
+.wkpos-net-profit.active > div {
+  background: #8c4fca !important;
+  color: #fff;
+}
+
+#wkpos-sales > div,
+#wkpos-order > div,
+#wkpos-cart > div,
+#wkpos-net-profit > div {
+  margin-left: 0;
+}
+
+.wkpos-panel-heading {
+  font-size: 30px;
+}
+.wkpos-panel {
+  margin-bottom: 20px;
+  padding: 0px 10px;
+}
+
+.wkpos-sales > span > i,
+.wkpos-order > span > i,
+.wkpos-cart > span > i,
+.wkpos-net-profit > span > i {
+  z-index: 1;
+  left: 0px;
+  width: 100%;
+  color: white;
+  font-size: 25px;
+}
+
+.wk-padding-0 {
+  padding: 0px !important;
+}
+
+.wk-dashboard-details {
+  display: flex !important;
+}
+
+#wk_selected_outlet {
+  background: white;
+  margin-left: 15px;
+}

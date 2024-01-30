@@ -1,0 +1,353 @@
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.txt
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to a newer
+ * versions in the future. If you wish to customize this module for your
+ * needs please refer to CustomizationPolicy.txt file inside our module for more information.
+ *
+ * @author Webkul IN
+ * @copyright Since 2010 Webkul
+ * @license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+
+:root {
+    --wk-pos-close-session: #511C29;
+    --wk-pos-confirm: #b3001d;
+    --wk-pos-addcash: #41af4b;
+    --wk-pos-removecash: #e6643c;
+    --wk-pos-set-closing: #c5593c;
+    --wk-pos-pdf-download: #3d3e48e0;
+    --wk-pos-close-btn: #511c28e6;
+}
+.card {
+    box-shadow: 2px 2px 8px 0 rgba(0,0,0,.2);
+    /* padding: 15px; */
+    position: relative;
+    background: var(--wkpos-white);
+}
+.wkpos-session-btn {
+    background: var(--wk-pos-btn-color);
+    color: var(--wkpos-white);
+    border: none;
+}
+
+.wkpos-close-btn {
+    background: var(--wk-pos-close-btn);
+    color: var(--wkpos-white);
+    border: none;
+}
+
+.card-heading-name {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    flex: 1 0 95%;
+}
+
+.card-heading-options {
+    padding: 5px 15px;
+    text-align: right;
+    background:  var(--wkpos-white);
+    /* border: 1px solid var(--wkpos-off-white); */
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    border-bottom: unset;
+}
+
+.card-actions {
+    width: 95%;
+    max-width: 180px;
+    box-shadow: 0 6px 12px -4px var(--wkpos-box-shadow);
+    border: 1px solid var(--wkpos-off-white);
+    background:  var(--wkpos-white);
+    display: none;
+}
+
+.cart-action-position {
+    position: absolute;
+    left: auto;
+    bottom: auto;
+    right: 0px;
+    margin-top: -1px;
+    border-color: var(--wkpos-off-white);
+    top: 30px;
+}
+#wkpos-session {
+    background: var(--wkpos-off-white);
+}
+
+#wkpos-session ul {
+    list-style: none;
+}
+
+#wkpos-session .card-actions ul {
+    padding: 15px;
+    margin: 0;
+}
+#wkpos-session .card-actions ul li{
+    padding-bottom: 5px;
+}
+#wkpos-session .card-actions ul li{
+    padding-bottom: 5px;
+}
+
+#wkpos-session .card-actions ul li:hover {
+    color: var(--wk-pos-btn-color);
+}
+
+.wk-line-height-2 {
+    line-height: 2;
+}
+
+.wkpos-confirm {
+    background: var(--wk-pos-confirm);
+}
+
+.wk-padding-15 {
+    padding: 15px;
+}
+
+.wk-flex-wrap {
+    flex-wrap: wrap;
+}
+
+.wk-cash-control-head {
+    display: flex;
+    flex-direction: row-reverse;
+    flex: 1;
+    /* position: absolute;
+    top: 0;
+    right: 0;
+    border-bottom: 1px solid var(--wkpos-off-white); */
+}
+
+.wkpos-card-content {
+    padding: 15px;
+    position: relative;
+}
+
+.wk-cash-control-head button {
+    background: white;
+    border: 1px solid var(--wkpos-off-white);
+    margin-right: 15px;
+}
+
+.wkpos_td_label {
+    width: 0%;
+    min-width: 150px;
+}
+
+.wkpos_td_label_1 {
+    width: 0%;
+    min-width: 60px;
+    padding-bottom: 30px;
+}
+.wkpos_td_label_2 {
+    width: 0%;
+    min-width: 60px;
+}
+
+.wk-width-100 {
+    width: 100%;
+}
+
+.wk-session-transaction-total {
+    width: 1px;
+    border-top: 1px solid var(--wkpos-off-white);
+}
+
+.wk-session-transaction-total .wkpos_td_label {
+    min-width: 250px;
+    text-align: right;
+    padding: 5px 15px;
+}
+
+.wk-blank-table {
+    margin: 15px;
+    width: 100%;
+}
+
+.wk-margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
+.wk-session-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.wk-cash-control-head button:hover {
+    background: var(--wk-pos-btn-color);
+}
+
+#pos-sale #wk-pos-session-modal .modal-body,
+#pos-sale #wk-pos-cash-control .modal-body {
+    padding: 15px;
+}
+
+.wk-padding-15 {
+    padding: 15px;
+}
+
+.wk-margin-bottom-15 {
+    margin-bottom: 15px;
+}
+
+.wk-input-group:focus,
+.wk-input-group:hover {
+    outline: unset;
+    background: white !important
+}
+
+.wk-input-group {
+    background: unset;
+    border: unset;
+    box-shadow: unset;
+}
+
+.wkpos-session-btn:hover,
+.wkpos-session-btn:active,
+.wkpos-session-btn:focus {
+    background: var(--wk-pos-confirm) !important;
+    color: var(--wkpos-white) !important;
+    opacity: 0.8;
+}
+
+.wkpos-card-content-heading {
+    border-bottom: 1px solid var(--wkpos-off-white);
+}
+
+.wk-margin-15 {
+    margin: 15px;
+}
+
+.wk-flex-1 {
+    flex: 1;
+}
+
+.wk-flex-2 {
+    flex: 2;
+}
+
+.wk-flex-3 {
+    flex: 3;
+}
+
+.wk-flex-4 {
+    flex: 4;
+}
+
+.wk-flex-5 {
+    flex: 5;
+}
+
+.wk-flex-6 {
+    flex: 6;
+}
+
+.wk-flex-7 {
+    flex: 7;
+}
+
+.wk-flex-8 {
+    flex: 8;
+}
+
+.wk-flex-9 {
+    flex: 9;
+}
+
+.wk-flex-10 {
+    flex: 10;
+}
+
+.wk-flex-11 {
+    flex: 11;
+}
+
+.wk-flex-12 {
+    flex: 12;
+}
+
+
+/* Register CSS */
+
+.open-register-panel-header {
+    text-align: center;
+}
+
+.open_register_form {
+    margin: 0 auto; width: 70%;
+}
+
+.wkps-cash-register-open {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.wkpos-heading {
+    padding: 0 15px;
+    border-bottom: 1px solid var(--wkpos-box-shadow);
+}
+
+.wkpos-addcash {
+    background: var(--wk-pos-addcash);
+    color: var(--wkpos-white);
+    border: none;
+    float: right;
+}
+
+.wkpos-removecash {
+    background: var(--wk-pos-removecash);
+    color: var(--wkpos-white);
+    border: none;
+    float: right;
+    margin-right: 10px;
+}
+
+.wkpos-closing-btn {
+    background: var(--wk-pos-set-closing);
+    color: var(--wkpos-white);
+    border: none;
+}
+
+.wkpos-heading-btn-panel {
+    padding: 15px;
+}
+
+.fixed-width-150 {
+    max-width: 150px;
+}
+
+.wkpos-users button.wkpos-btn {
+    padding: 2px 8px;
+}
+
+.wkpos-user-menu {
+    right: 0;
+    left: unset;
+}
+
+.wkpos-download-link {
+    background: var(--wk-pos-pdf-download);
+}
+
+.wk-icon-up {
+    color: #16d63f;
+}
+
+.wk-icon-down {
+    color: #ec1d1d;
+}

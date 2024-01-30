@@ -1,0 +1,237 @@
+-------------------------------------------------------------------------
+ChangeLog : V5.2.2 to V5.3.0 | PrestaShop v8.x.x & v1.7.x.x compatible
+-------------------------------------------------------------------------
+New Features:
+- Cash register is added in POS.
+- QZ tray certs is added for direct raw print.
+- Generate barcode for internal use feature is added.
+- Stock location is shown on POS panel with product and cart.
+- Customer address is shown on recipt if shipping is enabled on POS.
+- On creation of new product it is automatically assigne to all outlet.
+- Product original price is also shown on POS panel.
+- Payment method can be configurable for POS orders.
+
+Improvement:
+- POS reciept is improved.
+- Add tendered amount and change in reciept with payment method.
+- Currency symbol printing improved.
+- Refund degin improved.
+- Combination POP up design improved.
+
+Bug Fix:
+- Warning message issue is fixed now.
+- Security issue fixed.
+- Combination attribute selection from different attribute group issue is fixed.
+- Some validation issues are fixed now.
+
+-------------------------------------------------------------------------
+ChangeLog : V5.2.1 to V5.2.2 | PrestaShop v8.x.x & v1.7.x.x compatible
+-------------------------------------------------------------------------
+New Features:
+- Notification sound on any error.
+- POS panel regex search based on score.
+- Accented charachter search.
+- Auto focus in POS search bar added.
+- Keyboard sorcut added for discount, amount and number keys.
+- During checkout can also enter number by keyboard instead of on screen num pad.
+
+Bug Fix:
+- Aligment issue of return product list is fixed.
+- Responsive view for mobile device corrected.
+- Specific price cases added.
+- Full screen button for iPad fixed.
+- Simple product in outlet converted to combination product issue fixed.
+
+-------------------------------------------------------------------------
+ChangeLog : V5.2.0 to V5.2.1 | PrestaShop v8.0.x.x & v1.7.x.x compatible
+-------------------------------------------------------------------------
+New Features:
+- Stock quantity in POS panel with each product is shown.
+- Tax value in custom product added.
+- Stock update button is given in POS panel to synch stock.
+- No of items in cart is also shown in cart panel.
+
+Bug Fix:
+- No need to add custom lines for POS Stripe Terminal module.
+- displayPosHeaderButtons hook added in pos at header.tpl to add buttons.
+- ajaxDie replaced with ajaxRender.
+- Tools::jsonEncode() replaced with json_encode.
+- Tools::isPasswd() replaced with Tools::isPlaintextPassword().
+- hook actionUpdateQuantity registration removed, install error.
+- Date of birth not saving issue is fixed.
+- Prinitng credit slip in html is now possible.
+- price cache issue is fixed.
+- Voucher applying issue is fixed.
+
+-------------------------------------------------------------
+ChangeLog : V5.1.1 to V5.2.0 | PrestaShop v1.7.8.x compatible
+-------------------------------------------------------------
+New Features:
+- Add custom product through POS panel directly.
+- Partial voucher can also be redeemed from POS.
+- Fully compatible with multishop PrestaShop.
+- Added configuration for selecting refund voucher use type.
+- Return order stock is assigned to same outlet.
+- POS login page background color can be configured from back office.
+- POS button colors can be configured from back office.
+- Improved configuration page ui.
+- Configuration can be set in multilang.
+
+Bug Fix:
+- Fixed wrong combination name issue at admin outlet product.
+- Fixed wrong product name at POS end while adding product to cart.
+- POS contact number is also displayed in customer address box.
+- Fixed stock synchronization issue in outlet and PrestaShop.
+- Fixed issue of barcode scanning adds wrong combination to cart.
+- Redirection issue at admin end on POS dashboard fixed.
+- Few security issues and small bugs related to flow also fixed.
+- Pack item stock managment fixed.
+- Fixed issue related to specific prices.
+
+-------------------------------------------------------------
+ChangeLog : V5.1.0 to V5.1.1 | PrestaShop v1.7.8.x compatible
+-------------------------------------------------------------
+
+New Features:
+- Decimal presicion in version greater theen prestashop 1.7.6 is fixed.
+- Added new pos and web filter for order lsting symfony controller.
+- Display product on the basis of clicked category on POS.
+- Added scroll option in case of category have sub-categories longer then display.
+
+Bug Fix:
+- Order listing reference ambigous issue is ressolved.
+- Now employe password can be changed from pos panel also.
+- Same outlet name can't be added now, to prevent duplicacy.
+- POS carrier is now restricted to show on front end.
+- Sorted pos order on basis of order id desc.
+- Corrected html invoice and added few more data to invoice.
+
+-------------------------------------------------------------
+ChangeLog : V5.0.0 to V5.1.0 | PrestaShop v1.7.6.x compatible
+-------------------------------------------------------------
+
+New Features:
+- display POS category from catalog not from ps_topmenu module
+- Added configuration to display customer group in POS front end.
+- Added Search by phone in customer search and provide different search category to select like email, phone, etc.
+- Added phone number field while creating customer through POS
+- Display Order message in POS Order Detail added
+- Added HTML Invoice Printing
+
+Bug Fix:
+- Customer group update from POS front end.
+- Remove POS carrier from website end.
+- Fixed Price and qty heading repeating on multiple invoice print without page refresh
+- Country set in context while creating order
+- Quantity not available issue fixed
+- Removed the customer name from POS cart if the customer has been deleted.
+- Fixed ERR_TOO_MANY_REDIRECTS on hitting pos sale url
+
+-------------------------------------------------------------
+ChangeLog : V4.0.2 to V5.0.0 | PrestaShop v1.7.6.x compatible
+-------------------------------------------------------------
+
+New Features:
+- PS 1.7.6.x compatible now
+- Indexed Db added for storing the product details
+- Partial Payment added
+- Order Return added
+- POS Order filter added in PS Admin Order List page
+- Custom header logo name configuration added
+- Pay By check payment method added
+- Guest Button Added to select the guest customer
+- PS category tree display if mainmenu module disable
+- Add combination product in cart on barcode scan
+- Configuration to change the cart product price tax incl. or tax excl.
+- Managed Multi Currency according to outlets.
+- Added tooltip in admin POS dashboard.
+- Remove product from outlet on deletion from catalog.
+- Add message on order while processing.
+- Added configuration to display voucher and message field in front.
+
+Bug Fix:
+- All translation issue fixed
+- POS product quantity synch/up-to-date with ps quantity
+- Offline Order Sync. before placing order in online mode
+- Order history Subtotal:NaN display fixed
+- Tag search duplicate product display fixed
+- Admin tab module icon added
+- Display issue of cart values when screen size is decreased fixed
+- from Validation at 'Add Outlet' html tag display fixed
+- POS employee image deletion fixed on update
+- Employee logout on page reload after employee gets deleted
+- Combination synch if created in catalog after assign in outlet
+- POS carrier create now with free shipping
+- Missing voucher details added in order receipt
+- Offline order reference in search added
+- Dashboard column sort fixed
+- Search input should be blank after barcode scan
+- Category tree wrong if BlockMainMenu module is disabled/uninstalled fixed
+- Quantity syncronization is not managed for cancel order fixed
+- Offline case language change No internet issue fixed
+- Minimum Qty Restriction
+- JS Code Optimization (Use of Webpack to break the JS files)
+- Standard space in order receipt for all column fixed
+- Working of Del Button fixed
+- Tooltip in POS Dashboard added
+- Incorrect price display under 'Sales' & 'Net Profit' at Dashboard tab fixed
+- Remove product from all outlet on deletion from catalog
+- category tree layout, need css change and differ with left menu fixed
+- Cart selection issue fixed
+- Option to view more categories disappear after we switch to any other tab fixed
+- Display 'No Product Found' message on assign product page fixed
+- Display Free Order in POS order detail fixed
+- Remove disabled buttons from 'Shipping' page at POS FO fixed
+- Display price upto two places of decimal fixed
+
+----------------------------
+ChangeLog : V4.0.1 to V4.0.2
+----------------------------
+
+New Features:
+- Added Voucher/Cart Rule Functionality.
+- Restrict Order Confirmation Mail send through POS
+
+Bug Fix:
+- Optimize the search product function.
+- Manage the POS carrier for the applied carrier in the product.
+
+
+----------------------------
+ChangeLog : V4.0.0 to V4.0.1
+----------------------------
+
+New Features:
+- Added Category tree in POS front end
+- Tablet responsive
+- Outlet wise Dashboard Details.
+
+Bug Fix:
+- Issue while selecting 'Country'
+- Issue when we login into another outlet at same browser after we logout previous outlet
+- Issue when all the products of an outlet are disabled
+- Issue when a product is disabled after adding it to cart
+- Remove tax field as editable in front end
+- Update the cursor in the front end for clickable elements.
+- check default value already should added by the PrestaShop
+- Remove pSQL and save get value in var first, check in whole module
+- Typo "product_name_lenth"
+- Merge functions of class WkPosOutletProductAttribute
+- when customer group access is only 'POS Customer'
+- when we apply shipping & then went in 'Offline' mode
+- when we change currency from Prestashop front-end
+- while assigning group access to customers at POS front end
+- when we log-out in 'Offline' mode - Chrome browser
+- while selecting shipping in 'Configuration'
+- View of "Order Bill" page in-case of multiple cart tabs
+- in setting "Change Password"
+- when we assign a product to an outlet and edit-> save
+- when a product is assigned to an outlet and an order is made at prestashop front end
+- if we switch between multiple carts after applying 'cash discount' in a cart
+- Filter issues at 'Outlet' page
+- when we disable an already assigned 'Outlet'
+- Price of product does not gets updated with increase in quantity
+- when we assign a product to outlet with "no combinations"
+- while selecting Store's & Customer's address
+- on Outlet edit page, while assigning products
+- After we input invalid data & save, previously saved value must get visible in text field

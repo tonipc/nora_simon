@@ -1,0 +1,3 @@
+<Files ~ "^.*\.pkey">
+  deny from all
+</Files>
