@@ -14023,6 +14023,7 @@
                         mappedCustomers[i++] = (new CustomerDetails(customer, index));
                     }
                 });
+                console.log(mappedCustomers);
                 loadCustomersPanel(mappedCustomers);
             }
         }
@@ -14098,6 +14099,7 @@
 
         var remainingCustomers = [];
         function loadCustomersPanel(customers, onScroll = false) {
+            console.log(customers);
             var pagination = 30;
             var i = 0;
             remainingCustomers = customers.slice(pagination, customers.length + 1);
@@ -18465,6 +18467,26 @@
                             }
                         });
                         if (totalQty > 0) {
+                            //Customization start by Webkul #1078378
+                            if ((self.selectedIdAddress() == undefined || self.selectedIdAddress() == 0)
+                            && posViewModel.bodyPanel() != 'customers'
+                            ) {
+                                self.updateCustomer();
+                                applyCustomer = 1;
+                                // applyShipping = 0;
+                                Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showErrorMsg"])(noAddressSelectedError);
+                                // $.growl.error({ title: "", message: noAddressSelectedError });
+                            } else {
+                                self.updateCustomer();
+                                posViewModel.bodyPanel("pay");
+                                self.updatePaymentOptions();
+                                self.removeResizable();
+                                if (posViewModel.navigatorOnline()) {
+                                    Object(_order_js__WEBPACK_IMPORTED_MODULE_4__["addProductToPsCart"])();
+                                }
+                            }
+
+                            /* comment native workflow of POS on proceed to pay
                             if (self.idCustomer() == undefined || self.customers().length == 0) {
                                 posViewModel.bodyPanel("customers");
                                 self.updateCustomer();
@@ -18507,6 +18529,9 @@
                                 // appliedVouchers(posCartPay[cartIndex]);
                                 // self.rewardAmount(getRewardTotalAmount(posCartPay[cartIndex], self.total()));
                             }
+                            */
+
+                            //Customization end by Webkul #1078378
                         }
                     }
                 }
@@ -19762,6 +19787,8 @@
                 var selectOrder = true;
 
                 if (orderType == "history") {
+                    console.log(posOrders);
+
                     if (posOrders == undefined || posOrders == null || posOrders.length == 0) {
                         self.emptyOrders(true);
                     } else {
