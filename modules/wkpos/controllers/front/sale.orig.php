@@ -142,8 +142,6 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                 $this->ajaxRender(json_encode($productDetails));
             }
 
-            // dump($productDetails);
-
             return $productDetails;
         }
     }
@@ -345,12 +343,8 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
             $objPosOrder = new WkPosOrder();
             $objOutletEmployee = new WkPosOutletEmployee($this->context->cookie->id_outlet_employee);
             $orders = $objPosOrder->getOrdersDetail($objOutletEmployee->id_wkpos_outlet);
-
             $posOrder = [];
-            // $total_pagado = 0;
             foreach ($orders as &$order) {
-                // $pagado = $objPosOrder->getPagadoPorIdOrder($order['id_order']);
-                // $total_pagado += (float)$pagado;
                 $objCurrency = new Currency($order['id_currency']);
                 $orderDetails = $objPosOrder->getOrderDetailsByIdOrder($order['id_order'], $objCurrency);
                 $customer = new Customer($order['id_customer']);
@@ -372,14 +366,10 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                     }
                 }
             }
-            // $posOrder['total_pagado'] = $total_pagado;
-            // dump($total_pagado);
-
             if (Tools::getValue('ajax')) {
                 $this->ajaxRender(json_encode($posOrder));
             }
 
-            // dump($posOrder);
             return $posOrder;
         }
     }
@@ -452,16 +442,15 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                     $objCustomer->passwd = Tools::encrypt(Tools::getValue('customer_passwd'));
                 }
 
-                // if (Tools::getValue('birthday') == '0-0-0' || Tools::getValue('birthday') == ' - - ' || Tools::getValue('birthday') == '0-0-0' || Tools::getValue('birthday') == '--') {
-                // } else {
-                //     $objCustomer->birthday = Tools::getValue('birthday');
-                // }
-                // if (Tools::getValue('news_letter') == 'true') {
-                //     $objCustomer->newsletter = 1;
-                // } else {
-                //     $objCustomer->newsletter = 0;
-                // }
-
+                if (Tools::getValue('birthday') == '0-0-0' || Tools::getValue('birthday') == ' - - ' || Tools::getValue('birthday') == '0-0-0' || Tools::getValue('birthday') == '--') {
+                } else {
+                    $objCustomer->birthday = Tools::getValue('birthday');
+                }
+                if (Tools::getValue('news_letter') == 'true') {
+                    $objCustomer->newsletter = 1;
+                } else {
+                    $objCustomer->newsletter = 0;
+                }
                 $objCustomer->id_gender = (int) Tools::getValue('title');
 
                 $groups = Tools::getValue('groupAccess');
@@ -508,92 +497,12 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
 
     /**
      * Add New Address of a customer
-     * Pasamos de él, le meteremos la dirección de la tienda
+     *
      * @return void
      */
     public function displayAjaxAddNewAddress()
     {
-        //le forzamos una dirección, la nuestra
         if (Tools::getValue('posToken') == $this->module->secure_key) {
-
-            // $customer = new Customer();
-            // if (Validate::isEmail($customerEmail)) {
-            //     $customer = $customer->getByEmail($customerEmail);
-            // }
-            // if (empty($idCountry)) {
-            //     $this->errors[] = $this->module->l('Country Required', 'sale');
-            // }/* If the selected country does not contain states */
-            // if ($idCountry) {
-            //     $country = new Country((int) $idCountry);
-            //     if ($country && $country->contains_states && empty($idState)) {
-            //         $this->errors[] =
-            //         $this->module->l('Please select the state for a country that contain states.', 'sale');
-            //     }
-            // }
-            // if (empty($aliasName)) {
-            //     $this->errors[] = $this->module->l('Alias Name Required', 'sale');
-            // } elseif (!Validate::isName($aliasName)) {
-            //     $this->errors[] = $this->module->l('Invalid Alias Name', 'sale');
-            // }
-            // if (empty($firstName)) {
-            //     $this->errors[] = $this->module->l('First Name Required', 'sale');
-            // } elseif (!Validate::isName($firstName)) {
-            //     $this->errors[] = $this->module->l('Invalid First Name', 'sale');
-            // }
-            // if (empty($city)) {
-            //     $this->errors[] = $this->module->l('City Name Required', 'sale');
-            // } elseif (!Validate::isGenericName($city)) {
-            //     $this->errors[] = $this->module->l('Invalid City Name', 'sale');
-            // }
-            // if (empty($address1)) {
-            //     $this->errors[] = $this->module->l('Address1 Required', 'sale');
-            // } elseif (!Validate::isAddress($address1)) {
-            //     $this->errors[] = $this->module->l('Invalid Address1', 'sale');
-            // }
-            // if (!empty($address2) && !Validate::isAddress($address2)) {
-            //     $this->errors[] = $this->module->l('Invalid Address2', 'sale');
-            // }
-            // if (!empty($company) && !Validate::isAddress($company)) {
-            //     $this->errors[] = $this->module->l('Invalid Company Name', 'sale');
-            // }
-            // if (!empty($homePhone) && !Validate::isPhoneNumber($homePhone)) {
-            //     $this->errors[] = $this->module->l('Invalid Home Phone Number', 'sale');
-            // }
-            // if (!empty($phone) && !Validate::isPhoneNumber($phone)) {
-            //     $this->errors[] = $this->module->l('Invalid Phone Number', 'sale');
-            // }
-            // if (!empty($lastName) && !Validate::isName($lastName)) {
-            //     $this->errors[] = $this->module->l('Invalid last name', 'sale');
-            // }
-            // if (!Validate::isPostCode($postcode)) {
-            //     $this->errors[] = $this->module->l('Invalid Post Code', 'sale');
-            // }
-
-            $customer = new Customer();
-            $customerEmail = trim(Tools::getValue('customer_email'));
-            $customer = $customer->getByEmail($customerEmail);
-            $firstName = $customer->firstname;
-            $lastName = $customer->lastname;
-            $customerEmail = $customer->email;
-
-            // $objOutletEmployee = new WkPosOutletEmployee($this->context->cookie->id_outlet_employee);
-            // $objOutlet = new WkPosOutlets($objOutletEmployee->id_wkpos_outlet);
-            // $outlet_address = WkPosCustomer::getOutletAddress($objOutlet->id_address);
-            // foreach ($outlet_address as $address_customer){
-            //     // $idAddress = $address_customer['id'];
-            //     $aliasName = $address_customer['alias'];
-            //     $company = $address_customer['company'];
-            //     $address1 = $address_customer['address1'];
-            //     $address2 = $address_customer['address2'];
-            //     // $vatNumber = trim(Tools::getValue('vat_number'));
-            //     $postcode = $address_customer['postcode'];
-            //     $homePhone = $address_customer['phone'];
-            //     $phone = $address_customer['phone_mobile'];
-            //     $city =  $address_customer['city'];
-            //     $idCountry = $address_customer['id_country'];
-            //     $idState = $address_customer['id_state'];
-            // }
-
             $firstName = trim(Tools::getValue('first_name'));
             $idAddress = trim(Tools::getValue('id_address'));
             $lastName = trim(Tools::getValue('last_name'));
@@ -602,23 +511,75 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
             $address1 = trim(Tools::getValue('address1'));
             $address2 = trim(Tools::getValue('address2'));
             $company = trim(Tools::getValue('company'));
-            // $vatNumber = trim(Tools::getValue('vat_number'));
-            // $dni = trim(Tools::getValue('dni'));
+            $vatNumber = trim(Tools::getValue('vat_number'));
             $postcode = trim(Tools::getValue('postcode'));
             $homePhone = trim(Tools::getValue('home_phone'));
             $phone = trim(Tools::getValue('phone'));
-            // $other = trim(Tools::getValue('other'));
+            $other = trim(Tools::getValue('other'));
             $idCountry = trim(Tools::getValue('id_country'));
             $idState = trim(Tools::getValue('id_state'));
             $city = trim(Tools::getValue('city'));
 
-            // if (empty($this->errors)) {
-                // try {
-                    // if (empty($idAddress)) {
-                    //     $objAddress = new Address();
-                    // } else {
+            $customer = new Customer();
+            if (Validate::isEmail($customerEmail)) {
+                $customer = $customer->getByEmail($customerEmail);
+            }
+            if (empty($idCountry)) {
+                $this->errors[] = $this->module->l('Country Required', 'sale');
+            }/* If the selected country does not contain states */
+            if ($idCountry) {
+                $country = new Country((int) $idCountry);
+                if ($country && $country->contains_states && empty($idState)) {
+                    $this->errors[] =
+                    $this->module->l('Please select the state for a country that contain states.', 'sale');
+                }
+            }
+            if (empty($aliasName)) {
+                $this->errors[] = $this->module->l('Alias Name Required', 'sale');
+            } elseif (!Validate::isName($aliasName)) {
+                $this->errors[] = $this->module->l('Invalid Alias Name', 'sale');
+            }
+            if (empty($firstName)) {
+                $this->errors[] = $this->module->l('First Name Required', 'sale');
+            } elseif (!Validate::isName($firstName)) {
+                $this->errors[] = $this->module->l('Invalid First Name', 'sale');
+            }
+            if (empty($city)) {
+                $this->errors[] = $this->module->l('City Name Required', 'sale');
+            } elseif (!Validate::isGenericName($city)) {
+                $this->errors[] = $this->module->l('Invalid City Name', 'sale');
+            }
+            if (empty($address1)) {
+                $this->errors[] = $this->module->l('Address1 Required', 'sale');
+            } elseif (!Validate::isAddress($address1)) {
+                $this->errors[] = $this->module->l('Invalid Address1', 'sale');
+            }
+            if (!empty($address2) && !Validate::isAddress($address2)) {
+                $this->errors[] = $this->module->l('Invalid Address2', 'sale');
+            }
+            if (!empty($company) && !Validate::isAddress($company)) {
+                $this->errors[] = $this->module->l('Invalid Company Name', 'sale');
+            }
+            if (!empty($homePhone) && !Validate::isPhoneNumber($homePhone)) {
+                $this->errors[] = $this->module->l('Invalid Home Phone Number', 'sale');
+            }
+            if (!empty($phone) && !Validate::isPhoneNumber($phone)) {
+                $this->errors[] = $this->module->l('Invalid Phone Number', 'sale');
+            }
+            if (!empty($lastName) && !Validate::isName($lastName)) {
+                $this->errors[] = $this->module->l('Invalid last name', 'sale');
+            }
+            if (!Validate::isPostCode($postcode)) {
+                $this->errors[] = $this->module->l('Invalid Post Code', 'sale');
+            }
+
+            if (empty($this->errors)) {
+                try {
+                    if (empty($idAddress)) {
+                        $objAddress = new Address();
+                    } else {
                         $objAddress = new Address($idAddress);
-                    // }
+                    }
 
                     $objAddress->id_customer = (int) $customer->id;
                     $objAddress->id_country = (int) $idCountry;
@@ -627,13 +588,13 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                     $objAddress->company = $company;
                     $objAddress->lastname = $firstName;
                     $objAddress->firstname = $lastName;
-                    // $objAddress->vat_number = $vatNumber;
-                    // $objAddress->dni = '';
+                    $objAddress->vat_number = $vatNumber;
+                    $objAddress->dni = $vatNumber ? $vatNumber : '0000000';
                     $objAddress->address1 = $address1;
                     $objAddress->address2 = $address2;
                     $objAddress->postcode = $postcode;
                     $objAddress->city = $city;
-                    // $objAddress->other = $other;
+                    $objAddress->other = $other;
                     $objAddress->phone = $homePhone;
                     $objAddress->phone_mobile = $phone;
                     $objAddress->save();
@@ -649,28 +610,26 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                             )
                         );
                     }
-                // } 
-                // catch (Exception $e) {
-                //     $this->ajaxRender(
-                //         json_encode(
-                //             [
-                //                 'errors' => [$e->getMessage()],
-                //                 'hasError' => true,
-                //             ]
-                //         )
-                //     );
-                // }
-            // } 
-            // else {
-            //     $this->ajaxRender(
-            //         json_encode(
-            //             [
-            //                 'errors' => $this->errors,
-            //                 'hasError' => true,
-            //             ]
-            //         )
-            //     );
-            // }
+                } catch (Exception $e) {
+                    $this->ajaxRender(
+                        json_encode(
+                            [
+                                'errors' => [$e->getMessage()],
+                                'hasError' => true,
+                            ]
+                        )
+                    );
+                }
+            } else {
+                $this->ajaxRender(
+                    json_encode(
+                        [
+                            'errors' => $this->errors,
+                            'hasError' => true,
+                        ]
+                    )
+                );
+            }
             exit;
         }
     }

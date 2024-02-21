@@ -92,7 +92,7 @@ class WkPosOrder extends ObjectModel
             ord.`total_discounts`, ord.`total_products_wt`,
             ord.`total_paid_tax_incl`, pord.`order_date`, addr.`address1`, ord.`current_state`,
             addr.`address2`, addr.`city`, addr.`postcode`,
-            ord.id_order as `reference`, ord.`payment`, pord.`id_wkpos_outlet_employee`,
+            ord.`reference`, ord.`payment`, pord.`id_wkpos_outlet_employee`,
             pord.`offline_reference`, ord.`id_customer`, pord.`id_wkpos_order`,
             odc.`shipping_cost_tax_excl`, odc.`shipping_cost_tax_incl`, ord.`current_state`, odsl.`name`
             FROM `' . _DB_PREFIX_ . 'wkpos_order` pord
@@ -105,11 +105,7 @@ class WkPosOrder extends ObjectModel
             LEFT JOIN `' . _DB_PREFIX_ . 'order_state_lang` odsl ON (ods.`id_order_state` = odsl.`id_order_state`)
             WHERE outl.`id_wkpos_outlet` = ' . (int) $idWkPosOutlet .
             // ' AND odsl.`id_lang` = '.(int)Configuration::get('PS_LANG_DEFAULT');
-            ' AND odsl.`id_lang` = ' . (int) $context->language->id . '
-            AND ord.`current_state` != 6
-            AND DATE(pord.order_date) = CURRENT_DATE()';
-        // echo $sql;
-
+            ' AND odsl.`id_lang` = ' . (int) $context->language->id;
         if ($idOrder) {
             $sql .= ' AND pord.`id_order` = ' . (int) $idOrder;
             $order = Db::getInstance()->getRow($sql);
@@ -133,16 +129,6 @@ class WkPosOrder extends ObjectModel
 
         return $orders;
     }
-
-    //NEW
-    // public function getPagadoPorIdOrder(int $id_order)
-    // {
-    //     $sql = 'SELECT SUM(total_paid_tax_incl)
-    //     FROM `' . _DB_PREFIX_ . 'orders`
-    //     WHERE `id_order` = '.$id_order;
-
-    //     return Db::getInstance()->getValue($sql);
-    // }
 
     public function formatOrderDetails($order)
     {

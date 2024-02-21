@@ -34,12 +34,15 @@
                             data-bind="click: $root.contentModel.nextOrder">{l s='Next Order' mod='wkpos'}</a>
                     </span>
                     <div class="col-md-2"
-                        data-bind="if: (parseFloat($root.contentModel.customerPayAmount()) >= parseFloat($root.contentModel.totalOrderAmount()) && $root.contentModel.idOrder() == 0)">
+                        data-bind="if: (parseFloat($root.contentModel.customerPayAmount()) >= parseFloat($root.contentModel.totalOrderAmount()) && $root.contentModel.idOrder() == 0 && $root.contentModel.selectedPaymentId() == '2')">
                         <a class="btn wkpos-btn wkpos-confirmpayment"
-                            data-bind="css: { 'disabled': $root.contentModel.confirmDisabled() == 1 }, click:$root.contentModel.generateOrder">
+                            data-bind="css: { 'disabled': $root.contentModel.confirmDisabled() == 1 }, click:$root.contentModel.generateOrder"
+                           data-bind="click:$root.contentModel.generateOrder"
+                            >
                             {l s='Validate' mod='wkpos'}
-                        </a>
+                        </a> 
                     </div>
+        
                 </div>
             </div>
         </div>
@@ -113,7 +116,11 @@
                         </div>
                         <!-- /ko -->
                     {/if}
+
+                    <!--Siempre cargado debe ser-->
                     {include file="module:wkpos/views/templates/front/partials/wkpos_order_payment.tpl"}
+
+
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <!-- ko if: $root.contentModel.idOrder() == 0 -->
@@ -126,33 +133,38 @@
                                             {$payment.name|escape:'htmlall':'UTF-8'}</div>
                                     {/foreach}
                                     <!-- /ko -->
+
                                     <!-- ko if: navigatorOnline() == false-->
-                                    {foreach $payments as $payment}
+                                    {* {foreach $payments as $payment}
+                                        <!--pagar directamente aquí pero este no se usa-->
                                         {if $payment.id_wkpos_payment == 1}
                                             <div class="wkpos-paymentmethod"
                                                 data-bind="click: $root.contentModel.selectPaymentOption.bind($data, '{$payment.name|escape:'htmlall':'UTF-8'}, {$payment.id_wkpos_payment|escape:'htmlall':'UTF-8'}')">
                                                 {$payment.name|escape:'htmlall':'UTF-8'}</div>
                                         {/if}
-                                    {/foreach}
+                                    {/foreach} *}
                                     <!-- /ko -->
+                                    
                                 </div>
                                 <div class="col-md-8 col-sm-6 col-xs-8">
                                     {* <!-- ko if: ($root.contentModel.selectedPaymentId() == '1') && ($root.contentModel.idOrder() === 0) --> *}
                                     <div class="row">
+
                                         {* <div class="col-md-6 text-right">
-                                                    <div class="padding-bottom-8">
-                                                        <span class="wk-h4 wkpos-text-color" data-bind="text: $root.contentModel.totalOrderAmount()"></span>
-                                                        <div>{l s='Total' mod='wkpos'}({$currencySign})</div>
-                                                    </div>
-                                                    <div class="padding-bottom-8">
-                                                        <span class="wk-h4 wkpos-text-color" data-bind="text: $root.contentModel.customerPayAmount"></span>
-                                                        <div>{l s='Tendered' mod='wkpos'}</div>
-                                                    </div>
-                                                    <div class="padding-8">
-                                                        <span class="wk-h4 wkpos-text-color" data-bind="text: $root.contentModel.customerReturnAmount"></span>
-                                                        <div>{l s='Change' mod='wkpos'}</div>
-                                                    </div>
-                                                </div> *}
+                                            <div class="padding-bottom-8">
+                                                <span class="wk-h4 wkpos-text-color" data-bind="text: $root.contentModel.totalOrderAmount()"></span>
+                                                <div>{l s='Total' mod='wkpos'}({$currencySign})</div>
+                                            </div>
+                                            <div class="padding-bottom-8">
+                                                <span class="wk-h4 wkpos-text-color" data-bind="text: $root.contentModel.customerPayAmount"></span>
+                                                <div>{l s='Tendered' mod='wkpos'}</div>
+                                            </div>
+                                            <div class="padding-8">
+                                                <span class="wk-h4 wkpos-text-color" data-bind="text: $root.contentModel.customerReturnAmount"></span>
+                                                <div>{l s='Change' mod='wkpos'}</div>
+                                            </div>
+                                        </div> *}
+
                                         <div class="col-md-9">
                                             <ul id="wk-pos-keypad" class="col-md-12 wk-padding-0 wk-pos-pay-keypad">
                                                 <update-payment-details
@@ -206,17 +218,18 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    {* <!-- /ko -->
-                                            <!-- ko if: $root.contentModel.selectedPaymentId() == '2' && $root.contentModel.idOrder() == 0 && $root.navigatorOnline() -->
+                                    <!-- /ko -->
+                                            {* <!-- ko if: $root.contentModel.selectedPaymentId() == '2' && $root.contentModel.idOrder() == 0 && $root.navigatorOnline() -->
+                                            <!--con tarjeta directo a pagar-->
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <a class="btn wkpos-btn wkpos-confirmpayment" data-bind="css: { 'disabled': $root.contentModel.confirmDisabled() == 1 }, click:$root.contentModel.generateOrder">
                                                         {l s='Accept Payment' mod='wkpos'}
                                                     </a>
                                                 </div>
-                                            </div>
-                                            <!-- /ko --> *}
-                                    {include file="module:wkpos/views/templates/front/partials/wkpos_installment.tpl"}
+                                            </div> *}
+                                    <!-- /ko -->
+                                    {* {include file="module:wkpos/views/templates/front/partials/wkpos_installment.tpl"} *}
                                     {hook h='displayPaymentOptionDetail'}
                                 </div>
                             </div>

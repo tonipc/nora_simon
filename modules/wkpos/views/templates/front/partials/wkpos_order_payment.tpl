@@ -27,6 +27,7 @@
         </div>
     {/if}
     <!-- ko if: $root.contentModel.paymentOptions().length > 0 -->
+    <!--La añade al clickar-->
     <table width="100%" class="table">
         <thead>
             <tr>
@@ -46,9 +47,13 @@
                 </th>
             </tr>
         </thead>
-        <tbody data-bind="foreach: $root.contentModel.paymentOptions">
+        <tbody 
+        data-bind="foreach: $root.contentModel.paymentOptions"
+        >
             <tr
-                data-bind="click: $root.contentModel.selectOrderPayment, css: { 'wk-active': $root.contentModel.selectedPaymentOptionIndex() == $index() }">
+                {*le podemos forzar el 2*}
+                data-bind="click: $root.contentModel.selectOrderPayment, css: { 'wk-active': $root.contentModel.selectedPaymentOptionIndex() ==  $index()  }"
+                >
                 <td class="text-center" data-bind="text: dueAmount">
                 </td>
                 <td class="text-center tendered" data-bind="text: tendered">

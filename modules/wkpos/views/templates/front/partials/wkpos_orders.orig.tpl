@@ -59,7 +59,6 @@
                         <div class="alert alert-warning">{l s='No Order Found' mod='wkpos'}</div>
                     </div>
                     <!-- /ko -->
-
                     <!-- ko if : $root.contentModel.orderDetails().length > 0 -->
                     <div data-bind="foreach: $root.contentModel.orderDetails" class="margin-top-50px wk-order-detail">
                         <div class="wkpos-order-detail row wk-d-flex wk-flex-wrap clearfix"
@@ -75,13 +74,7 @@
                         </div>
                     </div>
                     <!-- /ko -->
-
-                    <!--new total pagado-->
-                    {if isset($totalpagadodia)}
-                        <p class="total"><b>Total pagado por día: {Tools::displayPrice($totalpagadodia)}</b></p>
-                    {/if}
                 </div>
-
                 <div class="col-md-8 col-sm-8 col-xs-6 ">
                     <div class="wk-order-product-action form-group clearfix">
                         <!-- ko if: $root.navigatorOnline() && $root.contentModel.selectedOrderType() != 'offline' -->

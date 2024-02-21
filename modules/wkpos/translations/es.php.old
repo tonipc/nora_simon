@@ -92,7 +92,7 @@ $_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_a52bf623a67efad0b
 $_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_e93c33bd1341ab74195430daeb63db13'] = 'Nombre de tienda';
 $_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_15b4e26c1c4668d1e4d489d5d4ffad6a'] = 'Cambiar el precio del producto en el carrito';
 $_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_a98093c6b7f9488294517c682dcda1b8'] = 'El efecto del cambio de precio en el producto del carrito será con impuestos incluidos o sin impuestos.';
-$_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_22b3728efe17b5502a2469424259dfa6'] = 'Voucher en paso Pedido';
+$_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_22b3728efe17b5502a2469424259dfa6'] = 'campo de comprobante';
 $_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_6795949af784a33856f66d8184d38db1'] = 'Si es así, entonces';
 $_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Activado';
 $_MODULE['<{wkpos}prestashop>adminwkposconfigurationcontroller_b9f5c797ebbf55adccdd8539a65a0241'] = 'Discapacitado';

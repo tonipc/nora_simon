@@ -245,27 +245,6 @@ class WkPosModuleFrontController extends ModuleFrontController
         return $locale;
     }
 
-    //NEW
-    public function getPagadoPorDia()
-    {
-        $context = Context::getContext();
-        $idShop = $context->shop->id;
-        $shopGroup = new ShopGroup($context->shop->id_shop_group);
-        $sql = 'SELECT SUM(ord.`total_paid_tax_incl`)
-            FROM `' . _DB_PREFIX_ . 'wkpos_order` pord
-            JOIN `' . _DB_PREFIX_ . 'wkpos_outlet_employee` outl ON (pord.`id_wkpos_outlet_employee` = outl.`id_wkpos_outlet_employee`)
-            LEFT JOIN `' . _DB_PREFIX_ . 'orders` ord ON (pord.`id_order` = ord.`id_order`)
-            WHERE outl.`id_wkpos_outlet` = ' . (int) $this->idWkPosOutlet . '
-            AND ord.`current_state` != 6
-            AND DATE(pord.order_date) = CURRENT_DATE()';
-
-        if ($shopGroup->share_order == 0) {
-            $sql .= ' AND ord.`id_shop` = ' . $idShop;
-        }
-        $sum =  Tools::ps_round(Db::getInstance()->getValue($sql), 2);
-        return $sum;
-    }
-
     public function setPosVariables()
     {
         $idShop = $this->context->shop->id;
@@ -323,11 +302,6 @@ class WkPosModuleFrontController extends ModuleFrontController
         $defaultSearchTypeId = (int) Configuration::get('WKPOS_DEFAULT_SEARCH_TYPE');
         $defaultSearchType = $this->module->customerSearchType[$defaultSearchTypeId - 1]['name'];
         $idLang = $this->context->language->id;
-
-        $fecha_para_total_dia = date('H:i') > '16:00';
-        $totalpagadodia = $this->getPagadoPorDia();
-
-        // dump($paymentDetails);
         $this->posAddJsDef(
             [
                 'posSales' => $posSales,
@@ -362,15 +336,11 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'idWkPosOutlet' => $this->idWkPosOutlet,
                 // 'outletAddress' => $objOutlet->address,
                 'outletCity' => $address->city,
-                'outletHomePhone' => $address->phone,
-                'outletPhone' => $address->phone_mobile,
+                'outletPhone' => $address->phone,
                 'outletAddress1' => $address->address1,
                 'outletAddress2' => $address->address2,
                 'outletPostCode' => $address->postcode,
                 'outletCountry' => $address->country,
-                'outletIdState' => $address->id_state,
-                'outletIdCountry' => $address->id_country,
-                'outletAlias' => $address->alias,
                 'outletState' => State::getNameById($address->id_state),
                 'idOutletAddress' => $objOutlet->id_address,
                 'defaultGroup' => Configuration::get('WKPOS_CUSTOMER_GROUP'),
@@ -409,7 +379,6 @@ class WkPosModuleFrontController extends ModuleFrontController
                 ),
                 'invoice_logo' => _PS_BASE_URL_SSL_ . _PS_IMG_ . Configuration::get('PS_LOGO'),
                 'cashRegisterStatus' => Configuration::get('WKPOS_CASH_REGISTER_STATUS'),
-                'totalpagadodia' => $fecha_para_total_dia ? $totalpagadodia : null,
             ]
         );
 
@@ -608,10 +577,6 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'wkposLoyaltyInstall' => $wkposLoyalty,
             ]
         );
-
-        $fecha_para_total_dia = date('H:i') > '16:00';
-        $totalpagadodia = $this->getPagadoPorDia();
-
         $this->context->smarty->assign(
             [
                 'logoPng' => _MODULE_DIR_ . '/wkpos/logo.png',
@@ -686,7 +651,6 @@ class WkPosModuleFrontController extends ModuleFrontController
                 Configuration::get('WKPOS_DIGITAL_SIGN_ON_PS_ORDER_LISTING') : 0,
                 'customProductPopUpImg' => _MODULE_DIR_ . 'wkpos/views/img/loading.gif',
                 'allTaxes' => TaxRulesGroup::getTaxRulesGroups(true),
-                'totalpagadodia' => $fecha_para_total_dia ? $totalpagadodia : null,
             ]
         );
     }

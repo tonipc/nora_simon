@@ -12947,7 +12947,6 @@
             self.installment_order = false;
             self.currency = ko.observable(order.currency);
             var orderPayments = [];
-
             if (order['order_payment']) {
                 $.each(order['order_payment'], function (index, payment) {
                     if (payment['id_wkpos_payment'] == 4) {
@@ -13234,7 +13233,6 @@
                         $('.wk-loading-status').html('').show();
                         $('.wk-loading-pos-details').next().css({ "opacity": "0.7" });
                         var paymentDetails = ko.mapping.toJS(viewModel.paymentOptions);
-                        console.log(paymentDetails);
                         if (paymentDetails.length == 1) {
                             viewModel.selectedPaymentOption(paymentDetails[0].paymentMethod);
                         }
@@ -13247,8 +13245,7 @@
                             // change: viewModel.customerReturnAmount(),
                             order_discount: viewModel.orderDiscount(),
                             payment_module: viewModel.selectedPaymentOption(),
-                            //no fuerzes el 2
-                            id_payment: viewModel.selectedPaymentId(),
+                            // id_payment: viewModel.selectedPaymentId(),
                             id_address: viewModel.selectedIdAddress(),
                             id_carrier: viewModel.selectedIdCarrier(),
                             order_message: viewModel.orderMessage(),
@@ -13288,8 +13285,7 @@
                                     Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showSuccessMsg"])(order.success);
                                     // $.growl.notice({ title: "", message: order.success });
                                     taxRate = undefined;
-                                    // viewModel.confirmDisabled(0);
-                                    viewModel.confirmDisabled(1);
+                                    viewModel.confirmDisabled(0);
                                     viewModel.orderDiscount(0);
                                     /* Generate order Receipt */
                                     viewModel.orderReceipt(order[order.id_order]);
@@ -13334,8 +13330,7 @@
                                     // viewModel.activeCustomerId(0);
                                 }
                                 viewModel.idCustomer(0);
-                                // viewModel.confirmDisabled(0);
-                                viewModel.confirmDisabled(1);
+                                viewModel.confirmDisabled(0);
                                 applyCustomer = 0;
                                 applyShipping = 0;
                                 $('.wk-loading-pos-details').removeClass('sync-orders').addClass('hide');
@@ -13416,8 +13411,7 @@
                                 textAlign: 'center',
                             });
                         }
-                        // viewModel.confirmDisabled(0);
-                        viewModel.confirmDisabled(1);
+                        viewModel.confirmDisabled(0);
                         viewModel.selectedIdCountry(0);
                         viewModel.selectedPaymentId(0);
                         qty = 0;
@@ -13516,8 +13510,6 @@
                             Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showSuccessMsg"])(order.success);
                             // $.growl.notice({ title: "", message: order.success });
                             posOrders[order['id_order']] = order;
-                            // console.log(order);
-                            // posOrders['totalpagadodia'] = totalpagadodia;
                             delete pos_orders[index];
                             localStorage.pos_orders = JSON.stringify(pos_orders);
                             if (viewModel.orderDetails() != undefined && viewModel.orderDetails() != null) {
@@ -14031,7 +14023,6 @@
                         mappedCustomers[i++] = (new CustomerDetails(customer, index));
                     }
                 });
-                console.log(mappedCustomers);
                 loadCustomersPanel(mappedCustomers);
             }
         }
@@ -14107,7 +14098,6 @@
 
         var remainingCustomers = [];
         function loadCustomersPanel(customers, onScroll = false) {
-            console.log(customers);
             var pagination = 30;
             var i = 0;
             remainingCustomers = customers.slice(pagination, customers.length + 1);
@@ -16683,26 +16673,26 @@
                     html += '<div id="digital_sign" style="word-break:break-all;">' + order['digital_sign'] + '</div>';
                 }
 
-                // html += '<div>';
-                //     html += '<table width="100%">';
-                //         html += '<thead>';
-                //             html += '<tr style="' + dflex + '">';
-                //                 html += '<th style="' + flex8 + '">' + paymentTypeWk + '</th>';
-                //                 html += '<th style="' + flex2 + textRight + '">' + paymentAmountWk + '</th>';
-                //                 html += '<th style="' + flex3 + textRight + '">' + paymentTenderedWk + '</th>';
-                //                 html += '<th style="' + flex3 + textRight + '">' + paymentChangeWk + '</th>';
-                //             html += '</tr>';
-                //             $.each(order.order_payment, function (index, orderPaymentWk) {
-                //                 html += '<tr style="' + dflex + '">';
-                //                     html += '<th style="' + flex8 + '">' + orderPaymentWk.name + '</th>';
-                //                     html += '<th style="' + flex2 + textRight + '">' + orderPaymentWk.totalOrderAmount + '</th>';
-                //                     html += '<th style="' + flex3 + textRight + '">' + orderPaymentWk.tendered + '</th>';
-                //                     html += '<th style="' + flex3 + textRight + '">' + orderPaymentWk.change + '</th>';
-                //                 html += '</tr>';
-                //             });
-                //         html += '</thead>';
-                //     html += '</table>';
-                // html += '</div>';
+                html += '<div>';
+                    html += '<table width="100%">';
+                        html += '<thead>';
+                            html += '<tr style="' + dflex + '">';
+                                html += '<th style="' + flex8 + '">' + paymentTypeWk + '</th>';
+                                html += '<th style="' + flex2 + textRight + '">' + paymentAmountWk + '</th>';
+                                html += '<th style="' + flex3 + textRight + '">' + paymentTenderedWk + '</th>';
+                                html += '<th style="' + flex3 + textRight + '">' + paymentChangeWk + '</th>';
+                            html += '</tr>';
+                            $.each(order.order_payment, function (index, orderPaymentWk) {
+                                html += '<tr style="' + dflex + '">';
+                                    html += '<th style="' + flex8 + '">' + orderPaymentWk.name + '</th>';
+                                    html += '<th style="' + flex2 + textRight + '">' + orderPaymentWk.totalOrderAmount + '</th>';
+                                    html += '<th style="' + flex3 + textRight + '">' + orderPaymentWk.tendered + '</th>';
+                                    html += '<th style="' + flex3 + textRight + '">' + orderPaymentWk.change + '</th>';
+                                html += '</tr>';
+                            });
+                        html += '</thead>';
+                    html += '</table>';
+                html += '</div>';
 
             html += '</div>';
 
@@ -16816,8 +16806,6 @@
         global.selectedCountry = 0;
         global.qty = 0;
         global.orderSlip = undefined;
-
-        // global.totalpagadodia = 0;
 
         global.getPOSDetails = undefined;
         global.getAllProducts = undefined;
@@ -17270,27 +17258,21 @@
                 orderData['action'] = 'getAllOrders';
                 orderData['ajax'] = true;
                 orderData['posToken'] = posToken;
-                // orderData['totalpagadodia'] = totalpagadodia;
                 if (loaded == 0) {
-                    orderData['viewmodel'] = 1; 
+                    orderData['viewmodel'] = 1;
                 }
-                console.log(orderData);
                 $.ajax({
                     url: posSales,
                     dataType: 'json',
                     type: 'get',
                     data: orderData,
                     success: function (orders) {
-                        console.log(orders);
-                        console.log(totalpagadodia);
                         if (orders.hasError) {
                             $.each(orders.errors, function (index, error) {
                                 Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showErrorMsg"])(error);
                                 // $.growl.error({ title: "", message: error });
                             });
                         } else {
-                            // totalpagadodia = json['totalpagadodia'];
-                            $('.total').css('display', 'hide');
                             $('.wk-loading-status').html(loadingPosOrders).css('color', 'green');
                             $('.progress-bar').css('width', '100%');
                             posOrders = orders;
@@ -17302,8 +17284,6 @@
                                 $('#loader').css('display', 'none');
                                 $('.wk-pos').removeClass('hidden hide');
                                 $('.wk-pos').show();
-                                $('.total').css('display', 'show');
-                                // $('.total').text(totalpagadodia);
 
                                 $('.wk-loading-pos-details, .progress, #loading-text').addClass('hide');
                             }, 700);
@@ -17878,20 +17858,13 @@
 
             /* Update the details of payment option selected in the product */
             self.selectPaymentOption = function (paymentMethod) {
-                console.log(paymentMethod);
-
                 var payment = paymentMethod.split(", ");
                 self.selectedPaymentOption(payment[0]);
-                console.log( self.selectedPaymentOption(payment[0]) );
-
                 self.selectedPaymentId(payment[1]);
                 self.installmentAmount(self.totalOrderAmount());
                 var dueAmount = self.totalOrderAmount() - self.customerPayAmount();
                 var addedPayments = self.paymentOptions();
-                console.log('addedPayments ' +addedPayments);
-
                 var addPayment = true;
-
                 if (addedPayments.length > 0) {
                     $.each(addedPayments, function (idx, pOpt) {
                         if (parseInt(payment[1]) == parseInt(pOpt['id_wkpos_payment'])) {
@@ -17934,7 +17907,6 @@
                         var index = self.paymentOptions.push(new _payment_js__WEBPACK_IMPORTED_MODULE_14__[/* PaymentOption */ "a"](data));
                         self.selectedPaymentOptionIndex(index - 1);
                     }
-
                     // var tenderedamount = 0;
                     // var autofillTenderedamount = true;
                     // dueAmount = dueAmount.toFixed(psPrecision);
@@ -17952,16 +17924,12 @@
                     // }
                     // var index = self.paymentOptions.push(new PaymentOption(data));
                     // self.selectedPaymentOptionIndex(index - 1);
-
                 }
-                
-                //Evento
                 self.emitAfterEvents('selectPaymentOption', { 'data': data, 'event': event });
             }
 
             self.selectOrderPayment = function (orderPayment) {
                 var index = self.paymentOptions.indexOf(orderPayment);
-                console.log('selectpaymentoption index ' +self.selectedPaymentOptionIndex(0));
                 self.selectedPaymentOptionIndex(index);
             }
 
@@ -18149,7 +18117,6 @@
                 var paymentOptions = self.paymentOptions();
                 $.each(paymentOptions, function (index, paymentOption) {
                     total += parseFloat(paymentOption.tendered());
-                    console.log('total actualizado ' +total);
                 });
                 total = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_1__["makeTotalProductCaculation"])(parseFloat(total));
                 self.totalOrderAmountPaid(total);
@@ -18169,20 +18136,18 @@
 
             /* Update the amount paid by the customer while creating the order */
             self.updatePaymentDetails = function () {
-                var added = true;
-                // if (self.paymentOptions().length == 0) {
-                //     var paymentMethod = self.selectedPaymentOption() + ', ' + self.selectedPaymentId();
-                //     self.selectPaymentOption(paymentMethod);
-                //     added = true;
-                // }
-                var paymentIndex = self.selectedPaymentOptionIndex(0);
-                console.log('payment index ' +paymentIndex);
+                var added = false;
+                if (self.paymentOptions().length == 0) {
+                    var paymentMethod = self.selectedPaymentOption() + ', ' + self.selectedPaymentId();
+                    self.selectPaymentOption(paymentMethod);
+                    added = true;
+                }
+                var paymentIndex = self.selectedPaymentOptionIndex();
                 var selectedPaymentOption = null;
                 if (paymentIndex != -1) {
                     selectedPaymentOption = self.paymentOptions()[paymentIndex];
                 }
                 if (selectedPaymentOption) {
-                    selectedPaymentOption = self.paymentOptions()[0];
                     var addText = '';
                     var tenderedAmount = selectedPaymentOption.tendered();
                     if (added) {
@@ -18402,7 +18367,6 @@
                     Object(_product_js__WEBPACK_IMPORTED_MODULE_2__["loadProductPanel"])(mappedTasks);
                 } else if (data.activeClass === "customers") {
                     self.updateCustomer();
-                //le pasamos nueva info    
                 } else if (data.activeClass === "orders") {
                     self.orderTab(self.selectedOrderType());
                 } else if (data.activeClass === "setting") {
@@ -18501,26 +18465,6 @@
                             }
                         });
                         if (totalQty > 0) {
-                            //Customization start by Webkul #1078378
-                            if ((self.selectedIdAddress() == undefined || self.selectedIdAddress() == 0)
-                            && posViewModel.bodyPanel() != 'customers'
-                            ) {
-                                self.updateCustomer();
-                                applyCustomer = 1;
-                                // applyShipping = 0;
-                                Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showErrorMsg"])(noAddressSelectedError);
-                                // $.growl.error({ title: "", message: noAddressSelectedError });
-                            } else {
-                                self.updateCustomer();
-                                posViewModel.bodyPanel("pay");
-                                self.updatePaymentOptions();
-                                self.removeResizable();
-                                if (posViewModel.navigatorOnline()) {
-                                    Object(_order_js__WEBPACK_IMPORTED_MODULE_4__["addProductToPsCart"])();
-                                }
-                            }
-
-                            /* comment native workflow of POS on proceed to pay
                             if (self.idCustomer() == undefined || self.customers().length == 0) {
                                 posViewModel.bodyPanel("customers");
                                 self.updateCustomer();
@@ -18563,9 +18507,6 @@
                                 // appliedVouchers(posCartPay[cartIndex]);
                                 // self.rewardAmount(getRewardTotalAmount(posCartPay[cartIndex], self.total()));
                             }
-                            */
-
-                            //Customization end by Webkul #1078378
                         }
                     }
                 }
@@ -19471,19 +19412,19 @@
 
             /* Mapping of customer address */
             self.addAddress = function () {
-                self.aliasName(outletAlias);
-                self.address1(outletAddress1);
-                self.address2(outletAddress2);
+                self.aliasName('');
+                self.address1('');
+                self.address2('');
                 self.company('');
-                // self.vatNumber('');
-                self.postcode(outletPostCode);
-                self.homePhone(outletHomePhone);
-                self.phone(outletPhone);
-                // self.other('');
-                self.selectedIdCountry(outletIdCountry);
-                // self.stateList([]);
-                self.selectedIdState(outletIdState);
-                self.city(outletCity);
+                self.vatNumber('');
+                self.postcode('');
+                self.homePhone('');
+                self.phone('');
+                self.other('');
+                self.selectedIdCountry(0);
+                self.stateList([]);
+                self.selectedIdState(0);
+                self.city('');
                 self.customerPanel('addaddress');
                 posViewModel.bodyPanel('customer');
                 self.removeResizable();
@@ -19524,39 +19465,22 @@
                                         return true;
                                     }
                                 });
-                            } 
-                            // else {
-                            //     self.firstName(customer['first_name']);
-                            //     self.lastName(customer['last_name']);
-                            //     // self.aliasName('');
-                            //     // self.address1('');
-                            //     // self.address2('');
-                            //     // self.company('');
-                            //     // self.vatNumber('');
-                            //     // self.postcode('');
-                            //     // self.homePhone('');
-                            //     // self.phone('');
-                            //     // self.other('');
-                            //     // self.selectedIdCountry(0);
-                            //     // self.selectedIdState(0);
-                            //     // self.city('');
-                            //     self.aliasName('Desconocido');
-                            //     self.address1('Desconocido');
-                            //     self.address2('Desconocido');
-                            //     self.company('Desconocido');
-                            //     // self.vatNumber('');
-                            //     self.postcode('08018');
-                            //     // self.homePhone('');
-                            //     if (customer['customer_phone']) {
-                            //         self.phone(customer['customer_phone']);
-                            //     } else {
-                            //         self.phone('1111');
-                            //     }
-                            //     // self.other('');
-                            //     self.selectedIdCountry(6);
-                            //     self.selectedIdState(334);
-                            //     self.city('Desconocido');
-                            // }
+                            } else {
+                                self.firstName(customer['first_name']);
+                                self.lastName(customer['last_name']);
+                                self.aliasName('');
+                                self.address1('');
+                                self.address2('');
+                                self.company('');
+                                self.vatNumber('');
+                                self.postcode('');
+                                self.homePhone('');
+                                self.phone('');
+                                self.other('');
+                                self.selectedIdCountry(0);
+                                self.selectedIdState(0);
+                                self.city('');
+                            }
                         }
                     });
                 }
@@ -19812,8 +19736,6 @@
                     }
                     self.orderedProductsDetail.push(objOrderedProduct);
                 });
-
-                // totalpagadodia = data['totalpagadodia'];
                 self.isOrderReturnable(isOrderReturnPossible)
                 self.enableOrderReturn(0);
                 self.showCreditSlip(0);
@@ -19840,7 +19762,6 @@
                 var selectOrder = true;
 
                 if (orderType == "history") {
-       
                     if (posOrders == undefined || posOrders == null || posOrders.length == 0) {
                         self.emptyOrders(true);
                     } else {
@@ -19851,13 +19772,9 @@
                             empty = false;
                             if (selectOrder) {
                                 selectOrder = false;
-                                // totalpagadodia = posOrders['totalpagadodia'];
-                                self.loadOrderedDetails({ 
-                                    idOrder: posOrders[order]['order']['id_order']
-                                    // totalpagadodia: totalpagadodia,
-                                })
+                                self.loadOrderedDetails({ idOrder: posOrders[order]['order']['id_order'] })
                             }
-                            return new _order_js__WEBPACK_IMPORTED_MODULE_4__["Order"]( posOrders[order]['order'] );
+                            return new _order_js__WEBPACK_IMPORTED_MODULE_4__["Order"](posOrders[order]['order']);
                             // }
                         });
                         self.emptyOrders(empty);
@@ -19897,7 +19814,7 @@
                                 selectOrder = false;
                                 self.loadOrderedDetails({ idOrder: posOrders[order]['order']['id_order'] })
                             }
-                            return new _order_js__WEBPACK_IMPORTED_MODULE_4__["Order"](posOrders[order]['order']/*, totalpagadodia*/);
+                            return new _order_js__WEBPACK_IMPORTED_MODULE_4__["Order"](posOrders[order]['order']);
                             // }
                         });
                         self.emptyOrders(empty);
