@@ -13288,8 +13288,8 @@
                                     Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showSuccessMsg"])(order.success);
                                     // $.growl.notice({ title: "", message: order.success });
                                     taxRate = undefined;
-                                    // viewModel.confirmDisabled(0);
-                                    viewModel.confirmDisabled(1);
+                                    viewModel.confirmDisabled(0);
+                                    // viewModel.confirmDisabled(1);
                                     viewModel.orderDiscount(0);
                                     /* Generate order Receipt */
                                     viewModel.orderReceipt(order[order.id_order]);
@@ -13334,8 +13334,8 @@
                                     // viewModel.activeCustomerId(0);
                                 }
                                 viewModel.idCustomer(0);
-                                // viewModel.confirmDisabled(0);
-                                viewModel.confirmDisabled(1);
+                                viewModel.confirmDisabled(0);
+                                // viewModel.confirmDisabled(1);
                                 applyCustomer = 0;
                                 applyShipping = 0;
                                 $('.wk-loading-pos-details').removeClass('sync-orders').addClass('hide');
