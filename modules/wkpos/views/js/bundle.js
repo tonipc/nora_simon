@@ -17272,7 +17272,7 @@
                 orderData['posToken'] = posToken;
                 // orderData['totalpagadodia'] = totalpagadodia;
                 if (loaded == 0) {
-                    orderData['viewmodel'] = 1; 
+                    orderData['viewmodel'] = 1;
                 }
                 console.log(orderData);
                 $.ajax({
@@ -17954,7 +17954,7 @@
                     // self.selectedPaymentOptionIndex(index - 1);
 
                 }
-                
+
                 //Evento
                 self.emitAfterEvents('selectPaymentOption', { 'data': data, 'event': event });
             }
@@ -18402,7 +18402,7 @@
                     Object(_product_js__WEBPACK_IMPORTED_MODULE_2__["loadProductPanel"])(mappedTasks);
                 } else if (data.activeClass === "customers") {
                     self.updateCustomer();
-                //le pasamos nueva info    
+                //le pasamos nueva info
                 } else if (data.activeClass === "orders") {
                     self.orderTab(self.selectedOrderType());
                 } else if (data.activeClass === "setting") {
@@ -18511,6 +18511,7 @@
                                 Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showErrorMsg"])(noAddressSelectedError);
                                 // $.growl.error({ title: "", message: noAddressSelectedError });
                             } else {
+                                back = posViewModel.bodyPanel();
                                 self.updateCustomer();
                                 posViewModel.bodyPanel("pay");
                                 self.updatePaymentOptions();
@@ -18518,6 +18519,9 @@
                                 if (posViewModel.navigatorOnline()) {
                                     Object(_order_js__WEBPACK_IMPORTED_MODULE_4__["addProductToPsCart"])();
                                 }
+                                setTimeout(function () {
+                                    $('.wkpos-paymentmethod').trigger('click');
+                                }, 350);
                             }
 
                             /* comment native workflow of POS on proceed to pay
@@ -19524,7 +19528,7 @@
                                         return true;
                                     }
                                 });
-                            } 
+                            }
                             // else {
                             //     self.firstName(customer['first_name']);
                             //     self.lastName(customer['last_name']);
@@ -19840,7 +19844,7 @@
                 var selectOrder = true;
 
                 if (orderType == "history") {
-       
+
                     if (posOrders == undefined || posOrders == null || posOrders.length == 0) {
                         self.emptyOrders(true);
                     } else {
@@ -19852,7 +19856,7 @@
                             if (selectOrder) {
                                 selectOrder = false;
                                 // totalpagadodia = posOrders['totalpagadodia'];
-                                self.loadOrderedDetails({ 
+                                self.loadOrderedDetails({
                                     idOrder: posOrders[order]['order']['id_order']
                                     // totalpagadodia: totalpagadodia,
                                 })
