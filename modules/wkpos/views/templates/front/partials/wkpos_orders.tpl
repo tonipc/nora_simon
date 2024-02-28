@@ -192,6 +192,7 @@
                                         <!-- /ko --> *}
                             </div>
                             <div class="print_invoice text-center">
+                                <!--Imprime invoice-->
                                 <a class="btn wkpos-payment-customer"
                                     data-bind="click: $root.contentModel.printInvoice">{l s='Print Invoice' mod='wkpos'}</a>
                                 {if $wkposLoyaltyInstall == true}
@@ -201,6 +202,10 @@
                                     </a>
                                 {/if}
                             </div>
+                            <!--Reprint que quiere Albert-->
+                            <div class="reprint" data-bind="attr: { 'data-idorder': orderReference }">
+                                {hook h='displayWkPosReprint'}
+                            </div> 
                         </div>
                         <!-- ko if: $root.contentModel.orderedProductsDetail -->
                         <div class="col-md-7 col-xs-12 wk-order-product-detail wkpos-scrollbar clearfix form-group">

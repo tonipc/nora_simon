@@ -1,0 +1,10 @@
+.formReprint{
+    display: none;
+    margin-bottom: 1rem;
+}
+#submitReprint{
+    margin-top: 1rem;
+    color: black;
+    background-color: teal;
+    font-size: 2rem;
+}
