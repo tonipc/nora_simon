@@ -28,7 +28,11 @@ class posreprintAjaxreprintModuleFrontController extends ModuleFrontController
             // else{
 
                 $send = self::dameInfoYEnvia($email, $id_order);
-                if($send)
+                if($send){
+                    $sql = 'INSERT INTO '._DB_PREFIX_.'posreprintlog (`email`,`id_order`) values ("'.$email.'", '.$id_order.')';
+                    $insert = Db::getInstance()->execute($sql);
+                }
+                if($insert)
                     $this->message = 'email enviado a '.$email;
 
                 echo json_encode(array(

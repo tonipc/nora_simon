@@ -28,6 +28,7 @@ class posreprint extends Module
     public function install()
     {
         // $this->createHook('displayWkPosReprint');
+        include(dirname(__FILE__) . '/sql/install.php');
 
         if (
             !parent::install()
@@ -71,6 +72,7 @@ class posreprint extends Module
 
     public function uninstall()
     {
+        // include(dirname(__FILE__) . '/sql/uninstall.php');
 
         if (!parent::uninstall())
             return false;
