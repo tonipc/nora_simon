@@ -28,8 +28,10 @@ class posreprintAjaxreprintModuleFrontController extends ModuleFrontController
             // else{
 
                 $send = self::dameInfoYEnvia($email, $id_order);
+                $order = new Order($id_order);
+
                 if($send){
-                    $sql = 'INSERT INTO '._DB_PREFIX_.'posreprintlog (`email`,`id_order`) values ("'.$email.'", '.$id_order.')';
+                    $sql = 'INSERT INTO '._DB_PREFIX_.'posreprintlog (`email`,`order_reference`, `id_order`) values ("'.$email.'", "'.$order->getUniqReference().'", '.$id_order.')';
                     $insert = Db::getInstance()->execute($sql);
                 }
                 if($insert)
@@ -179,7 +181,7 @@ class posreprintAjaxreprintModuleFrontController extends ModuleFrontController
                 '{invoice_state}' => $invoice->id_state ? $invoice_state->name : '',
                 '{invoice_phone}' => ($invoice->phone) ? $invoice->phone : $invoice->phone_mobile,
                 '{invoice_other}' => $invoice->other,
-                '{order_name}' => strval($order->id),
+                '{order_name}' => $id_order,
                 '{date}' => Tools::displayDate(date('Y-m-d H:i:s'), null, 1),
                 '{carrier}' => ($virtual_product || !isset($carrier->name)) ? $this->trans('No carrier', array(), 'Admin.Payment.Notification') : $carrier->name,
                 '{payment}' => Tools::substr($order->payment, 0, 255),
