@@ -412,7 +412,8 @@ class AdminWkPosDashboardController extends ModuleAdminController
         $this->identifier = 'product_id';
         $this->list_id = 'product_id';
         $this->_select = 'SUM(a.`product_quantity`) AS quantity';
-        $this->_join = 'RIGHT JOIN `' . _DB_PREFIX_ . 'wkpos_order` od ON od.`id_order` = a.`id_order`';
+        $this->_join = 'LEFT JOIN `' . _DB_PREFIX_ . 'orders` o ON a.`id_order` = o.`id_order`';
+        $this->_join .= 'RIGHT JOIN `' . _DB_PREFIX_ . 'wkpos_order` od ON od.`id_order` = a.`id_order`';
         $this->_where = ' AND od.`date_upd` BETWEEN "' . pSQL($this->dateFrom) . ' 00:00:00" AND "';
         $this->_where .= pSQL($this->dateTo) . ' 23:59:59"';
         if (isset($this->context->cookie->WKPOS_SELECTED_OUTLET)
@@ -427,6 +428,8 @@ class AdminWkPosDashboardController extends ModuleAdminController
             $idShops = Shop::getContextListShopID();
             $this->_where .= ' AND a.`id_shop` IN (' . implode(',', $idShops) . ')';
         }
+        $this->_where .= ' AND o.`valid` = 1';
+
         $this->_group = 'GROUP BY a.`product_id`';
         $this->_orderBy = Tools::getValue('product_idOrderby') ? Tools::getValue('product_idOrderby') : 'product_id';
         $this->_orderWay = Tools::getValue('product_idOrderway') ? Tools::getValue('product_idOrderway') : 'DESC';
