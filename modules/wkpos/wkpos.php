@@ -1767,6 +1767,7 @@ class WkPos extends Module
             $totalQty = (int) Tools::getValue('qty');
             $objPosOutletProduct = new WkPosOutletProduct();
             $psProducts = $objPosOutletProduct->getSelectedPsProduct($param['id_product']);
+
             $outlets = WkPosOutlets::getOutlets();
             if ($outlets) {
                 foreach ($outlets as $outlet) {
@@ -1791,13 +1792,26 @@ class WkPos extends Module
             $totalQty = Tools::getValue('qty_0');
             $objPosOutletProduct = new WkPosOutletProduct();
             $psProducts = $objPosOutletProduct->getSelectedPsProduct($param['id_product']);
-            $outlets = WkPosOutlets::getOutlets();
+            // dump($psProducts);
+
+            // $outlets = WkPosOutlets::getOutlets();
+            $outlets = WkPosOutlets::getOutletsForShop($this->context->shop->id);
+            // dump($outlets);
+
             if ($outlets) {
                 foreach ($outlets as $outlet) {
-                    $idOutletProduct = $objPosOutletProduct->checkOutletProductExist(
+                    // $idOutletProduct = $objPosOutletProduct->checkOutletProductExist(
+                    //     $param['id_product'],
+                    //     $outlet['id_wkpos_outlet']
+                    // );
+                      $idOutletProduct = $objPosOutletProduct->checkOutletProductExistInShop(
                         $param['id_product'],
-                        $outlet['id_wkpos_outlet']
+                        $outlet['id_wkpos_outlet'],
+                        $this->context->shop->id
                     );
+
+                    // dump($idOutletProduct);
+
                     if (empty($idOutletProduct)) {
                         $objPosOutletProduct->assignProduct(
                             $psProducts,

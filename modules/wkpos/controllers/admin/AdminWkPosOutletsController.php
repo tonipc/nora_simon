@@ -852,7 +852,7 @@ class AdminWkPosOutletsController extends ModuleAdminController
 
         $this->addRowAction('edit');
         $this->addRowAction('view');
-        $this->addRowAction('delete');
+        // $this->addRowAction('delete');
     }
 
     /**
@@ -1071,6 +1071,7 @@ class AdminWkPosOutletsController extends ModuleAdminController
             foreach ($idProducts as $idProduct) {
                 $objWkPosOutletProduct = new WkPosOutletProduct($idProduct);
                 $objWkPosOutletProduct->active = 1;
+                $objWkPosOutletProduct->id_shop = $this->context->shop->id;
                 $objWkPosOutletProduct->save();
             }
             Tools::redirectAdmin(
@@ -1095,6 +1096,7 @@ class AdminWkPosOutletsController extends ModuleAdminController
             foreach ($idProducts as $idProduct) {
                 $objWkPosOutletProduct = new WkPosOutletProduct($idProduct);
                 $objWkPosOutletProduct->active = 0;
+                $objWkPosOutletProduct->id_shop = $this->context->shop->id;
                 $objWkPosOutletProduct->save();
             }
             Tools::redirectAdmin(
@@ -1184,18 +1186,24 @@ class AdminWkPosOutletsController extends ModuleAdminController
                     $totalQuantity = (int) StockAvailable::getQuantityAvailableByProduct(
                         $objWkPosOutletProduct->id_product
                     );
+                    // dump($quantity);
                     $totalOutletQuantity = $objWkPosOutletProduct->getProductQuantityExceptCurrentOutlet(
                         $objWkPosOutletProduct->id_product,
                         Tools::getValue('id_wkpos_outlet')
                     );
-                    $totalOutletQuantity += $quantity;
-                    if (($totalQuantity < 0 && $totalOutletQuantity >= $totalQuantity)
-                        || ($totalQuantity >= 0 && $totalOutletQuantity <= $totalQuantity)
+
+                    // $totalOutletQuantity += $quantity;
+                    $totalOutletQuantity = $quantity;
+                    if (
+                        // ($totalQuantity < 0 && $totalOutletQuantity >= $totalQuantity)
+                        // || ($totalQuantity >= 0 && $totalOutletQuantity <= $totalQuantity)
+                        $totalOutletQuantity > 0
                     ) {
-                        if ($totalQuantity < 0) {
-                            $quantity = 0;
-                        }
+                        // if ($totalQuantity < 0) {
+                        //     $quantity = 0;
+                        // }
                         $objWkPosOutletProduct->quantity = $quantity;
+                        $objWkPosOutletProduct->id_shop = $this->context->shop->id;
                         $objWkPosOutletProduct->save();
                     } else {
                         $this->errors[] = $this->l('Insufficient Quantity');
@@ -1278,9 +1286,9 @@ class AdminWkPosOutletsController extends ModuleAdminController
         if (Tools::getIsset('submitBulkenableSelectionwkpos_outlet_product')) {
             $this->outletBulkEnable();
         }
-        if (Tools::getIsset('submitBulkdeletewkpos_outlet_product')) {
-            $this->outletBulkDelete();
-        }
+        // if (Tools::getIsset('submitBulkdeletewkpos_outlet_product')) {
+        //     $this->outletBulkDelete();
+        // }
         if (Tools::getIsset('submitBulkdisableSelectionwkpos_outlet_product')) {
             $this->outletBulkDisable();
         }
@@ -1336,6 +1344,7 @@ class AdminWkPosOutletsController extends ModuleAdminController
             if ($idWkPosOutletProduct) {
                 $objWkPosOutletProduct = new WkPosOutletProduct($idWkPosOutletProduct);
                 $objWkPosOutletProduct->active = !$objWkPosOutletProduct->active;
+                $objWkPosOutletProduct->id_shop = $this->context->shop->id;
                 $objWkPosOutletProduct->save();
                 Tools::redirectAdmin(
                     self::$currentIndex . '&id_wkpos_outlet=' .

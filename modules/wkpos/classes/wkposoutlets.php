@@ -90,6 +90,17 @@ class WkPosOutlets extends ObjectModel
         );
     }
 
+    public static function getOutletsForShop($id_shop)
+    {
+        return Db::getInstance()->executeS(
+            'SELECT id_wkpos_outlet, name
+            FROM `' . _DB_PREFIX_ . 'wkpos_outlets`
+            WHERE active = 1
+            and id_shop = '.$id_shop.'
+            '
+        );
+    }
+
     public static function getOutletExcept($idWkPosOutlets)
     {
         $notEmpty = false;

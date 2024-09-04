@@ -173,7 +173,7 @@ class WkPosOutletProduct extends ObjectModel
         $idShop = Context::getContext()->shop->id;
 
         return Db::getInstance()->getValue(
-            'SELECT SUM(op.`quantity`) as qunatity
+            'SELECT SUM(op.`quantity`) as quantity
             FROM `' . _DB_PREFIX_ . 'wkpos_outlet_product` op
             WHERE op.`id_product` = ' . (int) $idProduct . ' AND op.`id_shop` = ' . $idShop
         );
@@ -1434,7 +1434,8 @@ class WkPosOutletProduct extends ObjectModel
             }
             $quantity = $objWkPosOutletProduct->getProductQuantityByIdProduct($product['id_product']);
             if ($quantity) {
-                $totalQuantity -= $quantity;
+                // $totalQuantity -= $quantity;
+                $totalQuantity = $quantity;
             }
             if ($totalQuantity < 0) {
                 $totalQuantity = 0;
@@ -1445,6 +1446,8 @@ class WkPosOutletProduct extends ObjectModel
                 $objWkPosOutletProduct->id_shop = $idShop;
             }
             $objWkPosOutletProduct->quantity = $totalQuantity;
+            // dump($objWkPosOutletProduct);
+
             $objWkPosOutletProduct->save();
             if (Combination::isFeatureActive() && $product['cache_default_attribute']) {
                 $combinations = WkPosOutletProductAttribute::getProductCombination($product['id_product']);
@@ -1489,6 +1492,16 @@ class WkPosOutletProduct extends ObjectModel
             'Select `id_wkpos_outlet_product` from `' . _DB_PREFIX_ . 'wkpos_outlet_product` op' .
             ' Where `id_product` = ' . (int) $idProduct .
             ' AND `id_wkpos_outlet` = ' . (int) $idWkPosOutlet
+        );
+    }
+
+    public function checkOutletProductExistInShop($idProduct, $idWkPosOutlet, $id_shop)
+    {
+        return Db::getInstance()->getValue(
+            'Select `id_wkpos_outlet_product` from `' . _DB_PREFIX_ . 'wkpos_outlet_product` op' .
+            ' Where `id_product` = ' . (int) $idProduct .
+            ' AND `id_wkpos_outlet` = ' . (int) $idWkPosOutlet .
+            ' AND `id_shop` = ' . (int) $id_shop
         );
     }
 
