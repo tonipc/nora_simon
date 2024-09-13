@@ -251,7 +251,7 @@ class WkPosModuleFrontController extends ModuleFrontController
         $context = Context::getContext();
         $idShop = $context->shop->id;
         $shopGroup = new ShopGroup($context->shop->id_shop_group);
-        $sql = 'SELECT SUM(ord.`total_paid_tax_incl`)
+        $sql = 'SELECT SUM(ord.`total_paid_tax_incl`) as total, COUNT(distinct pord.id_order) as pedidos
             FROM `' . _DB_PREFIX_ . 'wkpos_order` pord
             JOIN `' . _DB_PREFIX_ . 'wkpos_outlet_employee` outl ON (pord.`id_wkpos_outlet_employee` = outl.`id_wkpos_outlet_employee`)
             LEFT JOIN `' . _DB_PREFIX_ . 'orders` ord ON (pord.`id_order` = ord.`id_order`)
@@ -262,8 +262,10 @@ class WkPosModuleFrontController extends ModuleFrontController
         if ($shopGroup->share_order == 0) {
             $sql .= ' AND ord.`id_shop` = ' . $idShop;
         }
-        $sum =  Tools::ps_round(Db::getInstance()->getValue($sql), 2);
-        return $sum;
+
+        $result = Db::getInstance()->getRow($sql);
+
+        return $result;
     }
 
     public function setPosVariables()
@@ -324,8 +326,15 @@ class WkPosModuleFrontController extends ModuleFrontController
         $defaultSearchType = $this->module->customerSearchType[$defaultSearchTypeId - 1]['name'];
         $idLang = $this->context->language->id;
 
-        $fecha_para_total_dia = date('H:i') > '16:00';
-        $totalpagadodia = $this->getPagadoPorDia();
+        if($idShop == 1)
+            $fecha_para_total_dia = date('H:i') > '16:30';
+        else
+            $fecha_para_total_dia = date('H:i') > '12:55';
+
+        $info = $this->getPagadoPorDia();
+
+        $totalpagadodia =  Tools::ps_round($info['total'], 2);
+        $num_pedidos =  $info['pedidos'];
 
         // dump($paymentDetails);
         $this->posAddJsDef(
@@ -410,6 +419,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'invoice_logo' => _PS_BASE_URL_SSL_ . _PS_IMG_ . Configuration::get('PS_LOGO'),
                 'cashRegisterStatus' => Configuration::get('WKPOS_CASH_REGISTER_STATUS'),
                 'totalpagadodia' => $fecha_para_total_dia ? $totalpagadodia : null,
+                'num_pedidos' => $fecha_para_total_dia ? $num_pedidos : null,
             ]
         );
 
@@ -609,8 +619,15 @@ class WkPosModuleFrontController extends ModuleFrontController
             ]
         );
 
-        $fecha_para_total_dia = date('H:i') > '16:00';
-        $totalpagadodia = $this->getPagadoPorDia();
+        if($idShop == 1)
+            $fecha_para_total_dia = date('H:i') > '16:30';
+        else
+            $fecha_para_total_dia = date('H:i') > '12:55';
+
+        $info = $this->getPagadoPorDia();
+
+        $totalpagadodia =  Tools::ps_round($info['total'], 2);
+        $num_pedidos =  $info['pedidos'];
 
         $this->context->smarty->assign(
             [
@@ -687,6 +704,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'customProductPopUpImg' => _MODULE_DIR_ . 'wkpos/views/img/loading.gif',
                 'allTaxes' => TaxRulesGroup::getTaxRulesGroups(true),
                 'totalpagadodia' => $fecha_para_total_dia ? $totalpagadodia : null,
+                'num_pedidos' => $fecha_para_total_dia ? $num_pedidos : null,
             ]
         );
     }

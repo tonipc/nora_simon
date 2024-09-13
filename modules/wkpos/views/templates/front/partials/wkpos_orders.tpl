@@ -76,9 +76,12 @@
                     </div>
                     <!-- /ko -->
 
-                    <!--new total pagado-->
+                    <!--new total pagado y orders-->
                     {if isset($totalpagadodia)}
                         <p class="total"><b>Total pagado por día: {Tools::displayPrice($totalpagadodia)}</b></p>
+                    {/if}
+                    {if isset($num_pedidos)}
+                        <p><b>Nº pedidos hoy: {$num_pedidos}</b></p>
                     {/if}
                 </div>
 
