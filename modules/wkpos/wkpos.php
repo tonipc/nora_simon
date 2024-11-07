@@ -1768,14 +1768,22 @@ class WkPos extends Module
             $objPosOutletProduct = new WkPosOutletProduct();
             $psProducts = $objPosOutletProduct->getSelectedPsProduct($param['id_product']);
 
-            $outlets = WkPosOutlets::getOutlets();
+            // $outlets = WkPosOutlets::getOutlets();
+            $outlets = WkPosOutlets::getOutletsForShop($this->context->shop->id);
+
             if ($outlets) {
                 foreach ($outlets as $outlet) {
                     if ($outlet['id_wkpos_outlet'] == $this->context->cookie->id_wkpos_outlet) {
-                        $idOutletProduct = $objPosOutletProduct->checkOutletProductExist(
+                        // $idOutletProduct = $objPosOutletProduct->checkOutletProductExist(
+                        //     $param['id_product'],
+                        //     $outlet['id_wkpos_outlet']
+                        // );
+                        $idOutletProduct = $objPosOutletProduct->checkOutletProductExistInShop(
                             $param['id_product'],
-                            $outlet['id_wkpos_outlet']
+                            $outlet['id_wkpos_outlet'],
+                            $this->context->shop->id
                         );
+    
                         if (empty($idOutletProduct)) {
                             $objPosOutletProduct->assignProduct(
                                 $psProducts,
