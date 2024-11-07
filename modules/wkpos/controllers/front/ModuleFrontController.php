@@ -628,6 +628,7 @@ class WkPosModuleFrontController extends ModuleFrontController
 
         $totalpagadodia =  Tools::ps_round($info['total'], 2);
         $num_pedidos =  $info['pedidos'];
+        $nestle_pantallas = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
 
         $this->context->smarty->assign(
             [
@@ -705,6 +706,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'allTaxes' => TaxRulesGroup::getTaxRulesGroups(true),
                 'totalpagadodia' => $fecha_para_total_dia ? $totalpagadodia : null,
                 'num_pedidos' => $fecha_para_total_dia ? $num_pedidos : null,
+                'TPVadmin' => !in_array($this->idEmployee, $nestle_pantallas),
             ]
         );
     }

@@ -1778,3 +1778,72 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+body .wk-products .product-select div.clearfix {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body .wk-products .product-select div.clearfix::before,
+body .wk-products .product-select div.clearfix::after {
+  content: unset !important;
+}
+
+body #growls {
+  display: none;
+}
+
+body.client-view header,
+body.client-view #wk-pos-side-panel,
+body.client-view #wkpos_full_screen_img,
+body.client-view .wk-cart-product-details .nav-tabs li:first-child,
+body.client-view .wk-cart-product-details .nav-tabs li:last-child,
+body.client-view .wk-payment .wk-nomargin:last-child > div:first-child > div:first-child,
+body.client-view .wk-payment .wk-nomargin:last-child > div:first-child > div:last-child > div:nth-child(2),
+body.client-view .wk-payment .wk-nomargin:last-child > div:last-child > div:first-child,
+
+body.client-view table thead th:last-child,
+body.client-view table tbody td:last-child,
+body.client-view .wkpos-payment-customer,
+body.client-view #wk-pos-keypad
+/* body.client-view .wk-payment */
+ {
+ display: none !important;
+}
+
+body.client-view .wk-payment .wk-nomargin:last-child > div:first-child > div:last-child {
+  width: 100% !important;
+}
+
+body.client-view #content-wrapper {
+  flex: 1;
+}
+
+body.client-view #wk-cart-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 767px) {
+  body.client-view #wk-cart-panel {
+      display: flex !important;
+  }
+}
+
+/* body.client-view #right_column {
+  height: 100% !important;
+} */
+
+body.client-view .wk-cart-product-details {
+  flex: 1;
+}
+
+body.client-view #wk-pos-payment-panel .clearfix .form-group.clearfix {
+  display: none;
+}
+
+body.client-view #wkpos-cart-panel {
+  height: 100% !important;
+}

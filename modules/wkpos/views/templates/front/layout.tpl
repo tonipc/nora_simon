@@ -40,7 +40,7 @@
 </head>
 
 <body id="{if isset($pageName) && $pageName == 'pos-sale'}{$pageName|escape:'htmlall':'UTF-8'}{else}{$page.page_name|escape:'htmlall':'UTF-8'}{/if}"
-    class="{$page.body_classes|classnames} wkpos-scrollbar">
+    class="{$page.body_classes|classnames} wkpos-scrollbar {if !$TPVadmin}client-view{/if}">
 
     {block name='hook_after_body_opening_tag'}
         {hook h='displayAfterBodyOpeningTag'}
