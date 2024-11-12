@@ -246,6 +246,8 @@ class AdminWkPosConfigurationController extends ModuleAdminController
         }
 
         if (Tools::isSubmit('submitWkPosPaymentConfiguration')) {
+            //Customization start by Webkul #1078378 [paytef]
+            /*
             if (empty(Tools::getValue('groupBox'))) {
                 $this->errors[] = $this->l('Please select at least one payment method.');
             } else {
@@ -256,6 +258,9 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                     }
                 }
             }
+
+            */
+            //Customization end by Webkul #1078378 [paytef]
 
             if (!empty($this->errors)) {
                 $this->current_config_tab = 'paymentForm';
@@ -443,6 +448,8 @@ class AdminWkPosConfigurationController extends ModuleAdminController
     {
         $paymentMethods = array_column(WkPosPayment::getPaymentDetailId(), 'id_wkpos_payment');
         foreach ($paymentMethods as $paymentMethod) {
+            //Customization start by Webkul #1078378 [paytef]
+            /*
             $found = 0;
             foreach (Tools::getValue('groupBox') as $selectedPaymentMethod) {
                 if ($selectedPaymentMethod == $paymentMethod) {
@@ -458,6 +465,13 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                 $objWkPosPayment->active = 0;
                 $objWkPosPayment->save();
             }
+            */
+
+            $objWkPosPayment = new WkPosPayment($paymentMethod);
+            $objWkPosPayment->active = 1;
+            $objWkPosPayment->save();
+
+            //Customization end by Webkul #1078378 [paytef]
         }
         Configuration::updateValue('WKPOS_ORDER_EDIT_PAYMENT', Tools::getValue('WKPOS_ORDER_EDIT_PAYMENT'));
         Configuration::updateValue('WKPOS_PAYMENT_PARTIAL_VOUCHER', Tools::getValue('WKPOS_PAYMENT_PARTIAL_VOUCHER'));
@@ -1205,6 +1219,8 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                 'icon' => 'icon-money',
             ],
             'input' => [
+                //Customization start by Webkul #1078378 [paytef]
+                /*
                 [
                     'type' => 'group',
                     'id' => 'payment',
@@ -1214,6 +1230,8 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                     'values' => $paymentDetails,
                     'col' => '6',
                 ],
+                */
+                //Customization end by Webkul #1078378 [paytef]
                 [
                     'type' => 'select',
                     'label' => $this->l('Order status'),
@@ -1278,6 +1296,8 @@ class AdminWkPosConfigurationController extends ModuleAdminController
             ),
         ];
 
+        //Customization start by Webkul #1078378 [paytef]
+        /*
         if ($paymentData = WkPosPayment::getPaymentDetail()) {
             foreach ($paymentData as $paymentMethod) {
                 if ($paymentMethod['active']) {
@@ -1288,6 +1308,8 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                 $payment['groupBox_' . $paymentMethod['id_group']] = $groupVal;
             }
         }
+        */
+         //Customization end by Webkul #1078378 [paytef]
         $this->fields_value = $payment;
 
         return parent::renderForm();

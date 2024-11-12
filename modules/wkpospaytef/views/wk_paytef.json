@@ -1,0 +1,28 @@
+{
+    "result": {
+      "branchInfo": null,
+      "datacenterMessage": "OK",
+      "datacenterPingMS": 123,
+      "isBusy": false,
+      "isOperational": true,
+      "lastLocation": null,
+      "message": "OK",
+      "pinpads": [
+        {
+          "batteryPercent": null,
+          "cardStatus": "none",
+          "code": 0,
+          "default": true,
+          "isCharging": false,
+          "kioskMode": false,
+          "serialNumber": "4231456",
+          "status": "#connected",
+          "proximitySensorEnabled": true,
+          "isScreenInteractive": true
+        }
+      ],
+      "success": true,
+      "tcod": "1"
+    },
+    "version": "2023.02.040333"
+  }

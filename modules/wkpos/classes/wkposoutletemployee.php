@@ -29,6 +29,11 @@ class WkPosOutletEmployee extends ObjectModel
     public $active;
     public $date_add;
     public $date_upd;
+    //Customization start by Webkul #1078378 [paytef]
+    public $device_ip;
+    public $device_port;
+    public $device_pinpad;
+    //Customization end by Webkul #1078378 [paytef]
 
     public static $definition = [
         'table' => 'wkpos_outlet_employee',
@@ -59,6 +64,11 @@ class WkPosOutletEmployee extends ObjectModel
             ],
             'date_add' => ['type' => self::TYPE_DATE, 'validate' => 'isDateFormat', 'required' => true],
             'date_upd' => ['type' => self::TYPE_DATE, 'validate' => 'isDateFormat', 'required' => true],
+            //Customization start by Webkul #1078378 [paytef]
+            'device_ip' => ['type' => self::TYPE_STRING],
+            'device_port' => ['type' => self::TYPE_STRING],
+            'device_pinpad' => ['type' => self::TYPE_STRING],
+            //Customization end by Webkul #1078378 [paytef]
         ],
     ];
 

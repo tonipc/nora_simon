@@ -371,6 +371,15 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                         }
                     }
                 }
+
+                //Reprint
+                // Hook::exec(
+                //     'displayWkPosReprint',
+                //     [
+                //         'id_order' => $order['id_order'],
+                //         'posOrder' => $posOrder,
+                //     ]
+                // );
             }
             // $posOrder['total_pagado'] = $total_pagado;
             // dump($total_pagado);

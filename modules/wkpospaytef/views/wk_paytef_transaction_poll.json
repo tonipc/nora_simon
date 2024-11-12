@@ -1,0 +1,16 @@
+{
+    "confirmation": null,
+    "info": {
+      "cardStatus": "finished",
+      "opType": "sale",
+      "requestedAmount": 0,
+      "sessionID": "{session-uuid}",
+      "tcod": "",
+      "transactionConfirmed": null,
+      "transactionReference": "Operación N 256498",
+      "transactionStatus": "finished"
+    },
+    "result": null,
+    "resultWorldCoo": null,
+    "version": "2023.02.040333"
+  }

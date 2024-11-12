@@ -196,4 +196,15 @@ class WkPosHelper
             return true;
         }
     }
+
+    // Customization code start by webkul #1078378 [paytef]
+    public static function getAllPaymentMethodsList()
+    {
+        $sql = 'SELECT wp.`id_wkpos_payment` as id, wp.`name`, wp.`id_wkpos_payment` as val
+            FROM `' . _DB_PREFIX_ . 'wkpos_payment` wp';
+
+        return Db::getInstance()->executeS($sql);
+    }
+
+    // Customization code end by webkul #1078378 [paytef]
 }

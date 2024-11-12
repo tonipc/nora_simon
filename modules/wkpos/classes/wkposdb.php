@@ -79,6 +79,7 @@ class WkPosDb
                 `id_address` int(10) unsigned NOT NULL,
                 `default_currency` int(10) unsigned NOT NULL,
                 `allowed_currencies` text default NULL,
+                `assigned_payment_methods` text default NULL,
                 `default_language` int(10) unsigned NOT NULL,
                 `allowed_languages` text default NULL,
                 `id_shop` int(10) unsigned NOT NULL,
@@ -164,6 +165,7 @@ class WkPosDb
                 PRIMARY KEY  (`id_wkpos_custom_pos_values`)
             ) ENGINE=" . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8',
         ];
+         // assigned_payment_methods customization done by webkul #1078378 [paytef]
     }
 
     public function getCashRegisterSql()

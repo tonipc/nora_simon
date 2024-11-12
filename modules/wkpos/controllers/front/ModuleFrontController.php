@@ -278,7 +278,10 @@ class WkPosModuleFrontController extends ModuleFrontController
 
         $posSales = $this->context->link->getModuleLink('wkpos', 'sale');
         $employeeDetails = $this->objEmployee;
-        $paymentDetails = WkPosPayment::getActivePaymentDetail();
+        // Customization code start by webkul #1078378 [paytef]
+        // $paymentDetails = WkPosPayment::getActivePaymentDetail();
+        $paymentDetails = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet);
+        // Customization code end by webkul #1078378 [paytef]
         $posSessionStatus = 0;
         $controlSession = 0;
 
@@ -628,7 +631,6 @@ class WkPosModuleFrontController extends ModuleFrontController
 
         $totalpagadodia =  Tools::ps_round($info['total'], 2);
         $num_pedidos =  $info['pedidos'];
-        $nestle_pantallas = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
 
         $this->context->smarty->assign(
             [
@@ -686,7 +688,10 @@ class WkPosModuleFrontController extends ModuleFrontController
                     'shortLastName' => mb_strimwidth($employeeDetails->lastname, 0, 8, '...'),
                     'email' => $employeeDetails->email,
                 ],
-                'payments' => WkPosPayment::getActivePaymentDetail(),
+                // Customization code start by webkul #1078378 [paytef]
+                // 'payments' => WkPosPayment::getActivePaymentDetail(),
+                'payments' => WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet),
+                // Customization code end by webkul #1078378 [paytef]
                 'outlet' => [
                     'address1' => $address->address1,
                     'address2' => $address->address2,
@@ -706,7 +711,6 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'allTaxes' => TaxRulesGroup::getTaxRulesGroups(true),
                 'totalpagadodia' => $fecha_para_total_dia ? $totalpagadodia : null,
                 'num_pedidos' => $fecha_para_total_dia ? $num_pedidos : null,
-                'TPVadmin' => !in_array($this->idEmployee, $nestle_pantallas),
             ]
         );
     }

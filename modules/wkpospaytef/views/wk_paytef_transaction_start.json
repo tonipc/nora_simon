@@ -1,0 +1,9 @@
+{
+  "info": {
+    "message": "Transacción en proceso",
+    "opType": "sale",
+    "sessionID": "{session-uuid}",
+    "started": true
+  },
+  "version": "2023.02.040333"
+}

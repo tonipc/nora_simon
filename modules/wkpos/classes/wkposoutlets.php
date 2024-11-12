@@ -32,6 +32,7 @@ class WkPosOutlets extends ObjectModel
     public $active;
     public $date_add;
     public $date_upd;
+    public $assigned_payment_methods; //customization done by webkul #1078378 [paytef]
 
     public static $definition = [
         'table' => 'wkpos_outlets',
@@ -57,6 +58,7 @@ class WkPosOutlets extends ObjectModel
                 'size' => 10,
             ],
             'allowed_currencies' => ['type' => self::TYPE_STRING, 'validate' => 'isJson'],
+            'assigned_payment_methods' => ['type' => self::TYPE_STRING], //customization done by webkul #1078378 [paytef]
             'default_language' => [
                 'type' => self::TYPE_INT,
                 'required' => true,

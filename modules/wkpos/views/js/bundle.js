@@ -223,7 +223,7 @@
                 try {
                     return getFormatPrice(number);
                 } catch (e) {
-                    console.log(e);
+                    // console.log(e);
                 }
             } else {
                 var patterns = currencyFormat.split(';');
@@ -13234,7 +13234,7 @@
                         $('.wk-loading-status').html('').show();
                         $('.wk-loading-pos-details').next().css({ "opacity": "0.7" });
                         var paymentDetails = ko.mapping.toJS(viewModel.paymentOptions);
-                        console.log(paymentDetails);
+                        // console.log(paymentDetails);
                         if (paymentDetails.length == 1) {
                             viewModel.selectedPaymentOption(paymentDetails[0].paymentMethod);
                         }
@@ -13454,7 +13454,7 @@
                             Object(_product_js__WEBPACK_IMPORTED_MODULE_3__["storeProduct"])(pos_products);
                             Object(_product_js__WEBPACK_IMPORTED_MODULE_2__["updateStoreProduct"])(pos_products);
                         } catch (e) {
-                            console.log(e);
+                            // console.log(e);
                         }
                         applyCustomer = 0;
                         applyShipping = 0;
@@ -14031,7 +14031,7 @@
                         mappedCustomers[i++] = (new CustomerDetails(customer, index));
                     }
                 });
-                console.log(mappedCustomers);
+                // console.log(mappedCustomers);
                 loadCustomersPanel(mappedCustomers);
             }
         }
@@ -14107,7 +14107,7 @@
 
         var remainingCustomers = [];
         function loadCustomersPanel(customers, onScroll = false) {
-            console.log(customers);
+            // console.log(customers);
             var pagination = 30;
             var i = 0;
             remainingCustomers = customers.slice(pagination, customers.length + 1);
@@ -17274,15 +17274,16 @@
                 if (loaded == 0) {
                     orderData['viewmodel'] = 1;
                 }
-                console.log(orderData);
+                // console.log(orderData);
                 $.ajax({
                     url: posSales,
                     dataType: 'json',
                     type: 'get',
                     data: orderData,
                     success: function (orders) {
-                        console.log(orders);
-                        console.log(totalpagadodia);
+                        // console.log(orders);
+                        // console.log(totalpagadodia);
+
                         if (orders.hasError) {
                             $.each(orders.errors, function (index, error) {
                                 Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showErrorMsg"])(error);
@@ -17299,6 +17300,7 @@
                             }
                             loaded = 1;
                             setTimeout(function () {
+
                                 $('#loader').css('display', 'none');
                                 $('.wk-pos').removeClass('hidden hide');
                                 $('.wk-pos').show();
@@ -17878,17 +17880,17 @@
 
             /* Update the details of payment option selected in the product */
             self.selectPaymentOption = function (paymentMethod) {
-                console.log(paymentMethod);
+                // console.log(paymentMethod);
 
                 var payment = paymentMethod.split(", ");
                 self.selectedPaymentOption(payment[0]);
-                console.log( self.selectedPaymentOption(payment[0]) );
+                // console.log( self.selectedPaymentOption(payment[0]) );
 
                 self.selectedPaymentId(payment[1]);
                 self.installmentAmount(self.totalOrderAmount());
                 var dueAmount = self.totalOrderAmount() - self.customerPayAmount();
                 var addedPayments = self.paymentOptions();
-                console.log('addedPayments ' +addedPayments);
+                // console.log('addedPayments ' +addedPayments);
 
                 var addPayment = true;
 
@@ -17954,14 +17956,30 @@
                     // self.selectedPaymentOptionIndex(index - 1);
 
                 }
+                //Customization code start by Webkul #1078378 [paytef]
+                else {
+                    var autofillTenderedamount = true;
+                    dueAmount = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_1__["makeTotalProductCaculation"])(parseFloat(dueAmount));
+                    if (autofillTenderedamount) {
+                        tenderedamount = dueAmount;
+                    }
 
+                    var data = {
+                        id_wkpos_payment: payment[1],
+                        dueAmount: dueAmount,
+                        tendered: tenderedamount,
+                        paymentMethod: payment[0]
+                    };
+                }
+
+                //Customization code end by Webkul #1078378 [paytef]
                 //Evento
                 self.emitAfterEvents('selectPaymentOption', { 'data': data, 'event': event });
             }
 
             self.selectOrderPayment = function (orderPayment) {
                 var index = self.paymentOptions.indexOf(orderPayment);
-                console.log('selectpaymentoption index ' +self.selectedPaymentOptionIndex(0));
+                // console.log('selectpaymentoption index ' +self.selectedPaymentOptionIndex(0));
                 self.selectedPaymentOptionIndex(index);
             }
 
@@ -18149,7 +18167,7 @@
                 var paymentOptions = self.paymentOptions();
                 $.each(paymentOptions, function (index, paymentOption) {
                     total += parseFloat(paymentOption.tendered());
-                    console.log('total actualizado ' +total);
+                    // console.log('total actualizado ' +total);
                 });
                 total = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_1__["makeTotalProductCaculation"])(parseFloat(total));
                 self.totalOrderAmountPaid(total);
@@ -18176,7 +18194,7 @@
                 //     added = true;
                 // }
                 var paymentIndex = self.selectedPaymentOptionIndex(0);
-                console.log('payment index ' +paymentIndex);
+                // console.log('payment index ' +paymentIndex);
                 var selectedPaymentOption = null;
                 if (paymentIndex != -1) {
                     selectedPaymentOption = self.paymentOptions()[paymentIndex];
@@ -18519,9 +18537,9 @@
                                 if (posViewModel.navigatorOnline()) {
                                     Object(_order_js__WEBPACK_IMPORTED_MODULE_4__["addProductToPsCart"])();
                                 }
-                                setTimeout(function () {
-                                    $('.wkpos-paymentmethod').trigger('click');
-                                }, 350);
+                                // setTimeout(function () {
+                                //     $('.wkpos-paymentmethod').trigger('click');
+                                // }, 350);
                             }
 
                             /* comment native workflow of POS on proceed to pay
@@ -19127,7 +19145,7 @@
                     }
                 } catch (e) {
                     self.printerConnected(qz.websocket.isActive());
-                    console.log(e);
+                    // console.log(e);
                 }
             }
 
@@ -19860,6 +19878,10 @@
                                     idOrder: posOrders[order]['order']['id_order']
                                     // totalpagadodia: totalpagadodia,
                                 })
+
+                                // var reprint = $('.reprint').data('idorder');
+                                // console.log('reprint ' +reprint);
+
                             }
                             return new _order_js__WEBPACK_IMPORTED_MODULE_4__["Order"]( posOrders[order]['order'] );
                             // }

@@ -85,4 +85,27 @@ class WkPosPayment extends ObjectModel
             Where pp.`active` = 1'
         );
     }
+
+    // Customization code start by webkul #1078378 [paytef]
+    public static function getActivePaymentDetailOutletWise($idWkPosOutlet)
+    {
+        $idShop = (int) Context::getContext()->shop->id;
+        $assignedPaymentMethods = Db::getInstance()->getValue('SELECT `assigned_payment_methods`
+        FROM `' . _DB_PREFIX_ . 'wkpos_outlets`
+        WHERE `id_wkpos_outlet` = ' . (int) $idWkPosOutlet . '
+        AND `id_shop` = ' . (int) $idShop);
+
+        if ($assignedPaymentMethods) {
+            $sql = 'SELECT wp.`id_wkpos_payment`,wp.`name`,
+            wp.`active`, wp.`id_wkpos_payment` as `val`
+            FROM `' . _DB_PREFIX_ . 'wkpos_payment` wp
+            Where wp.`active` = 1 AND wp.`id_wkpos_payment` IN ('.pSQL($assignedPaymentMethods).')';
+
+            return Db::getInstance()->executeS($sql);
+        } else {
+            return [];
+        }
+    }
+
+    // Customization code end by webkul #1078378 [paytef]
 }

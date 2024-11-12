@@ -465,6 +465,22 @@ class AdminWkPosOutletsController extends ModuleAdminController
                 ],
             ];
 
+            // Customization code start by webkul #1078378 [paytef]
+            $temp_fields[] = [
+                'type' => 'checkbox',
+                'label' => $this->l('Select payment methods'),
+                'name' => 'assigned_payment_methods[]',
+                'required' => 'true',
+                'col' => '4',
+                'values' => [
+                    'query' => WkPosHelper::getAllPaymentMethodsList(),
+                    'id' => 'id',
+                    'name' => 'name',
+                ],
+            ];
+
+              // Customization code end by webkul #1078378 [paytef]
+
             if (isset($address)) {
                 $this->fields_value = [
                     'address1' => empty(Tools::getValue('address1')) ?
@@ -521,6 +537,24 @@ class AdminWkPosOutletsController extends ModuleAdminController
                 }
             }
             $this->fields_value['allowed_languages[]'] = $allowedLanguages;
+
+            // Customization code start by webkul #1078378 [paytef]
+
+            $allowedPaymentMethods = Tools::getValue('assigned_payment_methods');
+            $allowedPaymentMethods = $allowedPaymentMethods ? implode(',', $allowedPaymentMethods) : false;
+
+            if (!$allowedPaymentMethods) {
+                if (Validate::isLoadedObject($this->object)) {
+                    $allowedPaymentMethods = explode(',', $this->object->assigned_payment_methods);
+
+                    foreach ($allowedPaymentMethods as $warehouse) {
+                        $this->fields_value['assigned_payment_methods[]_' . $warehouse] = true;
+                    }
+
+                }
+            }
+
+            // Customization code end by webkul #1078378 [paytef]
 
             array_splice($this->fields_form['input'], 3, 0, $temp_fields);
 
@@ -890,6 +924,14 @@ class AdminWkPosOutletsController extends ModuleAdminController
                 $this->errors[] = $this->l('Outlet name length must be between 0 and 32.');
             }
             $allowedCurrencies = Tools::getValue('allowed_currencies');
+
+            // Customization code start by webkul #1078378 [paytef]
+            if (empty(Tools::getValue('assigned_payment_methods'))) {
+                $this->errors[] = $this->l('Please select atleast one payment method.');
+            }
+
+            // Customization code end by webkul #1078378 [paytef]
+
             $defaultCurrency = Tools::getValue('default_currency');
             if (empty($allowedCurrencies)) {
                 $this->errors[] = $this->l('Please fill allowed currencies.');
@@ -937,6 +979,10 @@ class AdminWkPosOutletsController extends ModuleAdminController
                 $objOutlet->id_address = $address->id;
                 $objOutlet->default_currency = $defaultCurrency;
                 $objOutlet->allowed_currencies = json_encode($allowedCurrencies);
+                // Customization code start by webkul #1078378 [paytef]
+                $allowedPaymentMethod = implode(',', (Tools::getValue('assigned_payment_methods')));
+                $objOutlet->assigned_payment_methods = pSQL($allowedPaymentMethod);
+                // Customization code end by webkul #1078378 [paytef]
                 $objOutlet->default_language = $defaultLanguage;
                 $objOutlet->allowed_languages = json_encode($allowedLanguages);
                 $objOutlet->active = $active;

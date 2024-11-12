@@ -255,7 +255,10 @@ class WkPosModuleFrontController extends ModuleFrontController
 
         $posSales = $this->context->link->getModuleLink('wkpos', 'sale');
         $employeeDetails = $this->objEmployee;
-        $paymentDetails = WkPosPayment::getActivePaymentDetail();
+        // Customization code start by webkul #1078378 [paytef]
+        // $paymentDetails = WkPosPayment::getActivePaymentDetail();
+        $paymentDetails = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet);
+        // Customization code end by webkul #1078378 [paytef]
         $posSessionStatus = 0;
         $controlSession = 0;
 
@@ -633,7 +636,10 @@ class WkPosModuleFrontController extends ModuleFrontController
                     'shortLastName' => mb_strimwidth($employeeDetails->lastname, 0, 8, '...'),
                     'email' => $employeeDetails->email,
                 ],
-                'payments' => WkPosPayment::getActivePaymentDetail(),
+                // Customization code start by webkul #1078378 [paytef]
+                // 'payments' => WkPosPayment::getActivePaymentDetail(),
+                'payments' => WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet),
+                // Customization code end by webkul #1078378 [paytef]
                 'outlet' => [
                     'address1' => $address->address1,
                     'address2' => $address->address2,
