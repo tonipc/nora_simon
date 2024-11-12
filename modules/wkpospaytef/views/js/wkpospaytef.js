@@ -51,7 +51,7 @@ function PosPaytefTerminalViewModel(PosModel) {
             type: 'POST',
             data: data,
             success: function (response) {
-                if (response.status && response.status == '#connected') {
+                if (response.status && response.status == 'connected') {
                     showSuccessMsg(pinpadStatusConnected);
                     self.updatePaytefReader();
                     $('#discover-reader').attr('disabled', false);

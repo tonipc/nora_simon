@@ -49,25 +49,26 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
             ];
 
             // test code with json code
-            $filePath = _PS_MODULE_DIR_ . $this->module->name . '/views/wk_paytef.json';
-            $response = json_decode(Tools::file_get_contents($filePath), true);
-
+            // $filePath = _PS_MODULE_DIR_ . $this->module->name . '/views/wk_paytef.json';
+            // $response = json_decode(Tools::file_get_contents($filePath), true);
             // test code end
 
-            /*
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',
-            ]);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            $token = $this->getToken();
+            $response = $this->getApi(WkPosPaytefHelper::WK_POS_PAYTEF_PINPAD_STATUS_ENDPOINT, $data, $token);
 
-            $response = json_decode(curl_exec($ch));
+            // $ch = curl_init($url);
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            // curl_setopt($ch, CURLOPT_POST, true);
+            // curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            //     'Content-Type: application/json',
+            //     'Authorization:Bearer ' . $token,
+            // ]);
+            // curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
-            curl_close($ch);
-            */
+            // $response = json_decode(curl_exec($ch));
 
+            // curl_close($ch);
+            
             if(isset($response['result']['pinpads'][0]['status']) && $response['result']['pinpads'][0]['status']) {
                 exit(json_encode(['status' => $response['result']['pinpads'][0]['status']])); // we have static 0 index becuase we have get the status using pinpad id
             } else {
@@ -75,6 +76,7 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
                     'hasError' => true,
                     'msg' => $this->l('Pinpad staty is not getting.'),
                 ]);
+                exit($result);
             }
 
         } else {
@@ -84,6 +86,61 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
             ]);
             exit($result);
         }
+    }
+
+    public function getToken()
+    {
+        $function = '/authorize/';
+        $data = array(
+            'secretKey' => 'XQ3zULKIRsIBJEI1qOpjUs6mnCWUq5RWHoYvcg9r',
+            'accessKey' => 'MS43M3c='
+        );
+
+        $result = $this->getApi($function, $data);
+
+        if (isset($result['result'])) {
+            return $result['result']['token'];
+        }
+
+        return false;
+    }
+
+    public function getApi($function = '', $data = array(), $token = false)
+    {
+        $url =  Tools::getValue('deviceIP');
+        $cURLConnection = curl_init();
+
+        $headers = array('Content-Type:application/json');
+
+        if ($token) {
+            $headers[] = 'Authorization:Bearer ' . $token;
+        }
+
+        curl_setopt_array($cURLConnection, array(
+            CURLOPT_URL => $url . $function,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_UNICODE),
+            CURLOPT_HTTPHEADER => $headers,
+        ));
+
+        $result = curl_exec($cURLConnection);
+        $err = curl_error($cURLConnection);
+
+        curl_close($cURLConnection);
+
+        if ($err) {
+            return array('error' => $err);
+        }
+
+        $jsonArrayResponse = json_decode($result, true);
+        // $jsonArrayResponse = $result;
+
+        return $jsonArrayResponse;
     }
 
     public function displayAjaxStartPytefTransaction()
@@ -121,8 +178,10 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
 
 
             // test code with json code
-            $filePath = _PS_MODULE_DIR_ . $this->module->name . '/views/wk_paytef_transaction_start.json';
-            $response = json_decode(Tools::file_get_contents($filePath), true);
+            // $filePath = _PS_MODULE_DIR_ . $this->module->name . '/views/wk_paytef_transaction_start.json';
+            // $response = json_decode(Tools::file_get_contents($filePath), true);
+            $token = $this->getToken();
+            $response = $this->getApi(WkPosPaytefHelper::WK_POS_PAYTEF_TRANSACTION_START, $data, $token);
 
             // test code end
 
@@ -187,8 +246,11 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
             ];
 
             // test code with json code
-            $filePath = _PS_MODULE_DIR_ . $this->module->name . '/views/wk_paytef_transaction_poll.json';
-            $response = json_decode(Tools::file_get_contents($filePath), true);
+            // $filePath = _PS_MODULE_DIR_ . $this->module->name . '/views/wk_paytef_transaction_poll.json';
+            // $response = json_decode(Tools::file_get_contents($filePath), true);
+
+            $token = $this->getToken();
+            $response = $this->getApi(WkPosPaytefHelper::WK_POS_PAYTEF_TRANSACTION_POLL, $data, $token);
 
             // test code end
 
@@ -245,7 +307,10 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
 
             // test code with json code
             $filePath = _PS_MODULE_DIR_ . $this->module->name . '/views/wk_paytef_transaction_result.json';
-            $response = json_decode(Tools::file_get_contents($filePath), true);
+            // $response = json_decode(Tools::file_get_contents($filePath), true);
+
+            $token = $this->getToken();
+            $response = $this->getApi(WkPosPaytefHelper::WK_POS_PAYTEF_TRANSACTION_RESULT, $data, $token);
 
             // test code end
 
