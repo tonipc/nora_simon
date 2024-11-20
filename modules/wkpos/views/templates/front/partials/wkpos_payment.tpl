@@ -33,8 +33,9 @@
                         <a class="btn wkpos-btn pull-right"
                             data-bind="click: $root.contentModel.nextOrder">{l s='Next Order' mod='wkpos'}</a>
                     </span>
+                    <!--here-->
                     <div class="col-md-2"
-                        data-bind="if: (parseFloat($root.contentModel.customerPayAmount()) >= parseFloat($root.contentModel.totalOrderAmount()) && $root.contentModel.idOrder() == 0 && ($root.contentModel.selectedPaymentId() == '2' || $root.contentModel.selectedPaymentId() == wkPaytefPaymentId))"> {* Customization done by Webkul #1078378 [paytef] for wkPaytefPaymentId*}
+                        data-bind="if: (parseFloat($root.contentModel.customerPayAmount()) >= parseFloat($root.contentModel.totalOrderAmount()) && $root.contentModel.idOrder() == 0 && ($root.contentModel.selectedPaymentId() == '5')"> {* Customization done by Webkul #1078378 [paytef] for wkPaytefPaymentId*}
                         <a class="btn wkpos-btn wkpos-confirmpayment"
                             data-bind="css: { 'disabled': $root.contentModel.confirmDisabled() == 1 }, click:$root.contentModel.generateOrder"
                            data-bind="click:$root.contentModel.generateOrder"

@@ -88,10 +88,6 @@ class WkPos extends Module
      */
     public function hookActionAdminOrdersListingFieldsModifier($list)
     {
-
-        dump($list);
-        die;
-
         $optionsOrderStatus = [1 => 'POS', 2 => 'Web'];
         // if (isset($list['select'])) {
         //     // $list['select'] .= ', wko.`active` AS `type`, a.`reference`';
@@ -1787,7 +1783,7 @@ class WkPos extends Module
                             $outlet['id_wkpos_outlet'],
                             $this->context->shop->id
                         );
-
+    
                         if (empty($idOutletProduct)) {
                             $objPosOutletProduct->assignProduct(
                                 $psProducts,

@@ -95,6 +95,7 @@
                         <div class="wk-products clearfix" data-bind="foreach: $root.contentModel.products">
                             <div class="col-md-3 col-sm-6 col-xs-6 product-select" product-id="" options=""
                                 data-bind="attr: { 'product-id': idProduct, 'options': hasCombination }, click: $root.contentModel.addProductToCart">
+
                                 <div class="clearfix">
                                     {* <!-- ko if: $root.navigatorOnline() --> *}
                                     <img src="" class="img-responsive" data-id-product=""
@@ -116,10 +117,12 @@
                                         {* <!-- /ko --> *}
                                         {* <del class="line-through">$98.00</del> *}
                                         <br>
+                                        {* 
                                         <span> Stock :</span>
                                         <b data-bind="attr: { 'product-qty': displayAvailQty }, text: displayAvailQty"></b>
                                         <!-- ko if: $root.contentModel.showStockLocation() == 1 -->
-                                        <br>
+                                        <br> 
+                                        *}
                                         <div data-bind=" css: { 'hide' : displayStockLocation() == '' } ">
                                             <span> Stock Location:</span>
                                             <b data-bind="attr: { 'stock-location': displayStockLocation }, text: displayStockLocation"></b>

@@ -60,7 +60,7 @@
     <!-- /ko -->
     {include file="module:wkpos/views/templates/front/partials/wkpos_custom_product.tpl"}
     <div id="content-wrapper" class=""
-        data-bind="css: { 'col-xs-7 product-panel': (($root.bodyPanel() == 'products' || $root.bodyPanel() == 'customers' || $root.bodyPanel() == 'shipping') && $root.contentModel.displayCart() == 1), 'col-xs-11': (($root.bodyPanel() != 'products' || $root.bodyPanel() != 'customers' || $root.bodyPanel() != 'shipping') || $root.contentModel.displayCart() == 0) }">
+        data-bind="css: { 'col-xs-8 product-panel': (($root.bodyPanel() == 'products' || $root.bodyPanel() == 'customers' || $root.bodyPanel() == 'shipping') && $root.contentModel.displayCart() == 1), 'col-xs-11': (($root.bodyPanel() != 'products' || $root.bodyPanel() != 'customers' || $root.bodyPanel() != 'shipping') || $root.contentModel.displayCart() == 0) }">
         <div class="row">
             {hook h="wkposDisplayContentWrapperTop"}
             {block name='content'}
@@ -74,6 +74,7 @@
                 {include file="module:wkpos/views/templates/front/partials/wkpos_settings.tpl"}
                 <!-- /ko -->
                 <!-- ko if: ($root.bodyPanel() === "pay") -->
+                <!--ORIGINAL wkpos_payment.tpl-->
                 {include file="module:wkpos/views/templates/front/partials/wkpos_payment.tpl"}
                 <!-- /ko -->
                 <!-- ko if: ($root.bodyPanel() === "customer") -->
@@ -103,7 +104,7 @@
 {/block} *}
 {block name="right_column"}
     <!-- ko if: ($root.bodyPanel() == "products" || $root.bodyPanel() == "customers" || $root.bodyPanel() == "shipping") -->
-    <div id="right_column" class="col-xs-5 hidden-xs"
+    <div id="right_column" class="col-xs-4 hidden-xs"
         data-bind="css: { 'customer-panel-active': ($root.bodyPanel() == 'customers')}">
         <!-- ko if: $root.rightColumnPage() == "pos_cart" -->
         <!-- ko if: $root.contentModel.displayCart() == 1 -->
@@ -117,8 +118,12 @@
         <!-- /ko -->
         <!-- /ko -->
         {hook h="displayPosRightColumn"}
+
+
     </div>
     <!-- /ko -->
+
+
 {/block}
 {*
 {block name='wkpos_fullscreen'}
