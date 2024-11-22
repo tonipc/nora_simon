@@ -33,6 +33,7 @@ class WkPosOutletEmployee extends ObjectModel
     public $device_ip;
     public $device_port;
     public $device_pinpad;
+    public $printer_name;
     //Customization end by Webkul #1078378 [paytef]
 
     public static $definition = [
@@ -68,6 +69,7 @@ class WkPosOutletEmployee extends ObjectModel
             'device_ip' => ['type' => self::TYPE_STRING],
             'device_port' => ['type' => self::TYPE_STRING],
             'device_pinpad' => ['type' => self::TYPE_STRING],
+            'printer_name' => ['type' => self::TYPE_STRING],
             //Customization end by Webkul #1078378 [paytef]
         ],
     ];

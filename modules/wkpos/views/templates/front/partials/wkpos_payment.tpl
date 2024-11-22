@@ -244,8 +244,12 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6 invoice clearfix wkpos-scrollbar">
                         <div class="print_invoice text-center">
-                            <a class="btn wkpos-payment-customer"
+                         {* Customization code start by Webkul #1078378 [paytef] *}
+                            {* <a class="btn wkpos-payment-customer"
+                                data-bind="click: $root.contentModel.printInvoice">{l s='Print Invoice' mod='wkpos'}</a> *}
+                                <a id="wk_pos_paytef_print_invoice" class="btn wkpos-payment-customer"
                                 data-bind="click: $root.contentModel.printInvoice">{l s='Print Invoice' mod='wkpos'}</a>
+                                {* Customization code end by Webkul #1078378 [paytef] *}
                             {if $wkposLoyaltyInstall == true}
                                 <a class="btn wkpos-payment-customer gift-card"
                                     data-bind=" click : $root.loyalty.printGiftCardSlip">

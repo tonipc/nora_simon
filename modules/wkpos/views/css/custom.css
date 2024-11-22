@@ -129,9 +129,8 @@ div.wk-load-pos-product {
 
 body#pos-sale {
   overflow: hidden;
-  /* font-family: "Roboto", sans-serif !important; */
-  font-family: "Cormorant Garamond";
-  cursor: pointer !important; /*Customization done by Webkul #1078378  [paytef] */
+  font-family: "Roboto", sans-serif !important;
+   cursor: pointer !important; /*Customization done by Webkul #1078378  [paytef] */
 }
 
 .wk-emp-img {
@@ -143,7 +142,6 @@ body#pos-sale {
 
 .wkpos-back {
   cursor: pointer;
-  font-size: 22px;
 }
 .category-div {
   padding: 0px !important;
@@ -281,9 +279,8 @@ body {
   text-align: center;
   border-bottom: 1px solid var(--wkpos-off-white);
   height: 50px;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
-  text-transform: uppercase;
   padding: 0;
   display: flex;
   border-right: 1px solid var(--wkpos-box-shadow);
@@ -883,7 +880,7 @@ body#pos-sale .wk-h4 {
 }
 
 .wkpos-confirmpayment {
-  font-size: 40px;
+  font-size: 18px;
   width: 100%;
   /* padding: 15px; */
   /* margin-top: 30px; */
@@ -1806,10 +1803,6 @@ body .wk-products .product-select div.clearfix::after {
   content: unset !important;
 }
 
-body #growls {
-  display: none;
-}
-
 /* body.client-view header, */
 body.client-view header #wkpos-header > *:not(:first-child),
 body.client-view #wk-pos-side-panel,
@@ -1838,8 +1831,8 @@ body.client-view .wk-cart-product-details .nav-tabs li:nth-child(2) button::afte
   border: 1px solid #dddd;
 }
 
-.wk-pos .title{ 
-  padding-left: 4rem; 
+.wk-pos.title{
+  padding-left: 1rem;
 }
 
 body.client-view .wk-payment .wk-nomargin:last-child > div:first-child > div:last-child {
@@ -1875,4 +1868,8 @@ body.client-view #wk-pos-payment-panel .clearfix .form-group.clearfix {
 
 body.client-view #wkpos-cart-panel {
   height: 100% !important;
+}
+
+body.client-view #wk_pos_paytef_print_invoice {
+  visibility: hidden;
 }
