@@ -34,9 +34,9 @@ function PosPaytefTerminalViewModel(PosModel) {
     }
 
     self.pinpadStatus = function () {
-        $('#discover-reader').attr('disabled', true);
-        $('#reader-msg').html(checkingPinpadStatusText);
-        $('#paytef-reader-loader').show(300);
+        // $('#discover-reader').attr('disabled', true);
+        // $('#reader-msg').html(checkingPinpadStatusText);
+        // $('#paytef-reader-loader').show(300);
         var data = {
             action: 'fetchPinPadStatus',
             ajax: true,
@@ -53,18 +53,18 @@ function PosPaytefTerminalViewModel(PosModel) {
             success: function (response) {
                 if (response.status && response.status == 'connected') {
                     showSuccessMsg(pinpadStatusConnected);
-                    self.updatePaytefReader();
-                    $('#discover-reader').attr('disabled', false);
-                    $('#reader-msg').html('');
-                    $('#paytef-reader-loader').hide();
+                    // self.updatePaytefReader();
+                    // $('#discover-reader').attr('disabled', false);
+                    // $('#reader-msg').html('');
+                    // $('#paytef-reader-loader').hide();
                     localStorage.setItem('paytef_device_ip', self.paytefDeviceIP());
                     localStorage.setItem('paytef_device_port', self.paytefDevicePort());
                     localStorage.setItem('paytef_device_pinpad', self.paytefDevicePinpad());
                 } else {
                     showErrorMsg(response.msg);
-                    $('#discover-reader').attr('disabled', false);
-                    $('#reader-msg').html('');
-                    $('#paytef-reader-loader').hide();
+                    // $('#discover-reader').attr('disabled', false);
+                    // $('#reader-msg').html('');
+                    // $('#paytef-reader-loader').hide();
                     localStorage.removeItem('paytef_device_ip');
                     localStorage.removeItem('paytef_device_port');
                     localStorage.removeItem('paytef_device_pinpad');
@@ -88,12 +88,16 @@ function PosPaytefTerminalViewModel(PosModel) {
             posViewModel.paytef.paytefDeviceIP(IP);
             posViewModel.paytef.paytefDevicePort(port);
             posViewModel.paytef.paytefDevicePinpad(pinpad);
-            self.updatePaytefReader();
+            // self.updatePaytefReader();
+            self.pinpadStatus();
         } else {
             showErrorMsg(employee_no_detail_error);
         }
     };
 
+    setTimeout(function () {
+        self.openPaytefTerminalPinpadStatus();
+    }, 400);
 }
 
 function getCookieValueBykey(name) {
@@ -108,7 +112,7 @@ $(document).ready(function () {
         localStorage.removeItem('paytef_device_ip');
         localStorage.removeItem('paytef_device_port');
         localStorage.removeItem('paytef_device_pinpad');
-        $('.wkpos-confirmpayment').attr('disabled', false);
+        $('.wkpos-confirmpayment').show();
         posViewModel.paytef = new PosPaytefTerminalViewModel(PosModel);
     });
 
@@ -128,6 +132,7 @@ $(document).ready(function () {
                 return;
             }
 
+            console.log(params.data.tendered);
             var pos_cart = $.parseJSON(localStorage.pos_cart);
             var cartIndex = viewModel.posCarts()[localStorage.selectedCartId].posCartId() - 1;
             var idCart = pos_cart[cartIndex]['others']['id_cart'];
@@ -148,7 +153,7 @@ $(document).ready(function () {
                 data: data,
                 beforeSend: function () {
                     $('#wk-pos-paytef-create-payment').modal('toggle');
-                    $('.wkpos-confirmpayment').attr('disabled', true);
+                    $('.wkpos-confirmpayment').hide();
                     $('#paytef-create-loader').show(300);
                     $('#connector-msg').html(initiatingPaytef);
                 },
@@ -157,23 +162,27 @@ $(document).ready(function () {
                         showErrorMsg(response.msg);
                         cancelPaytefPaymentSelection();
                         $('#wk-pos-paytef-create-payment').modal('toggle');
-                        $('.wkpos-confirmpayment').attr('disabled', false);
+                        $('.wkpos-confirmpayment').show();
                         $('#paytef-create-loader').hide();
                         return false;
-                    } else
+                    } else {
                         if (typeof response.status != 'undefined' && response.status) {
                             // transaction started.
                             showSuccessMsg(transaction_start_msg);
+                            // setTimeout(async function () {
+                            //     checkTransactionStatus(idCart);
+                            // }, 1000);
                             setTimeout(async function () {
                                 checkTransactionStatus(idCart);
-                            }, 1000);
-
+                            }, 5000);
                         } else {
                             showErrorMsg(someError);
+                            cancelPaytefPaymentSelection();
                             $('#wk-pos-paytef-create-payment').modal('toggle');
-                            $('.wkpos-confirmpayment').attr('disabled', false);
+                            $('.wkpos-confirmpayment').hide();
                             $('#paytef-create-loader').hide();
                         }
+                    }
                 }
             });
         }
@@ -181,7 +190,7 @@ $(document).ready(function () {
     // document ready end
 });
 
-function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 10) {
+function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 11) {
     $.ajax({
         url: paytefServiceUrl,
         type: 'POST',
@@ -198,20 +207,21 @@ function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 10) {
             if (transaction_status.info.cardStatus === 'finished' && transaction_status.info.transactionStatus === 'finished') {
                 getTransactionResult(idCart);
             } else if (retryCount < maxRetries) {
-                setTimeout(() => checkTransactionStatus(idCart, retryCount + 1, maxRetries), 1000);
+                setTimeout(() => checkTransactionStatus(idCart, retryCount + 1, maxRetries), 5000);
             } else {
                 showErrorMsg(maxTryError);
                 cancelPaytefPaymentSelection();
                 $('#wk-pos-paytef-create-payment').modal('toggle');
-                $('.wkpos-confirmpayment').attr('disabled', false);
+                $('.wkpos-confirmpayment').hide();
                 $('#paytef-create-loader').hide();
                 return false;
             }
         },
         error: function (error) {
             showErrorMsg(someError);
+            cancelPaytefPaymentSelection();
             $('#wk-pos-paytef-create-payment').modal('toggle');
-            $('.wkpos-confirmpayment').attr('disabled', false);
+            $('.wkpos-confirmpayment').hide();
             $('#paytef-create-loader').hide();
         }
     });
@@ -236,20 +246,22 @@ function getTransactionResult(idCart) {
                 showSuccessMsg(transaction_approved_msg);
                 // start order code
                 $('#wk-pos-paytef-create-payment').modal('toggle');
-                $('.wkpos-confirmpayment').attr('disabled', false);
+                $('.wkpos-confirmpayment').hide();
                 $('.wkpos-confirmpayment').trigger('click'); // initiate payment
                 // code end
             } else {
                 showErrorMsg(payment_error);
+                cancelPaytefPaymentSelection();
                 $('#wk-pos-paytef-create-payment').modal('toggle');
-                $('.wkpos-confirmpayment').attr('disabled', false);
+                $('.wkpos-confirmpayment').hide();
                 $('#paytef-create-loader').hide();
             }
         },
         error: function (error) {
             showErrorMsg(transaction_result_err);
+            cancelPaytefPaymentSelection();
             $('#wk-pos-paytef-create-payment').modal('toggle');
-            $('.wkpos-confirmpayment').attr('disabled', false);
+            $('.wkpos-confirmpayment').hide();
             $('#paytef-create-loader').hide();
         }
     });
@@ -264,6 +276,7 @@ showSuccessMsg = function (msg) {
 }
 
 cancelPaytefPaymentSelection = function () {
+    viewModel.removePaymentOption();
     $("#wk-pos-payment-panel > div > div > div:nth-child(3) > table > tbody > tr > td.text-center.wk-pointer").trigger('click');
 }
 

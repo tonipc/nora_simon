@@ -16,7 +16,7 @@
           "isCharging": false,
           "kioskMode": false,
           "serialNumber": "4231456",
-          "status": "#connected",
+          "status": "connected",
           "proximitySensorEnabled": true,
           "isScreenInteractive": true
         }

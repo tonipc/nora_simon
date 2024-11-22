@@ -6,7 +6,7 @@
     "result": {
       "acquirerID": "790139",
       "amountWithSign": "1,99",
-      "approved": true,
+      "approved": false,
       "authorisationCode": "959052",
       "authorisationMode": "online",
       "bankName": null,
@@ -43,7 +43,7 @@
       "dccData": null,
       "dccText": null,
       "emvARC": "00",
-      "failed": false,
+      "failed": true,
       "isCorporate": null,
       "isDCC": false,
       "issuerNameAndCountry": null,
