@@ -35,7 +35,7 @@ class posreprintAjaxreprintModuleFrontController extends ModuleFrontController
                     $insert = Db::getInstance()->execute($sql);
                 }
                 if($insert)
-                    $this->message = 'email enviado a '.$email;
+                    $this->message = 'email sended to '.$email;
 
                 echo json_encode(array(
                     'status' => $this->message,

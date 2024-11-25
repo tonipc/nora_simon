@@ -246,11 +246,22 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
         if (Module::isEnabled('ps_mainmenu')) {
             $menu_items = $this->getMenuItems();
 
+            $nestle_pantallas = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
+            if(!$nestle_pantallas){
+                $nestle_pantallas = [];
+            }
+
+
             $this->_menu = [];
             foreach ($menu_items as $item) {
                 if (!$item) {
                     continue;
                 }
+                //Sólo 16 autopago
+                if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && $item != 'CAT16'){
+                    continue;
+                }
+
                 preg_match($this->pattern, $item, $value);
                 $id = (int) Tools::substr($item, Tools::strlen($value[1]), Tools::strlen($item));
                 $objPosProduct = new WkPosOutletProduct();

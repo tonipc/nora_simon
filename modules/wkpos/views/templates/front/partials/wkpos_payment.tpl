@@ -30,12 +30,11 @@
                     </span>
                     <span class="wk-payment-heading">{l s='Payment' mod='wkpos'}</span>
                     <span class="print_invoice" data-bind="if: ($root.contentModel.idOrder() !== 0)">
-                        <a class="btn wkpos-btn pull-right"
+                        <a class="btn wkpos-btn next pull-right"
                             data-bind="click: $root.contentModel.nextOrder">{l s='Next Order' mod='wkpos'}</a>
                     </span>
-                    <!--here-->
                     <div class="col-md-2"
-                        data-bind="if: (parseFloat($root.contentModel.customerPayAmount()) >= parseFloat($root.contentModel.totalOrderAmount()) && $root.contentModel.idOrder() == 0 && ($root.contentModel.selectedPaymentId() == '5')"> {* Customization done by Webkul #1078378 [paytef] for wkPaytefPaymentId*}
+                        data-bind="if: (parseFloat($root.contentModel.customerPayAmount()) >= parseFloat($root.contentModel.totalOrderAmount()) && $root.contentModel.idOrder() == 0 && ($root.contentModel.selectedPaymentId() == '5' || $root.contentModel.selectedPaymentId() == wkPaytefPaymentId))"> {* Customization done by Webkul #1078378 [paytef] for wkPaytefPaymentId*}
                         <a class="btn wkpos-btn wkpos-confirmpayment"
                             data-bind="css: { 'disabled': $root.contentModel.confirmDisabled() == 1 }, click:$root.contentModel.generateOrder"
                            data-bind="click:$root.contentModel.generateOrder"
@@ -54,7 +53,8 @@
                     {assign var="paymentWidth" value="col-sm-8"}
                 </span>
                 <!-- ko if: $root.contentModel.idOrder() == 0 -->
-                <div class="col-md-6 {$paymentWidth|escape:'htmlall':'UTF-8'}">
+                <!--Centrado-->
+                <div class="{if isset($TPVadmin) && !$TPVadmin} col-md-12 {else} col-md-6 {$paymentWidth|escape:'htmlall':'UTF-8'}{/if}">
                     <div class="wkpos-payment-customer" data-bind="click: $root.contentModel.updateCustomer">
                         <i class="fa fa-user-circle"></i>
                         <span data-bind="text: $root.contentModel.selectedCustomerName"></span>

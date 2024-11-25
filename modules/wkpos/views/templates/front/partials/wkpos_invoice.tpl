@@ -129,11 +129,11 @@
     {* <tr>
         <td>---------------------------------------------------------------------------------</td>
     </tr> *}
-    <tr>
+    {* <tr>
         <td style="text-align: center">
             <span>{l s='Customer Name: ' mod='wkpos'}<span data-bind="text: customerName"></span>
         </td>
-    </tr>
+    </tr> *}
     {if isset($displayBarcode) && $displayBarcode}
         <tr>
             <td style="text-align: center">

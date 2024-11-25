@@ -35,7 +35,7 @@
 {block name="wkpos_sidebar"}
     <div class="col-xs-12" id="left-panel">
         <wkpos-left-panel params='activeClass: "products" , panelConentHeading: "{l s='Home' mod='wkpos'}", icon: "home"'>
-        </wkpos-left-panel>
+        </wkpos-left-panel> 
         <wkpos-left-panel
             params='activeClass: "customers" , panelConentHeading: "{l s='Customer' mod='wkpos'}", icon: "user-circle"'>
         </wkpos-left-panel>

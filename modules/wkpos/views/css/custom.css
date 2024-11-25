@@ -129,7 +129,8 @@ div.wk-load-pos-product {
 
 body#pos-sale {
   overflow: hidden;
-  font-family: "Roboto", sans-serif !important;
+  /* font-family: "Roboto", sans-serif !important; */
+  font-family: "Cormorant Garamond";
    cursor: pointer !important; /*Customization done by Webkul #1078378  [paytef] */
 }
 
@@ -142,6 +143,7 @@ body#pos-sale {
 
 .wkpos-back {
   cursor: pointer;
+  font-size: 22px;
 }
 .category-div {
   padding: 0px !important;
@@ -279,8 +281,9 @@ body {
   text-align: center;
   border-bottom: 1px solid var(--wkpos-off-white);
   height: 50px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
+  text-transform: uppercase;
   padding: 0;
   display: flex;
   border-right: 1px solid var(--wkpos-box-shadow);
@@ -373,6 +376,7 @@ body {
   /* width: 80%; */
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 16px;
 }
 
 #pos-sale #wk-cart-panel .orderline .price {
@@ -880,7 +884,7 @@ body#pos-sale .wk-h4 {
 }
 
 .wkpos-confirmpayment {
-  font-size: 18px;
+  font-size: 20px;
   width: 100%;
   /* padding: 15px; */
   /* margin-top: 30px; */
@@ -1803,6 +1807,11 @@ body .wk-products .product-select div.clearfix::after {
   content: unset !important;
 }
 
+.wkpos-btn.next{
+  font-size: 30px;
+}
+
+
 /* body.client-view header, */
 body.client-view header #wkpos-header > *:not(:first-child),
 body.client-view #wk-pos-side-panel,
@@ -1822,6 +1831,11 @@ body.client-view #wk-pos-keypad
  display: none !important;
 }
 
+/*Vista cupones*/
+body.client-view .wkpos-payment-customer{
+  display: none;
+}
+
 body.client-view .wk-cart-product-details .nav-tabs li:nth-child(2) button::after {
   content: ' Eliminar carrito';
 }
@@ -1832,7 +1846,7 @@ body.client-view .wk-cart-product-details .nav-tabs li:nth-child(2) button::afte
 }
 
 .wk-pos.title{
-  padding-left: 1rem;
+  padding-left: 4rem; 
 }
 
 body.client-view .wk-payment .wk-nomargin:last-child > div:first-child > div:last-child {
@@ -1862,7 +1876,8 @@ body.client-view .wk-cart-product-details {
   flex: 1;
 }
 
-body.client-view #wk-pos-payment-panel .clearfix .form-group.clearfix {
+body.client-view #wk-pos-payment-panel .clearfix .form-group.clearfix 
+{
   display: none;
 }
 
@@ -1872,4 +1887,19 @@ body.client-view #wkpos-cart-panel {
 
 body.client-view #wk_pos_paytef_print_invoice {
   visibility: hidden;
+}
+
+body.client-view .wk-payment .wk-nomargin:last-child > div:last-child > div:last-child a.btn {
+  background-color: black !important;
+}
+
+.cart-product-selected {
+  background: #E7E7E7 !important;
+}
+
+ul#wk-pos-keypad li:hover,
+li.orderline:hover,
+div.customer-details:hover,
+div.wkpos-order-detail:hover {
+  background: #E7E7E7 !important;
 }
