@@ -220,10 +220,10 @@
                                 </span>
                                 {* <div data-bind="text:$root.contentModel.orderedProductsDetail().length"></div> *}
                                 <span class="text-center wk-flex-2">
-                                    {l s='Price' mod='wkpos'}
+                                    {l s='Total Price' mod='wkpos'}
                                 </span>
                                 <span class="text-center wk-flex-2">
-                                    {l s='Total Price' mod='wkpos'}
+                                    {l s='Price' mod='wkpos'}
                                 </span>
                                 <!-- ko if: $root.contentModel.alreadyRefund() -->
                                 <span class="text-center wk-flex-2">

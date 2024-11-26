@@ -119,12 +119,29 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
             $productDetails = [];
             $objOutletEmployee = new WkPosOutletEmployee($this->context->cookie->id_outlet_employee);
             $objOutlet = new WkPosOutlets($objOutletEmployee->id_wkpos_outlet);
+
             $productDetails['products'] = $objPosProduct->getProductDetails(
                 $this->context,
                 $objOutletEmployee->id_wkpos_outlet,
                 false,
                 $objOutlet->id_address
             );
+            // dump($productDetails['products']);
+
+
+            $nestle_pantallas = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
+            if(!$nestle_pantallas){
+                $nestle_pantallas = [];
+            }
+            $only_packs = [];
+            foreach ($productDetails['products'] as $key => $product){
+                if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && $product['id_category_default'] == 16){
+                    $only_packs[$key] = $product;
+                }
+            }
+            if(!empty($only_packs))
+                $productDetails['products'] = $only_packs;
+
             $productDetails['count_products'] = count($productDetails['products']);
             $productDetails['next_page'] = (int) Tools::getValue('page') + 1;
             if (Tools::getValue('page') == 0) {
@@ -257,8 +274,8 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                 if (!$item) {
                     continue;
                 }
-                //Sólo 16 autopago
-                if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && $item != 'CAT16'){
+                //Sólo la 16 en autopago
+                if(in_array($this->context->cookie->id_outlet_employee, $nestle_pantallas) && $item != 'CAT16'){
                     continue;
                 }
 
