@@ -167,13 +167,15 @@
                                                     <br>
                                                     <div class="row">
                                                         <div class="col-md-6 margin-top-15">
+                                                            {* 
                                                             <div class="combination-modal-head">
                                                                 {l s='Stock' mod='wkpos'}
-                                                            </div>
+                                                            </div> 
                                                             <div class="wk-padding-0 margin-top-15">
                                                                 <span data-bind="text: $root.contentModel.combinationAvalQty"
                                                                     class="combination-price"></span>
                                                             </div>
+                                                            *}
                                                         </div>
                                                         <!-- ko if: $root.contentModel.showStockLocation() == 1 -->
                                                         <div class="col-md-6 margin-top-15" data-bind=" css: { 'hide' : $root.contentModel.combinationStockLocation() == '' } ">
