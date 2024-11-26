@@ -253,15 +253,17 @@ class WkPosPayTef extends Module
         return $this->display(__FILE__, 'paytefmodal.tpl');
     }
 
+    //no veo que llegue aqui
     public function hookActionOrderStatusPostUpdate($params)
     {
         if ($params['newOrderStatus']->id == 2
         && Tools::getValue('ajax') == true
         && Tools::getValue('action') == 'generateOrder'
-        && Tools::getValue('payment_module') == 'Paytef'
+        && Tools::getValue('payment_module') == 'Pay by card'
         && Tools::getValue('module') == 'wkpos'
         && Tools::getValue('fc') == 'module'
         ) {
+
             $idOrder = $params['id_order'];
             $idCart = Tools::getValue('id_cart');
             $transactionDetail = WkPosPaytefTransaction::getTransactionDetailByIdCart((int) $idCart);
