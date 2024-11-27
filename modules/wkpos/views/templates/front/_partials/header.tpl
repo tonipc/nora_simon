@@ -25,12 +25,12 @@
 
 {block name='header_nav'}
     <nav class="header-nav">
-        <div class="container-fluid wk-pos"">
+        <div class="container-fluid wk-pos">
       <div class=" row">
         <div class="col-xs-12">
             <div class="row" id="wkpos-header">
                 {block name='pos_heading'}
-                <div class="col-xs-12 col-sm-3 wk-flex-grow">
+                <div class="col-xs-12 col-sm-3 wk-flex-grow title">
                     <span style="font-size: 26px; line-height: 1.9;">{$wkposHeading|escape:'htmlall':'UTF-8'}</span>
                 </div>
                 {/block}
@@ -161,7 +161,7 @@
                     <i class="fa fa-user-circle wk-line-height-0 col-md-2 wk-padding-0 clearfix"></i>
                     {/if}
                     <div class=" col-md-9 wk-padding-0 wkpos-padding-left-15 hidden-sm wk-d-flex">
-                        <div class="salesperson-name wk-flex-3"
+                        <div class="salesperson-name {$employee.id} wk-flex-3"
                             data-bind="text: cashierName, attr: { title: cashierName }"></div>
                         {* <div class="salesperson-post" title="{$employee.profile}">{$employee.shortProfile}</div> *}
                         {hook h='displayWkPosEmployeeDetail'}

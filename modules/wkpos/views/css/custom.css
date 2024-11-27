@@ -1813,7 +1813,7 @@ body .wk-products .product-select div.clearfix::after {
 
 
 /* body.client-view header, */
-body.client-view header #wkpos-header > *:not(:first-child),
+body.client-view header #wkpos-header > *:not(:first-child):not(:nth-child(7)),
 body.client-view #wk-pos-side-panel,
 body.client-view #wkpos_full_screen_img,
 body.client-view .wk-cart-product-details .nav-tabs li:first-child,
