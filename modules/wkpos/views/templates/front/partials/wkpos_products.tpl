@@ -226,6 +226,7 @@
                                             </div>
                                             <!-- /ko -->
                                             <div class="col-md-4 col-sm-4 col-xs-4 combination-price-block">
+                                                {*
                                                 <div class="row">
                                                     <div class="combination-modal-head">
                                                         {l s='Quantity' mod='wkpos'}
@@ -233,7 +234,7 @@
                                                     <div class="col-md-4 wk-padding-0 margin-top-15">
                                                         <input type="text" class="form-control col-md-5"
                                                             data-bind="value: $root.contentModel.combinationQuantity" />
-                                                    </div>
+                                                    </div> 
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-xs-6 padding-0">
@@ -253,6 +254,7 @@
                                                         </span>
                                                     </div>
                                                 </div>
+                                                *}
                                                 <div class="row margin-top-15">
                                                     <div class="combination-modal-head">
                                                         {l s='Price' mod='wkpos'}

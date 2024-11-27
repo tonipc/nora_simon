@@ -135,7 +135,7 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
             }
             $only_packs = [];
             foreach ($productDetails['products'] as $key => $product){
-                if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && $product['id_category_default'] == 16){
+                if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && ($product['id_category_default'] == 16 || $product['id_category_default'] == 17 || $product['id_category_default'] == 18)){
                     $only_packs[$key] = $product;
                 }
             }
@@ -274,8 +274,8 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                 if (!$item) {
                     continue;
                 }
-                //Sólo la 16 en autopago
-                if(in_array($this->context->cookie->id_outlet_employee, $nestle_pantallas) && $item != 'CAT16'){
+                //Sólo la 16 y 17 en autopago
+                if(in_array($this->context->cookie->id_outlet_employee, $nestle_pantallas) && ($item != 'CAT16' && $item != 'CAT17' && $item != 'CAT18')){
                     continue;
                 }
 

@@ -290,12 +290,11 @@ class AdminWkPosConfigurationController extends ModuleAdminController
             }
         }
         if (Tools::isSubmit('submitWkPosOrderReceiptConfiguration')) {
-            // if (empty(Tools::getValue('printer_name'))) {
+            if (empty(Tools::getValue('printer_name'))) {
                 // $this->errors[] = $this->l('Printer Name is a required field');
-            // }
-            //  elseif (!Validate::isGenericName(Tools::getValue('printer_name'))) {
-            //     $this->errors[] = $this->l('Please enter valid printer name.');
-            // }
+            } elseif (!Validate::isGenericName(Tools::getValue('printer_name'))) {
+                $this->errors[] = $this->l('Please enter valid printer name.');
+            }
             if (empty(Tools::getValue('printer_encoding'))) {
                 $this->errors[] = $this->l('Please enter printer encoding.');
             } elseif (!Validate::isGenericName(Tools::getValue('printer_encoding'))) {
@@ -488,7 +487,7 @@ class AdminWkPosConfigurationController extends ModuleAdminController
     public function orderPostProcess()
     {
         Configuration::updateValue('WKPOS_PRINT_TYPE', Tools::getValue('WKPOS_PRINT_TYPE'));
-        // Configuration::updateValue('WKPOS_PRINTER_NAME', Tools::getValue('printer_name'));
+        Configuration::updateValue('WKPOS_PRINTER_NAME', Tools::getValue('printer_name'));
         Configuration::updateValue('WKPOS_PRINTER_ENCODING', Tools::getValue('printer_encoding'));
         Configuration::updateValue('WKPOS_ORDER_CONFIRMATION_EMAIL', Tools::getValue('WKPOS_ORDER_CONFIRMATION_EMAIL'));
         Configuration::updateValue('WKPOS_DISPLAY_PRODUCT_DISCOUNT', Tools::getValue('display_product_discount'));
@@ -1349,14 +1348,14 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                         'name' => 'name',
                     ],
                 ],
-                // [
-                //     'type' => 'text',
-                //     'label' => $this->l('Printer name'),
-                //     'name' => 'printer_name',
-                //     'class' => 'fixed-width-xl',
-                //     'form_group_class' => 'raw_print',
-                //     'desc' => $this->l('If printer name is added then, system will connect to this specified printer.'),
-                // ],
+                [
+                    'type' => 'text',
+                    'label' => $this->l('Printer name'),
+                    'name' => 'printer_name',
+                    'class' => 'fixed-width-xl',
+                    'form_group_class' => 'raw_print',
+                    'desc' => $this->l('If printer name is added then, system will connect to this specified printer.'),
+                ],
                 [
                     'type' => 'text',
                     'label' => $this->l('Printer encoding'),
@@ -1500,10 +1499,10 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                 'WKPOS_PRINT_TYPE',
                 Configuration::get('WKPOS_PRINT_TYPE')
             ),
-            // 'printer_name' => Tools::getValue(
-            //     'printer_name',
-            //     Configuration::get('WKPOS_PRINTER_NAME')
-            // ),
+            'printer_name' => Tools::getValue(
+                'printer_name',
+                Configuration::get('WKPOS_PRINTER_NAME')
+            ),
             'printer_encoding' => Tools::getValue(
                 'printer_encoding',
                 Configuration::get('WKPOS_PRINTER_ENCODING')

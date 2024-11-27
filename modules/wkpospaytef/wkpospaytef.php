@@ -284,7 +284,7 @@ class WkPosPayTef extends Module
             $params['form_data']['device_ip'],
             $params['form_data']['device_port'],
             $params['form_data']['device_pinpad'],
-            $params['form_data']['printer_name']
+            // $params['form_data']['printer_name']
         );
     }
 
@@ -295,12 +295,12 @@ class WkPosPayTef extends Module
             $params['form_data']['pos_outlet'],
             $params['form_data']['device_ip'],
             $params['form_data']['device_port'],
-            $params['form_data']['device_pinpad'],
-            $params['form_data']['printer_name']
+            $params['form_data']['device_pinpad']
+            // $params['form_data']['printer_name']
         );
     }
 
-    public function saveDetails($idEmployee, $idWkPosOutlet, $deviceIp, $devicePort, $devicePinpad, $printerName)
+    public function saveDetails($idEmployee, $idWkPosOutlet, $deviceIp, $devicePort, $devicePinpad/*, $printerName*/)
     {
         $idOutletEmployee = WkPosOutletEmployee::getIdOutletEmployee($idEmployee);
         if (empty($idOutletEmployee)) {
@@ -315,7 +315,7 @@ class WkPosPayTef extends Module
         $objOutletEmployee->device_ip = pSQL($deviceIp);  // Sanitize input
         $objOutletEmployee->device_port = pSQL($devicePort); // Sanitize input
         $objOutletEmployee->device_pinpad = pSQL($devicePinpad); // Sanitize input
-        $objOutletEmployee->printer_name = pSQL($printerName); // Sanitize input
+        // $objOutletEmployee->printer_name = pSQL($printerName); // Sanitize input
         $objOutletEmployee->save();
     }
 
@@ -327,7 +327,7 @@ class WkPosPayTef extends Module
         $deviceIpData = ['label' => $this->l('Device IP'), 'required' => false];
         $devicePortData = ['label' => $this->l('Device Port'), 'required' => false];
         $devicePinpadData = ['label' => $this->l('Device Pinpad'), 'required' => false];
-        $printerName = ['label' => $this->l('Printer Name'), 'required' => false];
+        // $printerName = ['label' => $this->l('Printer Name'), 'required' => false];
 
         // Load saved data if the employee exists
         if ($idEmployee) {
@@ -349,9 +349,9 @@ class WkPosPayTef extends Module
                     $devicePinpadData['data'] = $objOutletEmployee->device_pinpad;
                 }
 
-                if (!empty($objOutletEmployee->printer_name)) {
-                    $printerName['data'] = $objOutletEmployee->printer_name;
-                }
+                // if (!empty($objOutletEmployee->printer_name)) {
+                //     $printerName['data'] = $objOutletEmployee->printer_name;
+                // }
             }
         }
 
@@ -380,13 +380,13 @@ class WkPosPayTef extends Module
             )
         );
 
-        $params['form_builder']->add(
-            $params['form_builder']->create(
-                'printer_name',
-                "Symfony\Component\Form\Extension\Core\Type\TextType",
-                $printerName
-            )
-        );
+        // $params['form_builder']->add(
+        //     $params['form_builder']->create(
+        //         'printer_name',
+        //         "Symfony\Component\Form\Extension\Core\Type\TextType",
+        //         $printerName
+        //     )
+        // );
     }
 
     private function alterOutletEmployeeTableAddColumns()
@@ -402,9 +402,9 @@ class WkPosPayTef extends Module
         if (!WkPosPaytefHelper::isColumnExist('device_pinpad', 'wkpos_outlet_employee')) {
             $columnsToAdd[] = 'ADD `device_pinpad` VARCHAR(255)';
         }
-        if (!WkPosPaytefHelper::isColumnExist('printer_name', 'wkpos_outlet_employee')) {
-            $columnsToAdd[] = 'ADD `printer_name` VARCHAR(255)';
-        }
+        // if (!WkPosPaytefHelper::isColumnExist('printer_name', 'wkpos_outlet_employee')) {
+        //     $columnsToAdd[] = 'ADD `printer_name` VARCHAR(255)';
+        // }
 
         // If there are columns to add, execute the ALTER TABLE statement
         if (!empty($columnsToAdd)) {

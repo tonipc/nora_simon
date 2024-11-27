@@ -1837,7 +1837,7 @@ body.client-view .wkpos-payment-customer{
 }
 
 body.client-view .wk-cart-product-details .nav-tabs li:nth-child(2) button::after {
-  content: ' Eliminar carrito';
+  content: ' Delete cart';
 }
 
 #pos-content {
