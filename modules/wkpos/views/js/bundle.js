@@ -13340,15 +13340,18 @@
                                 applyShipping = 0;
                                 $('.wk-loading-pos-details').removeClass('sync-orders').addClass('hide');
                                 $('.wk-loading-pos-details').next().css({ "opacity": "1" });
+
                                 // Customization code start by Webkul #1078378 [paytef]
                                 setTimeout(async function () {
-                                    if($('#wk_pos_paytef_print_invoice').length > 0) {
-                                        $('#wk_pos_paytef_print_invoice').trigger('click');
+                                    // if($('#wk_pos_paytef_print_invoice').length > 0) {
+                                    //     $('#wk_pos_paytef_print_invoice').trigger('click');
+                                    // }
+                                    if ($('#wkpos-print').length > 0) {
+                                        posViewModel.contentModel.printInvoice();
                                     }
                                 }, 1000);
 
                                 if ($('#pos-sale.client-view').length > 0) {
-                                    console.log('automatico');
                                     setTimeout(async function () {
                                         posViewModel.contentModel.nextOrder();
                                     }, 8000);
@@ -17571,17 +17574,17 @@
             self.printerConnected = ko.observable(false);
 
             //Customization code start by Webkul #1078378 [paytef]
-            var selectedWkUserID = getCookieValueBykey('wkpos_user_' + idWkPosOutlet);
-            var selectedWkUser = wk_pos_employee_details.find(function (user) {
-                        return user.id_wkpos_user === selectedWkUserID;
-            });
+            // var selectedWkUserID = getCookieValueBykey('wkpos_user_' + idWkPosOutlet);
+            // var selectedWkUser = wk_pos_employee_details.find(function (user) {
+            //             return user.id_wkpos_user === selectedWkUserID;
+            // });
 
-            if (selectedWkUser) {
-                var wk_selected_printer_name = selectedWkUser.printer_name;
-                self.selectedPrinter = ko.observable(wk_selected_printer_name);
-            }
+            // if (selectedWkUser) {
+            //     var wk_selected_printer_name = selectedWkUser.printer_name;
+            //     self.selectedPrinter = ko.observable(wk_selected_printer_name);
+            // }
 
-            // self.selectedPrinter = ko.observable(selectedPrinterName);
+            self.selectedPrinter = ko.observable(selectedPrinterName);
             //Customization code end by Webkul #1078378 [paytef]
 
 
@@ -19162,17 +19165,17 @@
                         });
                     } else {
                         Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["connect"])().then(function () {
-                        //Customization code start by Webkul #1078378 [paytef]
-                        var selectedWkUserID1 = getCookieValueBykey('wkpos_user_' + idWkPosOutlet);
-                        var selectedWkUser1 = wk_pos_employee_details.find(function (user) {
-                                    return user.id_wkpos_user === selectedWkUserID1;
-                        });
+                        // //Customization code start by Webkul #1078378 [paytef]
+                        // var selectedWkUserID1 = getCookieValueBykey('wkpos_user_' + idWkPosOutlet);
+                        // var selectedWkUser1 = wk_pos_employee_details.find(function (user) {
+                        //             return user.id_wkpos_user === selectedWkUserID1;
+                        // });
 
-                        if (selectedWkUser1) {
-                            var wk_selected_printer_name1 = selectedWkUser1.printer_name;
-                            return qz.printers.find(wk_selected_printer_name1);
-                        }
-                        // return qz.printers.find(selectedPrinterName); // Pass the printer name into the next Promise
+                        // if (selectedWkUser1) {
+                        //     var wk_selected_printer_name1 = selectedWkUser1.printer_name;
+                        //     return qz.printers.find(wk_selected_printer_name1);
+                        // }
+                        return qz.printers.find(selectedPrinterName); // Pass the printer name into the next Promise
                         //Customization code end by Webkul #1078378 [paytef]
                         }).then(function (printer) {
                             Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showSuccessMsg"])(printerConnectedSuccess);
@@ -19205,16 +19208,16 @@
                 } else {
                     Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["connect"])().then(function () {
                         //Customization code start by Webkul #1078378 [paytef]
-                        var selectedWkUserID2 = getCookieValueBykey('wkpos_user_' + idWkPosOutlet);
-                        var selectedWkUser2 = wk_pos_employee_details.find(function (user) {
-                                    return user.id_wkpos_user === selectedWkUserID2;
-                        });
+                        // var selectedWkUserID2 = getCookieValueBykey('wkpos_user_' + idWkPosOutlet);
+                        // var selectedWkUser2 = wk_pos_employee_details.find(function (user) {
+                        //             return user.id_wkpos_user === selectedWkUserID2;
+                        // });
 
-                        if (selectedWkUser2) {
-                            var wk_selected_printer_name2 = selectedWkUser2.printer_name;
-                            return qz.printers.find(wk_selected_printer_name2);
-                        }
-                        // return qz.printers.find(selectedPrinterName);               // Pass the printer name into the next Promise
+                        // if (selectedWkUser2) {
+                        //     var wk_selected_printer_name2 = selectedWkUser2.printer_name;
+                        //     return qz.printers.find(wk_selected_printer_name2);
+                        // }
+                        return qz.printers.find(selectedPrinterName);               // Pass the printer name into the next Promise
                         // return print();
                         //Customization code end by Webkul #1078378 [paytef]
                     }).then(function (printer) {
@@ -19245,19 +19248,30 @@
                     // printHtmlCreditSlip(creditSlip);
 
                 } else {
-                    Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["connect"])().then(function () {
-                        //Customization code start by Webkul #1078378 [paytef]
-                        var selectedWkUserID3 = getCookieValueBykey('wkpos_user_' + idWkPosOutlet);
-                        var selectedWkUser3 = wk_pos_employee_details.find(function (user) {
-                                    return user.id_wkpos_user === selectedWkUserID3;
-                        });
 
-                        if (selectedWkUser3) {
-                            var wk_selected_printer_name3 = selectedWkUser3.printer_name;
-                            return qz.printers.find(wk_selected_printer_name3);
-                        }
-                         // return qz.printers.find(selectedPrinterName);               // Pass the printer name into the next Promise
-                        //Customization code end by Webkul #1078378 [paytef]
+                    // Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["connect"])().then(function () {
+                    //     //Customization code start by Webkul #1078378 [paytef]
+                    //     var selectedWkUserID3 = getCookieValueBykey('wkpos_user_' + idWkPosOutlet);
+                    //     var selectedWkUser3 = wk_pos_employee_details.find(function (user) {
+                    //                 return user.id_wkpos_user === selectedWkUserID3;
+                    //     });
+
+                    //     if (selectedWkUser3) {
+                    //         var wk_selected_printer_name3 = selectedWkUser3.printer_name;
+                    //         return qz.printers.find(wk_selected_printer_name3);
+                    //     }
+                    //      // return qz.printers.find(selectedPrinterName);               // Pass the printer name into the next Promise
+                    //     //Customization code end by Webkul #1078378 [paytef]
+                    //     // return print();
+                    // }).then(function (printer) {
+                    //     Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["printCreditSlipSecond"])(printer);
+                    // }).catch(function (e) {
+                    //     Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showErrorMsg"])(e);
+                    //     // $.growl.error({ title: "", message: e });
+                    // });
+
+                    Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["connect"])().then(function () {
+                        return qz.printers.find(selectedPrinterName);               // Pass the printer name into the next Promise
                         // return print();
                     }).then(function (printer) {
                         Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["printCreditSlipSecond"])(printer);
@@ -19489,6 +19503,7 @@
                             posOrder[viewModel.selectedOrderId()]['product']
                         );
                     } else {
+
                         self.printerConnected(qz.websocket.isActive());
                         if (qz.websocket.isActive()) {
                             Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["printOrderBill"])(self.selectedPrinter());
