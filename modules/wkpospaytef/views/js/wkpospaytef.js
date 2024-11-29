@@ -132,7 +132,7 @@ $(document).ready(function () {
                 return;
             }
 
-            console.log(params.data.tendered);
+          //  console.log(params.data.tendered);
             var pos_cart = $.parseJSON(localStorage.pos_cart);
             var cartIndex = viewModel.posCarts()[localStorage.selectedCartId].posCartId() - 1;
             var idCart = pos_cart[cartIndex]['others']['id_cart'];
@@ -172,9 +172,10 @@ $(document).ready(function () {
                             // setTimeout(async function () {
                             //     checkTransactionStatus(idCart);
                             // }, 1000);
+                            console.log('transactionStatus 3000');
                             setTimeout(async function () {
                                 checkTransactionStatus(idCart);
-                            }, 5000);
+                            }, 3000);
                         } else {
                             showErrorMsg(someError);
                             cancelPaytefPaymentSelection();
@@ -190,7 +191,7 @@ $(document).ready(function () {
     // document ready end
 });
 
-function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 11) {
+function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 20) {
     $.ajax({
         url: paytefServiceUrl,
         type: 'POST',
@@ -207,7 +208,8 @@ function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 11) {
             if (transaction_status.info.cardStatus === 'finished' && transaction_status.info.transactionStatus === 'finished') {
                 getTransactionResult(idCart);
             } else if (retryCount < maxRetries) {
-                setTimeout(() => checkTransactionStatus(idCart, retryCount + 1, maxRetries), 5000);
+                console.log('transactionStatus 3000');
+                setTimeout(() => checkTransactionStatus(idCart, retryCount + 1, maxRetries), 3000);
             } else {
                 showErrorMsg(maxTryError);
                 cancelPaytefPaymentSelection();
@@ -218,11 +220,15 @@ function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 11) {
             }
         },
         error: function (error) {
-            showErrorMsg(someError);
-            cancelPaytefPaymentSelection();
-            $('#wk-pos-paytef-create-payment').modal('toggle');
-            $('.wkpos-confirmpayment').hide();
-            $('#paytef-create-loader').hide();
+            // showErrorMsg(someError);
+            // cancelPaytefPaymentSelection();
+            // $('#wk-pos-paytef-create-payment').modal('toggle');
+            // $('.wkpos-confirmpayment').hide();
+            // $('#paytef-create-loader').hide();
+
+            //Continue anyways
+            console.log('error pero sigue!');
+            setTimeout(() => checkTransactionStatus(idCart, retryCount + 1, maxRetries), 3000);       
         }
     });
 }
