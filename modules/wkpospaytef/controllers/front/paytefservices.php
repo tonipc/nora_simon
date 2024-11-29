@@ -90,8 +90,10 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
     {
         $function = '/authorize/';
         $data = [
-            'secretKey' => 'XQ3zULKIRsIBJEI1qOpjUs6mnCWUq5RWHoYvcg9r',
-            'accessKey' => 'MS43M3c=',
+            // 'secretKey' => 'XQ3zULKIRsIBJEI1qOpjUs6mnCWUq5RWHoYvcg9r',
+            'secretKey' => '1ZjmBIJUICQdEIgLMf1CGWAg5fxHFWKCtpR3PPc9',
+            // 'accessKey' => 'MS43M3c=',
+            'accessKey' => 'MS43ZWU=',
         ];
 
         $result = $this->getApi($function, $data);
@@ -113,6 +115,8 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
         if ($token) {
             $headers[] = 'Authorization:Bearer ' . $token;
         }
+
+        // dump($data);
 
         curl_setopt_array($cURLConnection, [
             CURLOPT_URL => $url . $function,
@@ -147,12 +151,15 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
             $pinpad = Tools::getValue('pinpad');
             $deviceIP = Tools::getValue('deviceIP');
             $devicePort = Tools::getValue('devicePort');
-            $amount = Tools::getValue('amount');
+            $amount = (float) Tools::getValue('amount');
             $idCart = (int) Tools::getValue('id_cart');
             $transactionReference = $idCart . '-' . time();
             $isoCode = $this->context->language->iso_code;
 
             $url = 'http://' . $deviceIP . ':' . $devicePort . WkPosPaytefHelper::WK_POS_PAYTEF_TRANSACTION_START;
+
+            // $amount_for_paytelf = Tools::ps_round(Tools::getValue('amount'), 2);
+            // $amount_for_paytelf = (float) $amount_for_paytelf * 100;
 
             $data = [
                 'cardNumberHashDomain' => 'branch',
@@ -168,7 +175,7 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
                         'enablePaperPrint' => true,
                     ],
                 ],
-                'requestedAmount' => $amount * 100, // Amount of the transaction in cents of euros. For example 299 indicates 2.99 euros
+                'requestedAmount' => round($amount * 100, 2), // Amount of the transaction in cents of euros. For example 299 indicates 2.99 euros
                 'requireConfirmation' => false,
                 'transactionReference' => $transactionReference,
             ];
@@ -284,6 +291,7 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
             $deviceIP = Tools::getValue('deviceIP');
             $devicePort = Tools::getValue('devicePort');
             $idCart = Tools::getValue('id_cart');
+            // $idOrder = Tools::getValue('id_order');
 
             $url = 'http://' . $deviceIP . ':' . $devicePort . WkPosPaytefHelper::WK_POS_PAYTEF_TRANSACTION_RESULT;
 
@@ -299,7 +307,6 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
             $response = $this->getApi(WkPosPaytefHelper::WK_POS_PAYTEF_TRANSACTION_RESULT, $data, $token);
 
             // test code end
-
             /*
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -317,6 +324,7 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
             if (isset($response['info'], $response['result']) && $response['info'] && $response['result']) {
                 $transactionDetail = WkPosPaytefTransaction::getTransactionDetailByIdCart((int) $idCart, $pinpad);
                 $objWkPosPaytefTransaction = new WkPosPaytefTransaction($transactionDetail[0]['id_wkpos_paytef_transaction']);
+                // $objWkPosPaytefTransaction->id_order = $idOrder;
                 $objWkPosPaytefTransaction->acquirerID = trim($response['result']['acquirerID']); // empty when start the transaction
                 $objWkPosPaytefTransaction->transaction_response = json_encode($response['result']);
                 $objWkPosPaytefTransaction->save();

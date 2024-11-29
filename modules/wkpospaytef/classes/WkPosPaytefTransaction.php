@@ -41,7 +41,7 @@ class WkPosPaytefTransaction extends ObjectModel
             'reference' => ['type' => self::TYPE_STRING, 'size' => 50],
             'acquirerID' => ['type' => self::TYPE_STRING, 'size' => 255],
             'pinpadID' => ['type' => self::TYPE_STRING, 'size' => 50],
-            'amount' => ['type' => self::TYPE_FLOAT, 'validate' => 'isPrice'],
+            'amount' => ['type' => self::TYPE_FLOAT, /*'validate' => 'isPrice'*/],
             'transaction_response' => ['type' => self::TYPE_STRING],
             'date_add' => ['type' => self::TYPE_DATE, 'validate' => 'isDateFormat', 'required' => true],
             'date_upd' => ['type' => self::TYPE_DATE, 'validate' => 'isDateFormat', 'required' => true],
