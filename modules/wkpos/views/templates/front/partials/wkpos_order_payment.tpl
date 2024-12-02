@@ -26,6 +26,31 @@
                 data-bind="textInput: $root.contentModel.orderMessage"></textarea>
         </div>
     {/if}
+
+    {* Customization code start by Webkul #1078378 [paytef] *}
+    <!-- Custom Table for Initial Payment Details -->
+    <!-- ko if: $root.contentModel.wkpaymentOptions().length > 0 -->
+    <table width="100%" class="table">
+        <thead>
+            <tr>
+                <th class="text-center">{l s='Due' mod='wkpos'}</th>
+                <th class="text-center">{l s='Tendered' mod='wkpos'}</th>
+                <th class="text-center">{l s='Change' mod='wkpos'}</th>
+                <th class="text-center">{l s='Method' mod='wkpos'}</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: $root.contentModel.wkpaymentOptions" class="wk-active">
+            <tr>
+                <td class="text-center" data-bind="text: dueAmount"></td>
+                <td class="text-center" data-bind="text: tendered"></td>
+                <td class="text-center" data-bind="text: change"></td>
+                <td class="text-center" data-bind="text: paymentMethod"></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- /ko -->
+    {* Customization code end by Webkul #1078378 [paytef] *}
+
     <!-- ko if: $root.contentModel.paymentOptions().length > 0 -->
     <!--La añade al clickar-->
     <table width="100%" class="table">
@@ -47,20 +72,27 @@
                 </th>
             </tr>
         </thead>
-        <tbody 
+        <tbody
         data-bind="foreach: $root.contentModel.paymentOptions"
         >
             <tr
                 {*le podemos forzar el 2*}
                 data-bind="click: $root.contentModel.selectOrderPayment, css: { 'wk-active': $root.contentModel.selectedPaymentOptionIndex() ==  $index()  }"
                 >
-                <td class="text-center" data-bind="text: dueAmount">
+                <td class="text-center"
+                data-bind="text: dueAmount">
                 </td>
-                <td class="text-center tendered" data-bind="text: tendered">
+                <td class="text-center tendered"
+                data-bind="text: tendered"
+                >
                 </td>
-                <td class="text-center" data-bind="text: change">
+                <td class="text-center"
+                data-bind="text: change"
+                >
                 </td>
-                <td class="text-center" data-bind="text: paymentMethod">
+                <td class="text-center"
+                data-bind="text: paymentMethod"
+                >
                 </td>
                 <td class="text-center wk-pointer" data-bind="click: $root.contentModel.removePaymentOption">
                     <i class="fa fa-remove"></i>
