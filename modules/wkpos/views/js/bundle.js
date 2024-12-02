@@ -17567,6 +17567,7 @@
 
             /* Partial Payment */
             self.paymentOptions = ko.observableArray([]);
+            self.wkpaymentOptions = ko.observableArray([]); //Customization code end by Webkul #1078378 [paytef]
             self.selectedPaymentOptionIndex = ko.observable(-1);
             /* End */
             self.emptyOfflineOrders = ko.observable(false);
@@ -17914,6 +17915,8 @@
             self.selectPaymentOption = function (paymentMethod) {
                 // console.log(paymentMethod);
 
+                self.wkpaymentOptions([]); // Customization done by Webkul #1078378 [paytef]
+
                 var payment = paymentMethod.split(", ");
                 self.selectedPaymentOption(payment[0]);
                 // console.log( self.selectedPaymentOption(payment[0]) );
@@ -18019,6 +18022,24 @@
                 self.paymentOptions.remove(data);
                 var index = self.paymentOptions().length - 1;
                 self.selectedPaymentOptionIndex(index);
+                // Customization code start by Webkul #1078378 [paytef]
+                self.wkpaymentOptions([]);
+                var wkdueAmount = 0;
+                var wktenderedamount = 0;
+                // wkdueAmount = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_1__["makeTotalProductCaculation"])(parseFloat(wkdueAmount));
+                wkdueAmount = viewModel.totalOrderAmount();
+                wktenderedamount = wkdueAmount;
+
+                var initialPaymentData = {
+                    id_wkpos_payment: null,       // No payment method selected initially
+                    paymentMethod: "Not Selected",
+                    tendered: wktenderedamount,     // Default tendered is equal to the due amount
+                    dueAmount: wkdueAmount,         // Calculated due amount
+                    change: 0                     // Change is initially 0
+                };
+
+                self.wkpaymentOptions([new _payment_js__WEBPACK_IMPORTED_MODULE_14__[/* PaymentOption */ "a"](initialPaymentData)]);
+                // Customization code end by Webkul #1078378 [paytef]
             }
 
             /* Calculate the subTotal amount of the cart */
@@ -18569,6 +18590,86 @@
                                 if (posViewModel.navigatorOnline()) {
                                     Object(_order_js__WEBPACK_IMPORTED_MODULE_4__["addProductToPsCart"])();
                                 }
+
+                                // Customization code start by Webkul #1078378 [paytef]
+                                var wktenderedamount = 0;
+                                var wkdueAmount = 0;
+                                var initialPaymentData = {};
+                                setTimeout(function () {
+                                    self.wkpaymentOptions([]);
+                                    // wkdueAmount = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_1__["makeTotalProductCaculation"])(parseFloat(wkdueAmount));
+                                    wkdueAmount = viewModel.totalOrderAmount();
+                                    wktenderedamount = wkdueAmount;
+
+                                     initialPaymentData = {
+                                        id_wkpos_payment: null,       // No payment method selected initially
+                                        paymentMethod: "Not Selected",
+                                        tendered: wktenderedamount,     // Default tendered is equal to the due amount
+                                        dueAmount: wkdueAmount,         // Calculated due amount
+                                        change: 0                     // Change is initially 0
+                                    };
+
+                                    self.wkpaymentOptions([new _payment_js__WEBPACK_IMPORTED_MODULE_14__[/* PaymentOption */ "a"](initialPaymentData)]);
+                                }, 500);
+
+                                if(typeof wktenderedamount == 'undefined' || wktenderedamount == null || !wktenderedamount) {
+                                    setTimeout(function () {
+                                        self.wkpaymentOptions([]);
+                                        // wkdueAmount = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_1__["makeTotalProductCaculation"])(parseFloat(wkdueAmount));
+                                        wkdueAmount = viewModel.totalOrderAmount();
+                                        wktenderedamount = wkdueAmount;
+
+                                        initialPaymentData = {
+                                            id_wkpos_payment: null,       // No payment method selected initially
+                                            paymentMethod: "Not Selected",
+                                            tendered: wktenderedamount,     // Default tendered is equal to the due amount
+                                            dueAmount: wkdueAmount,         // Calculated due amount
+                                            change: 0                     // Change is initially 0
+                                        };
+
+                                        self.wkpaymentOptions([new _payment_js__WEBPACK_IMPORTED_MODULE_14__[/* PaymentOption */ "a"](initialPaymentData)]);
+                                    }, 800);
+                                }
+
+                                if(typeof wktenderedamount == 'undefined' || wktenderedamount == null || !wktenderedamount) {
+                                    setTimeout(function () {
+                                        self.wkpaymentOptions([]);
+                                        // wkdueAmount = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_1__["makeTotalProductCaculation"])(parseFloat(wkdueAmount));
+                                        wkdueAmount = viewModel.totalOrderAmount();
+                                        wktenderedamount = wkdueAmount;
+
+                                        initialPaymentData = {
+                                            id_wkpos_payment: null,       // No payment method selected initially
+                                            paymentMethod: "Not Selected",
+                                            tendered: wktenderedamount,     // Default tendered is equal to the due amount
+                                            dueAmount: wkdueAmount,         // Calculated due amount
+                                            change: 0                     // Change is initially 0
+                                        };
+
+                                        self.wkpaymentOptions([new _payment_js__WEBPACK_IMPORTED_MODULE_14__[/* PaymentOption */ "a"](initialPaymentData)]);
+                                    }, 1200);
+                                }
+
+                                if(typeof wktenderedamount == 'undefined' || wktenderedamount == null || !wktenderedamount) {
+                                    setTimeout(function () {
+                                        self.wkpaymentOptions([]);
+                                        // wkdueAmount = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_1__["makeTotalProductCaculation"])(parseFloat(wkdueAmount));
+                                        wkdueAmount = viewModel.totalOrderAmount();
+                                        wktenderedamount = wkdueAmount;
+
+                                        initialPaymentData = {
+                                            id_wkpos_payment: null,       // No payment method selected initially
+                                            paymentMethod: "Not Selected",
+                                            tendered: wktenderedamount,     // Default tendered is equal to the due amount
+                                            dueAmount: wkdueAmount,         // Calculated due amount
+                                            change: 0                     // Change is initially 0
+                                        };
+
+                                        self.wkpaymentOptions([new _payment_js__WEBPACK_IMPORTED_MODULE_14__[/* PaymentOption */ "a"](initialPaymentData)]);
+                                    }, 1800);
+                                }
+
+                                // Customization code end by Webkul #1078378 [paytef]
                                 // setTimeout(function () {
                                 //     $('.wkpos-paymentmethod').trigger('click');
                                 // }, 350);
