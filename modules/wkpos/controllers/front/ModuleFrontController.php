@@ -636,6 +636,14 @@ class WkPosModuleFrontController extends ModuleFrontController
             $nestle_pantallas = [];
         }
 
+        $payments = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet);
+        foreach($payments as $payment){
+            //Siempre es el primero el pago x empresa
+            if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && $payment['id_wkpos_payment'] == 5){
+                unset($payments[0]);
+            }
+        }
+
         $this->context->smarty->assign(
             [
                 'logoPng' => _MODULE_DIR_ . '/wkpos/logo.png',
@@ -694,7 +702,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 ],
                 // Customization code start by webkul #1078378 [paytef]
                 // 'payments' => WkPosPayment::getActivePaymentDetail(),
-                'payments' => WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet),
+                'payments' => $payments,
                 // Customization code end by webkul #1078378 [paytef]
                 'outlet' => [
                     'address1' => $address->address1,
