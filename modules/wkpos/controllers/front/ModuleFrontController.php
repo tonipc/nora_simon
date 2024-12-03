@@ -190,7 +190,7 @@ class WkPosModuleFrontController extends ModuleFrontController
         $this->posAddCss(
             [
                 _MODULE_DIR_ . 'wkpos/views/css/bootstrap.min.css',
-                _MODULE_DIR_ . 'wkpos/views/css/custom.css',
+                _MODULE_DIR_ . 'wkpos/views/css/custom.css?1.0',
                 _MODULE_DIR_ . 'wkpos/views/css/jquery.growl.css',
                 'https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700',
                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',

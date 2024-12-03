@@ -82,7 +82,7 @@ class WkPosLoginModuleFrontController extends ModuleFrontController
         $jsFiles['growlJs'] = _MODULE_DIR_ . 'wkpos/views/js/jquery.growl.js';
         $jsFiles['bootstrapJsUrl'] = _MODULE_DIR_ . 'wkpos/views/js/bootstrap.min.js';
         $cssFiles['bootstrapcss_url'] = _MODULE_DIR_ . 'wkpos/views/css/bootstrap.min.css';
-        $cssFiles['customCss'] = _MODULE_DIR_ . 'wkpos/views/css/custom.css';
+        $cssFiles['customCss'] = _MODULE_DIR_ . 'wkpos/views/css/custom.css?1.0';
         $cssFiles['growlCss'] = _MODULE_DIR_ . 'wkpos/views/css/jquery.growl.css';
         $cssFiles['iconCss'] = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 
