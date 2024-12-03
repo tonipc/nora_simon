@@ -126,7 +126,8 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <!-- ko if: $root.contentModel.idOrder() == 0 -->
                             <div class="row">
-                                <div class="col-md-4 col-sm-6 col-xs-4">
+                                {if isset($TPVadmin) && !$TPVadmin}<div class="col-md-4"></div>{/if}
+                                <div class="{if isset($TPVadmin) && !$TPVadmin}col-md-4{else}col-md-4 col-sm-6 col-xs-4{/if}">
                                     <!-- ko if: navigatorOnline() -->
                                     {foreach $payments as $payment}
                                         <div class="wkpos-paymentmethod"
@@ -147,7 +148,7 @@
                                     <!-- /ko -->
 
                                 </div>
-                                <div class="col-md-8 col-sm-6 col-xs-8">
+                                <div class="{if isset($TPVadmin) && !$TPVadmin}col-md-4{else}col-md-8 col-sm-6 col-xs-8{/if}">
                                     {* <!-- ko if: ($root.contentModel.selectedPaymentId() == '1') && ($root.contentModel.idOrder() === 0) --> *}
                                     <div class="row">
 
