@@ -823,7 +823,7 @@ textarea {
 
 body.client-view .wkpos-paymentmethod {
   font-size: 40px;
-  height: 340px;
+  height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
