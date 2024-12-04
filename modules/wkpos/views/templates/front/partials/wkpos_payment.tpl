@@ -132,7 +132,10 @@
                                     {foreach $payments as $payment}
                                         <div class="wkpos-paymentmethod"
                                             data-bind="click: $root.contentModel.selectPaymentOption.bind($data, '{$payment.name|escape:'htmlall':'UTF-8'}, {$payment.id_wkpos_payment|escape:'htmlall':'UTF-8'}')">
-                                            {$payment.name|escape:'htmlall':'UTF-8'}</div>
+                                            {$payment.name|escape:'htmlall':'UTF-8'}
+                                            {if isset($TPVadmin) && !$TPVadmin}<p><img src="/modules/wkpos/views/img/paybycard-icon.png" width="100" height="100" class="" /></p>{/if}
+
+                                        </div>
                                     {/foreach}
                                     <!-- /ko -->
 
