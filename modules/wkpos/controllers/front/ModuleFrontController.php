@@ -190,7 +190,7 @@ class WkPosModuleFrontController extends ModuleFrontController
         $this->posAddCss(
             [
                 _MODULE_DIR_ . 'wkpos/views/css/bootstrap.min.css',
-                _MODULE_DIR_ . 'wkpos/views/css/custom.css?1.0',
+                _MODULE_DIR_ . 'wkpos/views/css/custom.css?3.0',
                 _MODULE_DIR_ . 'wkpos/views/css/jquery.growl.css',
                 'https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700',
                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
@@ -637,13 +637,33 @@ class WkPosModuleFrontController extends ModuleFrontController
         }
 
         $payments = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet);
-        foreach($payments as $payment){
-            //Siempre es el primero el pago x empresa
-            if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && $payment['id_wkpos_payment'] == 5){
-                unset($payments[0]);
-            }
+
+        $translations_payment_first = array();
+        $translations_payment_second = array();
+        $translations_payment_first[1] =  'Pago con tarjeta';
+        $translations_payment_first[2] = ' Pay by card';
+        $translations_payment_second[1] =  'Pago por empresa';
+        $translations_payment_second[2] = ' Pay with company';
+        $new_payments = array();
+        foreach($payments as $key => $payment){
+            if($payment['id_wkpos_payment'] == 5)
+                $new_payments[$key]['name'] = $translations_payment_first[$this->context->language->id];
+            elseif($payment['id_wkpos_payment'] == 2)
+                $new_payments[$key]['name'] = $translations_payment_second[$this->context->language->id];
+
+            $new_payments[$key]['id_wkpos_payment'] = $payment['id_wkpos_payment']; 
+            $new_payments[$key]['active'] = $payment['active']; 
+            $new_payments[$key]['val'] = $payment['val']; 
         }
 
+        $payments = $new_payments;
+        foreach ($payments as $payment){
+            //Ahora es el 2o el pago x empresa
+            if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && $payment['id_wkpos_payment'] == 5){
+                unset($payments[1]);
+            }
+        }
+        
         $this->context->smarty->assign(
             [
                 'logoPng' => _MODULE_DIR_ . '/wkpos/logo.png',

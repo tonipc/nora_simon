@@ -99,7 +99,9 @@ class WkPosPayment extends ObjectModel
             $sql = 'SELECT wp.`id_wkpos_payment`,wp.`name`,
             wp.`active`, wp.`id_wkpos_payment` as `val`
             FROM `' . _DB_PREFIX_ . 'wkpos_payment` wp
-            Where wp.`active` = 1 AND wp.`id_wkpos_payment` IN ('.pSQL($assignedPaymentMethods).')';
+            Where wp.`active` = 1 AND wp.`id_wkpos_payment` IN ('.pSQL($assignedPaymentMethods).')
+            ORDER BY wp.`id_wkpos_payment` DESC
+            ';
 
             return Db::getInstance()->executeS($sql);
         } else {
