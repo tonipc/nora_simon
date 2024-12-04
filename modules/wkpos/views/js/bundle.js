@@ -14877,7 +14877,6 @@
             orderBill = orderBill.concat(orderDetails);
 
             /*  In case sign not print comment below to print it as text */
-            /*
                 var orderReplacedEuro = orderBill;
                 orderBill = [];
                 var items = [];
@@ -14893,7 +14892,6 @@
                     }
                 });
                 orderBill = items;
-            */
         }
 
         /* Connect the printer at run time */
