@@ -259,7 +259,8 @@ class WkPosPayTef extends Module
         if ($params['newOrderStatus']->id == 2
         && Tools::getValue('ajax') == true
         && Tools::getValue('action') == 'generateOrder'
-        && (Tools::getValue('payment_module') == 'Pago con tarjeta' || Tools::getValue('payment_module') == 'Pay by card')
+        // && Tools::getValue('payment_module') == 'Pago con tarjeta'
+        && Tools::getValue('payment_module') == 'Pay by card'
         && Tools::getValue('module') == 'wkpos'
         && Tools::getValue('fc') == 'module'
         ) {
