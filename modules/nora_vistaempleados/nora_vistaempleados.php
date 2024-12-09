@@ -32,7 +32,8 @@ class nora_vistaempleados extends Module
 {
     public $output = '';
     public $configs = [
-        'EMPLEADOS_VISTACLIENTE'
+        'EMPLEADOS_VISTACLIENTE',
+        'EMPLEADOS_AUTOPAGO_CAFETERIAS'
     ];
 	public function __construct() 
 	{
