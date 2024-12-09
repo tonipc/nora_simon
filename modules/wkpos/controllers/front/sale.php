@@ -75,7 +75,7 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
         );
         $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/onscan.js');
         $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/fuse.js');
-        $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/bundle.js?6.0');
+        $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/bundle.js?6.2');
     }
 
     /**
@@ -129,19 +129,32 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
             // dump($productDetails['products']);
 
 
-            $nestle_pantallas = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
-            if(!$nestle_pantallas){
-                $nestle_pantallas = [];
+            $autopago_menus_users = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
+            if(!$autopago_menus_users){
+                $autopago_menus_users = [];
             }
             $only_packs = [];
             foreach ($productDetails['products'] as $key => $product){
-                if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && ($product['id_category_default'] == 16 || $product['id_category_default'] == 17 || $product['id_category_default'] == 18)){
+                if(in_array($this->context->cookie->id_employee, $autopago_menus_users) && ($product['id_category_default'] == 16 || $product['id_category_default'] == 17 || $product['id_category_default'] == 18)){
                     $only_packs[$key] = $product;
                 }
             }
             if(!empty($only_packs))
                 $productDetails['products'] = $only_packs;
 
+            $autopago_cafeterias_users = json_decode(Configuration::get('EMPLEADOS_AUTOPAGO_CAFETERIAS'), true);
+            if(!$autopago_cafeterias_users){
+                $autopago_cafeterias_users = [];
+            } 
+            $only_cafeteria = [];
+            foreach ($productDetails['products'] as $key => $product){
+                if(in_array($this->context->cookie->id_employee, $autopago_cafeterias_users) && ($product['id_category_default'] == 3 || $product['id_category_default'] == 6 || $product['id_category_default'] == 9)){
+                    $only_cafeteria[$key] = $product;
+                }
+            }
+            if(!empty($only_cafeteria))
+                $productDetails['products'] = $only_cafeteria;
+    
             $productDetails['count_products'] = count($productDetails['products']);
             $productDetails['next_page'] = (int) Tools::getValue('page') + 1;
             if (Tools::getValue('page') == 0) {
@@ -263,9 +276,13 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
         if (Module::isEnabled('ps_mainmenu')) {
             $menu_items = $this->getMenuItems();
 
-            $nestle_pantallas = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
-            if(!$nestle_pantallas){
-                $nestle_pantallas = [];
+            $autopago_menus_users = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
+            if(!$autopago_menus_users){
+                $autopago_menus_users = [];
+            }
+            $autopago_cafeterias_users = json_decode(Configuration::get('EMPLEADOS_AUTOPAGO_CAFETERIAS'), true);
+            if(!$autopago_cafeterias_users){
+                $autopago_cafeterias_users = [];
             }
 
 
@@ -274,8 +291,12 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                 if (!$item) {
                     continue;
                 }
-                //Sólo la 16 y 17 en autopago
-                if(in_array($this->context->cookie->id_outlet_employee, $nestle_pantallas) && ($item != 'CAT16' && $item != 'CAT17' && $item != 'CAT18')){
+                //Autopago menus
+                if(in_array($this->context->cookie->id_outlet_employee, $autopago_menus_users) && ($item != 'CAT16' && $item != 'CAT17' && $item != 'CAT18')){
+                    continue;
+                }
+                //Autopago cafeterias
+                if(in_array($this->context->cookie->id_outlet_employee, $autopago_cafeterias_users) && ($item != 'CAT3' && $item != 'CAT6' && $item != 'CAT9')){
                     continue;
                 }
 

@@ -54,7 +54,7 @@
                 </span>
                 <!-- ko if: $root.contentModel.idOrder() == 0 -->
                 <!--Centrado-->
-                <div class="{if isset($TPVadmin) && !$TPVadmin} col-md-12 {else} col-md-6 {$paymentWidth|escape:'htmlall':'UTF-8'}{/if}">
+                <div class="{if isset($TPV_autopago) && $TPV_autopago} col-md-12 {else} col-md-6 {$paymentWidth|escape:'htmlall':'UTF-8'}{/if}">
                     <div class="wkpos-payment-customer" data-bind="click: $root.contentModel.updateCustomer">
                         <i class="fa fa-user-circle"></i>
                         <span data-bind="text: $root.contentModel.selectedCustomerName"></span>
@@ -126,14 +126,14 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <!-- ko if: $root.contentModel.idOrder() == 0 -->
                             <div class="row">
-                                {if isset($TPVadmin) && !$TPVadmin}<div class="col-md-4"></div>{/if}
-                                <div class="{if isset($TPVadmin) && !$TPVadmin}col-md-4{else}col-md-4 col-sm-6 col-xs-4{/if}">
+                                {if isset($TPV_autopago) && $TPV_autopago}<div class="col-md-4"></div>{/if}
+                                <div class="{if isset($TPV_autopago) && $TPV_autopago}col-md-4{else}col-md-4 col-sm-6 col-xs-4{/if}">
                                     <!-- ko if: navigatorOnline() -->
                                     {foreach $payments as $payment}
                                         <div class="wkpos-paymentmethod"
                                             data-bind="click: $root.contentModel.selectPaymentOption.bind($data, '{$payment.name|escape:'htmlall':'UTF-8'}, {$payment.id_wkpos_payment|escape:'htmlall':'UTF-8'}')">
                                             {$payment.name|escape:'htmlall':'UTF-8'}
-                                            {if isset($TPVadmin) && !$TPVadmin}<p><img src="/modules/wkpos/views/img/paybycard-icon.png" width="100" height="100" class="" /></p>{/if}
+                                            {if isset($TPV_autopago) && $TPV_autopago}<p><img src="/modules/wkpos/views/img/paybycard-icon.png" width="100" height="100" class="" /></p>{/if}
 
                                         </div>
                                     {/foreach}
@@ -151,7 +151,7 @@
                                     <!-- /ko -->
 
                                 </div>
-                                <div class="{if isset($TPVadmin) && !$TPVadmin}col-md-4{else}col-md-8 col-sm-6 col-xs-8{/if}">
+                                <div class="{if isset($TPV_autopago) && $TPV_autopago}col-md-4{else}col-md-8 col-sm-6 col-xs-8{/if}">
                                     {* <!-- ko if: ($root.contentModel.selectedPaymentId() == '1') && ($root.contentModel.idOrder() === 0) --> *}
                                     <div class="row">
 

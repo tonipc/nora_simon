@@ -14590,6 +14590,10 @@
             jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(shopNameArray, function (index, shop) {
                 orderBill.push(shop + '\x0A');
             });
+            //autopago cafeterias
+            if (printer_autopago_cafeterias) {
+                orderBill.push('ACAFETERIA' + '\x0A'); 
+            }
             if (outletAddress1.length > 1) {
                 orderBill.push(outletAddress1);
             }
@@ -14598,6 +14602,7 @@
             } else {
                 orderBill.push('\x0A');
             }
+         
             // if (outletCity.length > 1) {
             //     orderBill.push(outletCity);
             // }

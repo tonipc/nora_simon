@@ -52,7 +52,7 @@ class nora_vistaempleados extends Module
     {
         if (Tools::isSubmit('submitAll')) {
             $this->postProcess();
-            $this->output .= $this->displayConfirmation($this->l('Lista de empleados actualizada.'));
+            $this->output .= $this->displayConfirmation($this->l('Lista de varias vistas empleados actualizada.'));
         }
 
         return $this->output . $this->displayForm();
@@ -107,7 +107,7 @@ class nora_vistaempleados extends Module
         $fields = array();
         $fields[0]['form'] = array(
             'legend' => array(
-                'title' => $this->l('Configuración de variables generales'),
+                'title' => $this->l('Configuración de empleados con AUTOPAGO'),
                 'icon' => 'icon-cogs',
             ),
             'input' => array(
@@ -115,8 +115,20 @@ class nora_vistaempleados extends Module
                     'type' => 'select',
                     'multiple' => true,
                     'class' => 'chosen',
-                    'label' => $this->l('Empleados con vista cliente.'),
+                    'label' => $this->l('Empleados con vista SÓLO MENUS + EXTRAS'),
                     'name' => 'EMPLEADOS_VISTACLIENTE',
+                    'options' => array(
+                        'query' => $employees,
+                        'id' => 'id_employee',
+                        'name' => 'name',
+                    ),
+                ),
+                array(
+                    'type' => 'select',
+                    'multiple' => true,
+                    'class' => 'chosen',
+                    'label' => $this->l('Empleados con vista SÓLO DESAYUNOS'),
+                    'name' => 'EMPLEADOS_AUTOPAGO_CAFETERIAS',
                     'options' => array(
                         'query' => $employees,
                         'id' => 'id_employee',

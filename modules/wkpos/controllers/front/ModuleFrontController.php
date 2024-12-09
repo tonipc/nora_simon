@@ -339,6 +339,14 @@ class WkPosModuleFrontController extends ModuleFrontController
         $totalpagadodia =  Tools::ps_round($info['total'], 2);
         $num_pedidos =  $info['pedidos'];
 
+        $autopago_cafeterias_users = json_decode(Configuration::get('EMPLEADOS_AUTOPAGO_CAFETERIAS'), true);
+        if(!$autopago_cafeterias_users){
+            $autopago_cafeterias_users = [];
+        }
+        $printer_autopago_cafeterias = 0;
+        if (in_array($this->idEmployee, $autopago_cafeterias_users))
+            $printer_autopago_cafeterias = 1;
+
         // dump($paymentDetails);
         $this->posAddJsDef(
             [
@@ -402,6 +410,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'posSessionStatus' => $posSessionStatus,
                 'controlSession' => $controlSession,
                 'wkposPrintType' => Configuration::get('WKPOS_PRINT_TYPE'),
+                'printer_autopago_cafeterias' => $printer_autopago_cafeterias,
                 'signOnOrderReciept' => Configuration::get('WKPOS_DIGITAL_SIGN_ON_RECIEPT') ?
                 Configuration::get('WKPOS_DIGITAL_SIGN_ON_RECIEPT') : 0,
                 'signOnCashRegister' => Configuration::get('WKPOS_DIGITAL_SIGN_ON_CASH_REGISTER') ?
@@ -631,10 +640,20 @@ class WkPosModuleFrontController extends ModuleFrontController
 
         $totalpagadodia =  Tools::ps_round($info['total'], 2);
         $num_pedidos =  $info['pedidos'];
-        $nestle_pantallas = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
-        if(!$nestle_pantallas){
-            $nestle_pantallas = [];
+
+        $autopago_menus_users = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
+        if(!$autopago_menus_users){
+            $autopago_menus_users = [];
         }
+        $autopago_cafeterias_users = json_decode(Configuration::get('EMPLEADOS_AUTOPAGO_CAFETERIAS'), true);
+        if(!$autopago_cafeterias_users){
+            $autopago_cafeterias_users = [];
+        }
+  
+        $TPV_autopago = false;
+        if (in_array($this->idEmployee, $autopago_menus_users) || in_array($this->idEmployee, $autopago_cafeterias_users))
+            $TPV_autopago = true;
+        // dump($TPV_autopago);
 
         $payments = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet);
 
@@ -660,7 +679,7 @@ class WkPosModuleFrontController extends ModuleFrontController
         // $payments = $new_payments;
         foreach ($payments as $payment){
             //Ahora es el 2o el pago x empresa
-            if(in_array($this->context->cookie->id_employee, $nestle_pantallas) && $payment['id_wkpos_payment'] == 5){
+            if( (in_array($this->context->cookie->id_employee, $autopago_menus_users) || in_array($this->context->cookie->id_employee, $autopago_cafeterias_users)) && $payment['id_wkpos_payment'] == 5 ){
                 unset($payments[1]);
             }
         }
@@ -744,7 +763,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'allTaxes' => TaxRulesGroup::getTaxRulesGroups(true),
                 'totalpagadodia' => $fecha_para_total_dia ? $totalpagadodia : null,
                 'num_pedidos' => $fecha_para_total_dia ? $num_pedidos : null,
-                'TPVadmin' => !in_array($this->idEmployee, $nestle_pantallas),
+                'TPV_autopago' => $TPV_autopago,
             ]
         );
     }
