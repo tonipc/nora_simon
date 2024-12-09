@@ -75,7 +75,7 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
         );
         $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/onscan.js');
         $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/fuse.js');
-        $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/bundle.js?6.2');
+        $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/bundle.js?6.3');
     }
 
     /**
@@ -148,7 +148,7 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
             } 
             $only_cafeteria = [];
             foreach ($productDetails['products'] as $key => $product){
-                if(in_array($this->context->cookie->id_employee, $autopago_cafeterias_users) && ($product['id_category_default'] == 3 || $product['id_category_default'] == 6 || $product['id_category_default'] == 9)){
+                if(in_array($this->context->cookie->id_employee, $autopago_cafeterias_users) && ($product['id_category_default'] == 19 || $product['id_category_default'] == 6 || $product['id_category_default'] == 9)){
                     $only_cafeteria[$key] = $product;
                 }
             }
@@ -296,7 +296,7 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                     continue;
                 }
                 //Autopago cafeterias
-                if(in_array($this->context->cookie->id_outlet_employee, $autopago_cafeterias_users) && ($item != 'CAT3' && $item != 'CAT6' && $item != 'CAT9')){
+                if(in_array($this->context->cookie->id_outlet_employee, $autopago_cafeterias_users) && ($item != 'CAT19' && $item != 'CAT6' && $item != 'CAT9')){
                     continue;
                 }
 
