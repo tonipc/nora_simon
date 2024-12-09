@@ -14598,20 +14598,20 @@
             } else {
                 orderBill.push('\x0A');
             }
-            if (outletCity.length > 1) {
-                orderBill.push(outletCity);
-            }
-            if (outletState.length > 1) {
-                orderBill.push(', ' + outletState + '\x0A');
-            } else {
-                orderBill.push('\x0A');
-            }
-            if (outletCountry.length > 1) {
-                orderBill.push(outletCountry + ' - ')
-            }
-            if (outletPostCode.length > 1) {
-                orderBill.push(outletPostCode + '\x0A')
-            }
+            // if (outletCity.length > 1) {
+            //     orderBill.push(outletCity);
+            // }
+            // if (outletState.length > 1) {
+            //     orderBill.push(', ' + outletState + '\x0A');
+            // } else {
+            //     orderBill.push('\x0A');
+            // }
+            // if (outletCountry.length > 1) {
+            //     orderBill.push(outletCountry + ' - ')
+            // }
+            // if (outletPostCode.length > 1) {
+            //     orderBill.push(outletPostCode + '\x0A')
+            // }
 
             if (contactDetails != undefined && contactDetails != '') {
                 orderDetails = [displayPhone + contactDetails + '\x0A'];
@@ -14619,36 +14619,36 @@
             orderBill = orderBill.concat(orderDetails);
 
             var productNameHeading2 = productNameHeading;
-            if (productNameHeading2.length < 20) {
+            if (productNameHeading2.length < 15) {
                 var length = productNameHeading2.length;
-                for (var i = 0; i < (22 - length); i++) {
+                for (var i = 0; i < (17 - length); i++) {
                     productNameHeading2 += ' ';
                 }
             } else {
-                productNameHeading2 = productNameHeading2.substr(0, 20) + '  ';
+                productNameHeading2 = productNameHeading2.substr(0, 15) + '  ';
             }
 
             var qtyHeading2 = qtyHeading;
-            if (qtyHeading2.length < 4) {
+            if (qtyHeading2.length < 3) {
                 var length = qtyHeading2.length;
-                for (var i = 0; i < (6 - length); i++) {
+                for (var i = 0; i < (5 - length); i++) {
                     qtyHeading2 += ' ';
                 }
             } else {
-                qtyHeading2 = qtyHeading2.substr(0, 4) + '  ';
+                qtyHeading2 = qtyHeading2.substr(0, 3) + '  ';
             }
             var priceHeading2 = priceHeading;
-            if (priceHeading2.length < 9) {
+            if (priceHeading2.length < 8) {
                 var length = priceHeading2.length;
-                for (var i = 0; i < (11 - length); i++) {
+                for (var i = 0; i < (10 - length); i++) {
                     priceHeading2 += ' ';
                 }
             } else {
-                priceHeading2 = priceHeading2.substr(0, 9) + '  ';
+                priceHeading2 = priceHeading2.substr(0, 8) + '  ';
             }
             var totalHeading2 = totalHeading;
-            if (totalHeading2.length > 12) {
-                totalHeading2 = totalHeading2.substr(0, 12);
+            if (totalHeading2.length > 8) {
+                totalHeading2 = totalHeading2.substr(0, 8);
             }
             orderDetails = [
                 order['order_date'] + '\x0A',
@@ -14701,35 +14701,35 @@
                         productName += ' ' + beforeDiscountMessage + product['reduction_percent'] + afterDiscountMessage;
                         // productDetails += ' ' + beforeDiscountMessage + product['reduction_percent'] + afterDiscountMessage;
                     }
-                    var productNameArray = chunkString(productName, 20);
+                    var productNameArray = chunkString(productName, 15);
                     jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(productNameArray, function (index, name) {
                         productDetails += name;
                         // productDetails += '\x0A' + '\x1B' + '\x61' + '\x32';
                         if (index == 0) {
-                            if (name.length <= 20) {
+                            if (name.length <= 15) {
                                 var length = name.length;
-                                for (var i = 0; i < (22 - length); i++) {
+                                for (var i = 0; i < (17 - length); i++) {
                                     name += ' ';
                                 }
                             }
                             productQuantity = productQuantity.toString();
                             var length = productQuantity.length;
-                            if (productQuantity.length <= 4) {
-                                for (var i = 0; i < (6 - length); i++) {
+                            if (productQuantity.length <= 3) {
+                                for (var i = 0; i < (5 - length); i++) {
                                     productQuantity += ' ';
                                 }
                             }
                             productPrice = productPrice.toString();
                             var length = productPrice.length;
-                            if (productPrice.length <= 9) {
-                                for (var i = 0; i < (11 - length); i++) {
+                            if (productPrice.length <= 8) {
+                                for (var i = 0; i < (10 - length); i++) {
                                     productPrice += ' ';
                                 }
                             }
                             totalPricePerProduct = totalPricePerProduct.toString();
                             var length = totalPricePerProduct.length;
-                            if (totalPricePerProduct.length <= 12) {
-                                for (var i = 0; i < (12 - length); i++) {
+                            if (totalPricePerProduct.length <= 8) {
+                                for (var i = 0; i < (10 - length); i++) {
                                     totalPricePerProduct += '';
                                 }
                             }
@@ -14744,7 +14744,7 @@
                     if (!taxArray.hasOwnProperty(product.tax_rate_value)) {
                         // If the tax rate value doesn't exist in taxArray, initialize it.
                         taxArray[product.tax_rate_value] = {
-                            'tax_rate': product.tax_rate,
+                            'tax_rate': 1 + product.tax_rate,
                             'tax_amount': 0
                         };
                     }
@@ -14857,11 +14857,11 @@
                 }
             }
             orderBill.push('\x0A');
-            var rowforpaymenthead = paymentTypeWk.padEnd(12, ' ')+paymentAmountWk.padEnd(12, ' ')+paymentTenderedWk.padEnd(12, ' ')+paymentChangeWk.padEnd(12, ' ');
+            var rowforpaymenthead = paymentTypeWk.padEnd(17, ' ')+paymentAmountWk.padEnd(12, ' ')+paymentTenderedWk.padEnd(12, ' ')/*+paymentChangeWk.padEnd(12, ' ')*/;
             orderBill.push(rowforpaymenthead + '\x0A');
 
             jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(order.order_payment, function (index, orderPaymentWk) {
-                var rowforpayment = (orderPaymentWk.name).padEnd(12, ' ') + (orderPaymentWk.totalOrderAmount).padEnd(12, ' ') + (orderPaymentWk.tendered).padEnd(12, ' ') + (orderPaymentWk.change).padEnd(12, ' ');
+                var rowforpayment = (orderPaymentWk.name).padEnd(17, ' ') + (orderPaymentWk.totalOrderAmount).padEnd(12, ' ') + (orderPaymentWk.tendered).padEnd(12, ' ') /*+ (orderPaymentWk.change).padEnd(12, ' ')*/;
                 orderBill.push(rowforpayment + '\x0A');
             });
 

@@ -75,7 +75,7 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
         );
         $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/onscan.js');
         $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/fuse.js');
-        $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/bundle.js?4.0');
+        $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/bundle.js?6.0');
     }
 
     /**
