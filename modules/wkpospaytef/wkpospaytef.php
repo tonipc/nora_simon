@@ -32,6 +32,7 @@ if (Module::isEnabled('wkpos')) {
 class WkPosPayTef extends Module
 {
     public $secure_key;
+    public $output;
 
     public function __construct()
     {
@@ -206,14 +207,18 @@ class WkPosPayTef extends Module
         if (Tools::isSubmit('btnSubmitGeneral')) {
             Configuration::updateGlobalValue('WKPOS_PAYTEF_SECRETKEY', Tools::getValue('WKPOS_PAYTEF_SECRETKEY'));
             Configuration::updateGlobalValue('WKPOS_PAYTEF_ACCESSKEY', Tools::getValue('WKPOS_PAYTEF_ACCESSKEY'));
+            $this->output .= $this->displayConfirmation($this->l('Global settings updated!'));
         }
     }
 
     public function getContent()
     {
+        $this->output .= $this->displayInformation($this->l('Need to configure the device IP, device Port and pin.pad from empoyeed add/edit page.'));
         $this->postProcess();
 
-        return $this->displayInformation($this->l('Need to configure the device IP, device Port and pin.pad from empoyeed add/edit page.')) . $this->renderGlobalForm();
+        $this->output .= $this->renderGlobalForm();
+
+        return $this->output;
     }
 
     private function renderGlobalForm()
