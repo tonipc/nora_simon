@@ -92,6 +92,7 @@ class WkPosPayTef extends Module
             'actionEmployeeFormBuilderModifier',
             'actionAfterCreateEmployeeFormHandler',
             'actionAfterUpdateEmployeeFormHandler',
+            'displayAdminOrderMain',
         ];
 
         return $this->registerHook($hooks);
@@ -509,6 +510,27 @@ class WkPosPayTef extends Module
             $sql = 'ALTER TABLE `' . _DB_PREFIX_ . 'wkpos_outlets`
                     ADD `assigned_payment_methods` text default NULL AFTER `allowed_currencies`';
             return Db::getInstance()->execute($sql);
+        }
+    }
+
+    public function hookDisplayAdminOrderMain($params)
+    {
+        $id_order = $params['id_order'];
+        if ($id_order && Validate::isLoadedObject($order = new Order($id_order))) {
+            
+            $sql = 'SELECT reference
+            FROM ' . _DB_PREFIX_ . 'wkpos_paytef_transaction
+            WHERE id_order = ' . $id_order;
+    
+            $ref_paytef = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
+
+            if($ref_paytef){
+                $this->context->smarty->assign(array(
+                    'ref_paytef'=> $ref_paytef,
+                ));
+
+                return $this->display(dirname(__FILE__), 'views/templates/hook/admin_wkpospaytef.tpl');
+            }
         }
     }
 
