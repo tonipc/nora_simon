@@ -14597,11 +14597,11 @@
         if (outletAddress1.length > 1) {
             orderBill.push(outletAddress1);
         }
-        if (outletAddress2.length > 1) {
-            orderBill.push(', ' + outletAddress2 + '\x0A');
-        } else {
-            orderBill.push('\x0A');
-        }
+        // if (outletAddress2.length > 1) {
+        //     orderBill.push(', ' + outletAddress2 + '\x0A');
+        // } else {
+        //     orderBill.push('\x0A');
+        // }
      
         // if (outletCity.length > 1) {
         //     orderBill.push(outletCity);
@@ -14660,6 +14660,7 @@
             '\x1B' + '\x45' + '\x0A', // bold off
             // '\x0A',                   // line break
             displayUser + employeeName + '\x0A',
+            outletAddress2 + '\x0A',
             // '\x0A',                   // line break
             displayOrder + '#' + order['reference'] + '\x0A',
             '\x0A',
