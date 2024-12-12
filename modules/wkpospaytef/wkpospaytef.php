@@ -32,6 +32,7 @@ if (Module::isEnabled('wkpos')) {
 class WkPosPayTef extends Module
 {
     public $secure_key;
+    public $output;
 
     public function __construct()
     {
@@ -91,6 +92,7 @@ class WkPosPayTef extends Module
             'actionEmployeeFormBuilderModifier',
             'actionAfterCreateEmployeeFormHandler',
             'actionAfterUpdateEmployeeFormHandler',
+            'displayAdminOrderMain',
         ];
 
         return $this->registerHook($hooks);
@@ -201,9 +203,92 @@ class WkPosPayTef extends Module
         return true;
     }
 
+    public function postProcess()
+    {
+        if (Tools::isSubmit('btnSubmitGeneral')) {
+            Configuration::updateGlobalValue('WKPOS_PAYTEF_SECRETKEY', Tools::getValue('WKPOS_PAYTEF_SECRETKEY'));
+            Configuration::updateGlobalValue('WKPOS_PAYTEF_ACCESSKEY', Tools::getValue('WKPOS_PAYTEF_ACCESSKEY'));
+            $this->output .= $this->displayConfirmation($this->l('Global settings updated!'));
+        }
+    }
+
     public function getContent()
     {
-        return $this->displayInformation($this->l('Need to configure the device IP, device Port and pin.pad from empoyeed add/edit page.'));
+        $this->output .= $this->displayInformation($this->l('Need to configure the device IP, device Port and pin.pad from empoyeed add/edit page.'));
+        $this->postProcess();
+
+        $this->output .= $this->renderGlobalForm();
+
+        return $this->output;
+    }
+
+    private function renderGlobalForm()
+    {
+        $helper = new HelperForm();
+
+        $helper->module = $this;
+        $helper->name_controller = $this->name;
+        $helper->token = Tools::getAdminTokenLite('AdminModules');
+        $helper->currentIndex = AdminController::$currentIndex.
+            '&configure='.
+            $this->name.
+            '&tab_module='.
+            $this->tab.
+            '&module_name='.
+            $this->name;
+        $helper->title = $this->displayName;
+        $helper->show_toolbar = true;
+        $helper->submit_action = 'btnSubmitGeneral';
+        $helper->table = $this->table;
+        $helper->identifier = $this->identifier;
+        $helper->default_form_language = (int) Configuration::get('PS_LANG_DEFAULT');
+        $helper->allow_employee_form_lang = (int) Configuration::get('PS_LANG_DEFAULT');
+        $helper->tpl_vars = array(
+            'fields_value' => $this->getConfiguationValues(),
+            'languages' => $this->context->controller->getLanguages(),
+            'id_language' => $this->context->language->id,
+        );
+
+        return $helper->generateForm(array($this->getConfigForm()));
+    }
+
+    protected function getConfigForm(){
+        $config_form = array(
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('Configuración parametros para Token de Paytef.'),
+                    'icon' => 'icon-cogs',
+                ),
+                'input' => array(
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Secret Key'),
+                        'name' => 'WKPOS_PAYTEF_SECRETKEY',
+                        'required' => true,
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Access Key'),
+                        'name' => 'WKPOS_PAYTEF_ACCESSKEY',
+                        'required' => true,
+                    ),
+                ),
+                'submit' => array(
+                    'title' => $this->l('Save'),
+                    'name' => 'btnSubmitGeneral'
+                ),
+            ),
+        );
+
+        return $config_form;
+    }
+
+    public function getConfiguationValues(){
+
+        $configuration['WKPOS_PAYTEF_SECRETKEY'] = Configuration::getGlobalValue('WKPOS_PAYTEF_SECRETKEY', '');
+        $configuration['WKPOS_PAYTEF_ACCESSKEY'] = Configuration::getGlobalValue('WKPOS_PAYTEF_ACCESSKEY', '');
+
+        return $configuration;
     }
 
     public function hookActionPosSetMedia($params)
@@ -425,6 +510,27 @@ class WkPosPayTef extends Module
             $sql = 'ALTER TABLE `' . _DB_PREFIX_ . 'wkpos_outlets`
                     ADD `assigned_payment_methods` text default NULL AFTER `allowed_currencies`';
             return Db::getInstance()->execute($sql);
+        }
+    }
+
+    public function hookDisplayAdminOrderMain($params)
+    {
+        $id_order = $params['id_order'];
+        if ($id_order && Validate::isLoadedObject($order = new Order($id_order))) {
+            
+            $sql = 'SELECT reference
+            FROM ' . _DB_PREFIX_ . 'wkpos_paytef_transaction
+            WHERE id_order = ' . $id_order;
+    
+            $ref_paytef = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
+
+            if($ref_paytef){
+                $this->context->smarty->assign(array(
+                    'ref_paytef'=> $ref_paytef,
+                ));
+
+                return $this->display(dirname(__FILE__), 'views/templates/hook/admin_wkpospaytef.tpl');
+            }
         }
     }
 

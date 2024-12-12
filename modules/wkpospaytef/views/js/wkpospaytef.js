@@ -205,7 +205,7 @@ function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 20) {
             pinpad: localStorage.paytef_device_pinpad
         },
         success: function (transaction_status) {
-            if (transaction_status.info.cardStatus === 'finished' && transaction_status.info.transactionStatus === 'finished') {
+            if (transaction_status.info.transactionStatus === 'finished') {
                 getTransactionResult(idCart);
             } else if (retryCount < maxRetries) {
                 console.log('transactionStatus 3000');

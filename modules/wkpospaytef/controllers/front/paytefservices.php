@@ -22,8 +22,6 @@ if (!defined('_PS_VERSION_')) {
 }
 class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontController
 {
-    public $secretkey;
-
     public function init()
     {
         parent::init();
@@ -54,6 +52,7 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
 
             $token = $this->getToken();
             $response = $this->getApi(WkPosPaytefHelper::WK_POS_PAYTEF_PINPAD_STATUS_ENDPOINT, $data, $token);
+            // dump($response);
 
             // $ch = curl_init($url);
             // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -90,10 +89,8 @@ class WkPosPaytefPaytefServicesModuleFrontController extends ModuleFrontControll
     {
         $function = '/authorize/';
         $data = [
-            // 'secretKey' => 'XQ3zULKIRsIBJEI1qOpjUs6mnCWUq5RWHoYvcg9r',
-            'secretKey' => '1ZjmBIJUICQdEIgLMf1CGWAg5fxHFWKCtpR3PPc9',
-            // 'accessKey' => 'MS43M3c=',
-            'accessKey' => 'MS43ZWU=',
+            'secretKey' => Configuration::getGlobalValue('WKPOS_PAYTEF_SECRETKEY', ''),
+            'accessKey' => Configuration::getGlobalValue('WKPOS_PAYTEF_ACCESSKEY', ''),
         ];
 
         $result = $this->getApi($function, $data);
