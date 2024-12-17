@@ -13349,7 +13349,7 @@
                                 if ($('#wkpos-print').length > 0) {
                                     posViewModel.contentModel.printInvoice();
                                 }
-                            }, 1000);
+                            }, 100);
 
                             if ($('#pos-sale.client-view').length > 0) {
                                 setTimeout(async function () {
