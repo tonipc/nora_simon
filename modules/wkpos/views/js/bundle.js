@@ -18756,6 +18756,7 @@
             } else {
                 posViewModel.bodyPanel(back);
             }
+            self.displayCart(1);// forced show cart on mobile device #1078378
             self.idOrder(0);
             self.callPosResize();
             $(window).trigger('resize');
