@@ -13354,7 +13354,7 @@
                             if ($('#pos-sale.client-view').length > 0) {
                                 setTimeout(async function () {
                                     posViewModel.contentModel.nextOrder();
-                                }, 8000);
+                                }, 5000);
                             }
 
                             // Customization code end by Webkul #1078378 [paytef]
