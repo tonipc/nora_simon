@@ -138,7 +138,22 @@ class cellnex_extras extends Module
 
     public function hookDisplayAdminProductsMainStepLeftColumnMiddle(array $params)
     {
-        return 'AAAAAAAAAAA';
+        $id_product = $params['id_product'];
+        $temporada_semana = '';
+
+        if ($id_product) {
+            $product = new Product($id_product);
+            $temporada_semana = $product->temporada_semana;
+        }
+
+        return '<div class="col-lg-6">
+            <div class="form-group">
+                <label>
+                    ' . $this->l('Temporada y Semana') . '
+                </label>
+                <input type="text" name="temporada_semana" class="form-control" value="' . $temporada_semana . '">
+            </div>
+        </div>';
     }
 
     /**
