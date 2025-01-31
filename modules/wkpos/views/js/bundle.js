@@ -19614,9 +19614,10 @@
                     self.printerConnected(qz.websocket.isActive());
                     if (qz.websocket.isActive()) {
                         Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["printOrderBill"])(self.selectedPrinter());
-                    } else {
-                        Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showErrorMsg"])(printerNotConnected);
-                    }
+                    } 
+                    // else {
+                    //     Object(_wkgrowlmsg_js__WEBPACK_IMPORTED_MODULE_0__["showErrorMsg"])(printerNotConnected);
+                    // }
                 }
             } catch (e) {
                 self.printerConnected(qz.websocket.isActive());
