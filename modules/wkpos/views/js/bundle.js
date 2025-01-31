@@ -11541,7 +11541,8 @@
             this.taxRate = ko.observable(defaultTaxRate[data.id]);
         }
         this.productName = data.name;
-        this.stock_location = product.stock_location;
+        // this.stock_location = product.stock_location;
+        this.stock_location = '';
         this.productPrice = ko.observable(data.price);
         this.taxExclPrice = ko.observable(parseFloat(data.taxExcludedPrice));
         this.updatePrice = ko.observable(data.updatePrice);
@@ -13354,7 +13355,7 @@
                             if ($('#pos-sale.client-view').length > 0) {
                                 setTimeout(async function () {
                                     posViewModel.contentModel.nextOrder();
-                                }, 5000);
+                                }, 8000);
                             }
 
                             // Customization code end by Webkul #1078378 [paytef]
