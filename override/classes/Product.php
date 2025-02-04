@@ -103,7 +103,7 @@ class Product extends ProductCore
             'date_add' => ['type' => self::TYPE_DATE, 'shop' => true, 'validate' => 'isDate'],
             'date_upd' => ['type' => self::TYPE_DATE, 'shop' => true, 'validate' => 'isDate'],
             'pack_stock_type' => ['type' => self::TYPE_INT, 'shop' => true, 'validate' => 'isUnsignedInt'],
-            // 'temporada_semana' => ['type' => self::TYPE_STRING, 'shop' => true],
+            'temporada_semana' => ['type' => self::TYPE_STRING, 'shop' => true],
 
             /* Lang fields */
             'meta_description' => ['type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 512],
