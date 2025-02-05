@@ -33,7 +33,9 @@ class nora_vistaempleados extends Module
     public $output = '';
     public $configs = [
         'EMPLEADOS_VISTACLIENTE',
-        'EMPLEADOS_AUTOPAGO_CAFETERIAS'
+        'EMPLEADOS_AUTOPAGO_CAFETERIAS',
+        // 'EMPLEADOS_TAKEAWAY',
+        'EMPLEADOS_MOSTRAR_CERRAR_SESION'
     ];
 	public function __construct() 
 	{
@@ -108,7 +110,7 @@ class nora_vistaempleados extends Module
         $fields = array();
         $fields[0]['form'] = array(
             'legend' => array(
-                'title' => $this->l('Configuración de empleados con AUTOPAGO'),
+                'title' => $this->l('Configuración de empleados con AUTOPAGO + TAKEAWAY'),
                 'icon' => 'icon-cogs',
             ),
             'input' => array(
@@ -130,6 +132,30 @@ class nora_vistaempleados extends Module
                     'class' => 'chosen',
                     'label' => $this->l('Empleados con vista SÓLO DESAYUNOS'),
                     'name' => 'EMPLEADOS_AUTOPAGO_CAFETERIAS',
+                    'options' => array(
+                        'query' => $employees,
+                        'id' => 'id_employee',
+                        'name' => 'name',
+                    ),
+                ),
+                // array(
+                //     'type' => 'select',
+                //     'multiple' => true,
+                //     'class' => 'chosen',
+                //     'label' => $this->l('Empleados con vista SÓLO TAKE AWAY'),
+                //     'name' => 'EMPLEADOS_TAKEAWAY',
+                //     'options' => array(
+                //         'query' => $employees,
+                //         'id' => 'id_employee',
+                //         'name' => 'name',
+                //     ),
+                // ),
+                array(
+                    'type' => 'select',
+                    'multiple' => true,
+                    'class' => 'chosen',
+                    'label' => $this->l('Empleados con visibilidad del boton de CERRAR SESION'),
+                    'name' => 'EMPLEADOS_MOSTRAR_CERRAR_SESION',
                     'options' => array(
                         'query' => $employees,
                         'id' => 'id_employee',

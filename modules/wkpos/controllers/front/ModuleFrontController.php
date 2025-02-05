@@ -649,11 +649,18 @@ class WkPosModuleFrontController extends ModuleFrontController
         if(!$autopago_cafeterias_users){
             $autopago_cafeterias_users = [];
         }
+
+        $mostrar_cerrar_sesion_users = json_decode(Configuration::get('EMPLEADOS_MOSTRAR_CERRAR_SESION'), true);
+        if (!$mostrar_cerrar_sesion_users){
+            $mostrar_cerrar_sesion_users = [];
+        }
   
         $TPV_autopago = false;
         if (in_array($this->idEmployee, $autopago_menus_users) || in_array($this->idEmployee, $autopago_cafeterias_users))
             $TPV_autopago = true;
         // dump($TPV_autopago);
+
+        $mostrar_cerrar_sesion = in_array($this->idEmployee, $mostrar_cerrar_sesion_users);
 
         $payments = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet);
 
@@ -678,6 +685,7 @@ class WkPosModuleFrontController extends ModuleFrontController
 
         // $payments = $new_payments;
         foreach ($payments as $payment){
+            //El empleado de takeaway no tiene ninguna restricción de pago
             //Ahora es el 2o el pago x empresa
             if( (in_array($this->context->cookie->id_employee, $autopago_menus_users) || in_array($this->context->cookie->id_employee, $autopago_cafeterias_users)) && $payment['id_wkpos_payment'] == 5 ){
                 unset($payments[1]);
@@ -764,6 +772,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'totalpagadodia' => $fecha_para_total_dia ? $totalpagadodia : null,
                 'num_pedidos' => $fecha_para_total_dia ? $num_pedidos : null,
                 'TPV_autopago' => $TPV_autopago,
+                'mostrar_cerrar_sesion' => $mostrar_cerrar_sesion,
             ]
         );
     }
