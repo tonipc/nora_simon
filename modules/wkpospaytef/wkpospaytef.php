@@ -534,4 +534,19 @@ class WkPosPayTef extends Module
         }
     }
 
+    public function hookdisplayWkPosEmployeeDetail($params)
+    {
+        
+        $idEmployee = $params['employee']['id'];
+        $pinpad = '';
+
+        $idOutletEmployee = WkPosOutletEmployee::getIdOutletEmployee($idEmployee);
+        if (!empty($idOutletEmployee)) {
+            $objOutletEmployee = new WkPosOutletEmployee($idOutletEmployee);
+            $pinpad = substr($objOutletEmployee->device_pinpad, -4);
+        }
+
+        return $pinpad;
+    }
+
 }

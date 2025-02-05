@@ -52,7 +52,7 @@ function PosPaytefTerminalViewModel(PosModel) {
             data: data,
             success: function (response) {
                 if (response.status && response.status == 'connected') {
-                    showSuccessMsg(pinpadStatusConnected);
+                    showSuccessMsg(pinpadStatusConnected + ' [' + self.paytefDevicePinpad() + ']');
                     // self.updatePaytefReader();
                     // $('#discover-reader').attr('disabled', false);
                     // $('#reader-msg').html('');
@@ -61,7 +61,7 @@ function PosPaytefTerminalViewModel(PosModel) {
                     localStorage.setItem('paytef_device_port', self.paytefDevicePort());
                     localStorage.setItem('paytef_device_pinpad', self.paytefDevicePinpad());
                 } else {
-                    showErrorMsg(response.msg);
+                    showErrorMsg(response.msg + ' [' + self.paytefDevicePinpad() + ']');
                     // $('#discover-reader').attr('disabled', false);
                     // $('#reader-msg').html('');
                     // $('#paytef-reader-loader').hide();
@@ -172,7 +172,6 @@ $(document).ready(function () {
                             // setTimeout(async function () {
                             //     checkTransactionStatus(idCart);
                             // }, 1000);
-                            console.log('transactionStatus 3000');
                             setTimeout(async function () {
                                 checkTransactionStatus(idCart);
                             }, 3000);
@@ -220,6 +219,7 @@ function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 20) {
             }
         },
         error: function (error) {
+            console.log(error);
             // showErrorMsg(someError);
             // cancelPaytefPaymentSelection();
             // $('#wk-pos-paytef-create-payment').modal('toggle');
@@ -227,8 +227,7 @@ function checkTransactionStatus(idCart, retryCount = 0, maxRetries = 20) {
             // $('#paytef-create-loader').hide();
 
             //Continue anyways
-            console.log('error pero sigue!');
-            setTimeout(() => checkTransactionStatus(idCart, retryCount + 1, maxRetries), 3000);       
+            setTimeout(() => checkTransactionStatus(idCart, retryCount + 1, maxRetries), 3000);
         }
     });
 }

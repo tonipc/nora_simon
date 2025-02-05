@@ -164,7 +164,7 @@
                         <div class="salesperson-name {$employee.id} wk-flex-3"
                             data-bind="text: cashierName, attr: { title: cashierName }"></div>
                         {* <div class="salesperson-post" title="{$employee.profile}">{$employee.shortProfile}</div> *}
-                        {hook h='displayWkPosEmployeeDetail'}
+                        {hook h='displayWkPosEmployeeDetail' employee=$employee}
                     </div>
                 </div>
                 {/block}
