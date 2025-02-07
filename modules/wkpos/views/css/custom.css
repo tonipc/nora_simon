@@ -309,6 +309,12 @@ body {
   display: flex;
   margin-bottom: 0px;
 }
+.lower-category li:nth-child(0){
+  color: red;
+}
+.lower-category li:nth-child(1){
+  color: blue;
+}
 
 #product-panel {
   line-height: 15px;
@@ -1609,11 +1615,22 @@ button.active.focus {
 
 .wkpos-category-list > div {
   border-right: 1px solid var(--wkpos-off-white);
+  color: red;
+}
+.wkpos-category-list > div .active{
+  color: red;
+}
+
+.wkpos-category-list > div:last-child {
+  color: blue;
+}
+.wkpos-category-list > div:last-child .active {
+  color: blue;
 }
 
 .wkpos-category-list:last-child {
   border-right: 0px;
-}
+} 
 
 .input-group-prepend button {
   border-top-right-radius: 0;
@@ -1824,7 +1841,7 @@ body .wk-products .product-select div.clearfix::after {
 
 
 /* body.client-view header, */
-body.client-view header #wkpos-header > *:not(:first-child):not(:nth-child(7)):not(:nth-child(8)),
+body.client-view header #wkpos-header > *:not(:first-child):not(:nth-child(6)):not(:nth-child(7)):not(:nth-child(8)),
 body.client-view #wk-pos-side-panel,
 body.client-view #wkpos_full_screen_img,
 body.client-view .wk-cart-product-details .nav-tabs li:first-child,
@@ -1902,6 +1919,10 @@ body.client-view #wk_pos_paytef_print_invoice {
 
 body.client-view .wk-payment .wk-nomargin:last-child > div:last-child > div:last-child a.btn {
   background-color: black !important;
+}
+
+body.client-view .cerrar-sesion{
+  display: none;
 }
 
 .cart-product-selected {
