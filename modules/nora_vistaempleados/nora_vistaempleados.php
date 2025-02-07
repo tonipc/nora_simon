@@ -35,7 +35,7 @@ class nora_vistaempleados extends Module
         'EMPLEADOS_VISTACLIENTE',
         'EMPLEADOS_AUTOPAGO_CAFETERIAS',
         // 'EMPLEADOS_TAKEAWAY',
-        'EMPLEADOS_MOSTRAR_CERRAR_SESION'
+        // 'EMPLEADOS_MOSTRAR_CERRAR_SESION'
     ];
 	public function __construct() 
 	{
@@ -150,18 +150,18 @@ class nora_vistaempleados extends Module
                 //         'name' => 'name',
                 //     ),
                 // ),
-                array(
-                    'type' => 'select',
-                    'multiple' => true,
-                    'class' => 'chosen',
-                    'label' => $this->l('Empleados con visibilidad del boton de CERRAR SESION'),
-                    'name' => 'EMPLEADOS_MOSTRAR_CERRAR_SESION',
-                    'options' => array(
-                        'query' => $employees,
-                        'id' => 'id_employee',
-                        'name' => 'name',
-                    ),
-                ),
+                // array(
+                //     'type' => 'select',
+                //     'multiple' => true,
+                //     'class' => 'chosen',
+                //     'label' => $this->l('Empleados con visibilidad del boton de CERRAR SESION'),
+                //     'name' => 'EMPLEADOS_MOSTRAR_CERRAR_SESION',
+                //     'options' => array(
+                //         'query' => $employees,
+                //         'id' => 'id_employee',
+                //         'name' => 'name',
+                //     ),
+                // ),
             ),
             'submit' => array(
                 'title' => $this->l('Update settings'),

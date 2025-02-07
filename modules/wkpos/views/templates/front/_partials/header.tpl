@@ -189,13 +189,13 @@
                 <!-- /ko -->
                 {block name='sign_out'}
                 <!-- ko ifnot: $root.sessionStatus() == 1 -->
-                {if $mostrar_cerrar_sesion}
+                {* {if $mostrar_cerrar_sesion} *}
                 <a href="{$wkposLogin|escape:'htmlall':'UTF-8'}">
                     <div class=" pull-right wk-pos-features" title="{l s='Sign out' mod='wkpos'}">
                         <i class="fa fa-sign-out"></i>
                         </div>
                     </a>
-                {/if}
+                {* {/if} *}
                     <!-- /ko -->
                 {/block}
             </div>
