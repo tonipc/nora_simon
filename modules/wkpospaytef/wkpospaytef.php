@@ -208,6 +208,14 @@ class WkPosPayTef extends Module
         if (Tools::isSubmit('btnSubmitGeneral')) {
             Configuration::updateGlobalValue('WKPOS_PAYTEF_SECRETKEY', Tools::getValue('WKPOS_PAYTEF_SECRETKEY'));
             Configuration::updateGlobalValue('WKPOS_PAYTEF_ACCESSKEY', Tools::getValue('WKPOS_PAYTEF_ACCESSKEY'));
+            //no deberia cambiar entre tiendas
+
+            $languages = Language::getLanguages(false);
+            foreach ($languages as $lang)
+                $fields['WKPOS_PAYTEF_PAYMENT_MODULE_NAME'][$lang['id_lang']] = Tools::getValue('WKPOS_PAYTEF_PAYMENT_MODULE_NAME_' . $lang['id_lang']);
+
+            Configuration::updateValue('WKPOS_PAYTEF_PAYMENT_MODULE_NAME', $fields['WKPOS_PAYTEF_PAYMENT_MODULE_NAME'], true);
+
             $this->output .= $this->displayConfirmation($this->l('Global settings updated!'));
         }
     }
@@ -256,7 +264,7 @@ class WkPosPayTef extends Module
         $config_form = array(
             'form' => array(
                 'legend' => array(
-                    'title' => $this->l('Configuración parametros para Token de Paytef.'),
+                    'title' => $this->l('Configuración de Token num. comercio de Paytef y Nombre del método de pago Paytef:'),
                     'icon' => 'icon-cogs',
                 ),
                 'input' => array(
@@ -270,6 +278,14 @@ class WkPosPayTef extends Module
                         'type' => 'text',
                         'label' => $this->l('Access Key'),
                         'name' => 'WKPOS_PAYTEF_ACCESSKEY',
+                        'required' => true,
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Nombre método de pago para el hook que tiene'),
+                        'name' => 'WKPOS_PAYTEF_PAYMENT_MODULE_NAME',
+                        'col' => 3,
+                        'lang' => true,
                         'required' => true,
                     ),
                 ),
@@ -288,6 +304,10 @@ class WkPosPayTef extends Module
         $configuration['WKPOS_PAYTEF_SECRETKEY'] = Configuration::getGlobalValue('WKPOS_PAYTEF_SECRETKEY', '');
         $configuration['WKPOS_PAYTEF_ACCESSKEY'] = Configuration::getGlobalValue('WKPOS_PAYTEF_ACCESSKEY', '');
 
+        $languages = Language::getLanguages(false);
+        foreach ($languages as $lang) 
+            $configuration['WKPOS_PAYTEF_PAYMENT_MODULE_NAME'][$lang['id_lang']] = Tools::getValue('WKPOS_PAYTEF_PAYMENT_MODULE_NAME_'.$lang['id_lang'], Configuration::getGlobalValue('WKPOS_PAYTEF_PAYMENT_MODULE_NAME', $lang['id_lang']));
+
         return $configuration;
     }
 
@@ -300,7 +320,7 @@ class WkPosPayTef extends Module
         );
         $this->context->controller->posAddJs(
             [
-                _MODULE_DIR_ . $this->name . '/views/js/wkpospaytef.js',
+                _MODULE_DIR_ . $this->name . '/views/js/wkpospaytef.js?1.0',
             ]
         );
         $this->context->controller->posAddJsDef(
@@ -338,14 +358,17 @@ class WkPosPayTef extends Module
         return $this->display(__FILE__, 'paytefmodal.tpl');
     }
 
-    //no veo que llegue aqui
     public function hookActionOrderStatusPostUpdate($params)
     {
+        $payment_module = 'Pago por tarjeta';
+        if(Configuration::getGlobalValue('WKPOS_PAYTEF_PAYMENT_MODULE_NAME', $this->context->language->id))
+            $payment_module = Configuration::getGlobalValue('WKPOS_PAYTEF_PAYMENT_MODULE_NAME', $this->context->language->id);
+
         if ($params['newOrderStatus']->id == 2
         && Tools::getValue('ajax') == true
         && Tools::getValue('action') == 'generateOrder'
         // && Tools::getValue('payment_module') == 'Pago con tarjeta'
-        && Tools::getValue('payment_module') == 'Pay by card'
+        && Tools::getValue('payment_module') == $payment_module
         && Tools::getValue('module') == 'wkpos'
         && Tools::getValue('fc') == 'module'
         ) {
