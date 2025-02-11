@@ -57,7 +57,7 @@ class WkPosPayment extends ObjectModel
         $sql = 'SELECT pp.`id_wkpos_payment` as id_group, ppl.`name`,
             pp.`active`, pp.`id_wkpos_payment` as `val`
             FROM `' . _DB_PREFIX_ . 'wkpos_payment` pp
-            LEFT JOIN `' . _DB_PREFIX_ . 'wkpos_payment_lang` ppl ON wp.`id_wkpos_payment` = ppl.`id_wkpos_payment` AND ppl.`id_lang` = ' . (int) $id_lang . ' ';
+            LEFT JOIN `' . _DB_PREFIX_ . 'wkpos_payment_lang` ppl ON pp.`id_wkpos_payment` = ppl.`id_wkpos_payment` AND ppl.`id_lang` = ' . (int) $id_lang . ' ';
         if ($active) {
             $sql .= ' Where pp.`active` = 1';
         }
