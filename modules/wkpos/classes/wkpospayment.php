@@ -23,7 +23,7 @@ if (!defined('_PS_VERSION_')) {
 class WkPosPayment extends ObjectModel
 {
     public $name;
-    public $active;
+    public $active = false;
     public $date_add;
     public $date_upd;
 

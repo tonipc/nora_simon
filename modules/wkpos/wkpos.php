@@ -68,6 +68,7 @@ class WkPos extends Module
      */
     public function getContent()
     {
+        // $this->installTab('AdminWkPosPayments', 'Payments', 'AdminPOSManage');
         Tools::redirectAdmin($this->context->link->getAdminLink('AdminWkPosConfiguration'));
     }
 
