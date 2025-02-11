@@ -135,19 +135,19 @@ class WkPosOrder extends ObjectModel
     }
 
     //NEW
-    // public function getPagadoPorIdOrder(int $id_order)
-    // {
-    //     $sql = 'SELECT SUM(total_paid_tax_incl)
-    //     FROM `' . _DB_PREFIX_ . 'orders`
-    //     WHERE `id_order` = '.$id_order;
+    public function getPagadoPorIdOrder(int $id_order)
+    {
+        $sql = 'SELECT SUM(total_paid_tax_incl)
+        FROM `' . _DB_PREFIX_ . 'orders`
+        WHERE `id_order` = '.$id_order;
 
-    //     return Db::getInstance()->getValue($sql);
-    // }
+        return Db::getInstance()->getValue($sql);
+    }
 
     public function formatOrderDetails($order)
     {
         $objCurrency = new Currency($order['id_currency']);
-        $orderPayment = WkPosOrderPayment::getOrderPayment($order['id_wkpos_order']);
+        $orderPayment = WkPosOrderPayment::getOrderPayment($order['id_wkpos_order'], Context::getContext()->language->id);
         /* Pending */
         $orderPaymentData = [];
         foreach ($orderPayment as &$orderAmount) {

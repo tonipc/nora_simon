@@ -93,13 +93,18 @@ class WkPosRegisterOrder extends ObjectModel
         return Db::getInstance()->executeS($sql);
     }
 
-    public function getRegisterPayment($idRegister)
+    public function getRegisterPayment($idRegister, $id_lang = null)
     {
+        if (!$id_lang) {
+            $id_lang = Configuration::get('PS_LANG_DEFAULT');
+        }
+
         $sql = new DbQuery();
-        $sql->select('wpop.`id_wkpos_payment`, wpp.`name`');
+        $sql->select('wpop.`id_wkpos_payment`, wppl.`name`');
         $sql->from('wkpos_register_order', 'wpro');
         $sql->leftJoin('wkpos_order_payment', 'wpop', 'wpop.`id_wkpos_order` = wpro.`id_wkpos_order`');
         $sql->leftJoin('wkpos_payment', 'wpp', 'wpp.`id_wkpos_payment` = wpop.`id_wkpos_payment`');
+        $sql->leftJoin('wkpos_payment_lang', 'wppl', 'wpp.`id_wkpos_payment` = wppl.`id_wkpos_payment` AND wppl.`id_lang` = ' . (int) $id_lang);
         $sql->where('wpp.`active` = ' . 1);
         $sql->where('wpro.`id_wkpos_register` = ' . (int) $idRegister);
         $sql->groupBy('wpop.`id_wkpos_payment`');

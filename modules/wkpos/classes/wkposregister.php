@@ -156,7 +156,7 @@ class WkPosRegister extends ObjectModel
             $data['closingDate'] = '';
         }
 
-        $paymentMethod = $objRegisterOrder->getRegisterPayment($idRegister);
+        $paymentMethod = $objRegisterOrder->getRegisterPayment($idRegister, Context::getContext()->language->id);
         if ($paymentMethod) {
             $paymentTotal = [];
             foreach ($paymentMethod as $payment) {

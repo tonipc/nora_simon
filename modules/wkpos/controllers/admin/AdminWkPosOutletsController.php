@@ -473,7 +473,7 @@ class AdminWkPosOutletsController extends ModuleAdminController
                 'required' => 'true',
                 'col' => '4',
                 'values' => [
-                    'query' => WkPosHelper::getAllPaymentMethodsList(),
+                    'query' => WkPosHelper::getAllPaymentMethodsList($this->context->language->id),
                     'id' => 'id',
                     'name' => 'name',
                 ],

@@ -198,10 +198,15 @@ class WkPosHelper
     }
 
     // Customization code start by webkul #1078378 [paytef]
-    public static function getAllPaymentMethodsList()
+    public static function getAllPaymentMethodsList($id_lang = null)
     {
-        $sql = 'SELECT wp.`id_wkpos_payment` as id, wp.`name`, wp.`id_wkpos_payment` as val
-            FROM `' . _DB_PREFIX_ . 'wkpos_payment` wp';
+        if (!$id_lang) {
+            $id_lang = Configuration::get('PS_LANG_DEFAULT');
+        }
+
+        $sql = 'SELECT wp.`id_wkpos_payment` as id, wpl.`name`, wp.`id_wkpos_payment` as val
+            FROM `' . _DB_PREFIX_ . 'wkpos_payment` wp
+            LEFT JOIN `' . _DB_PREFIX_ . 'wkpos_payment_lang` wpl ON wp.`id_wkpos_payment` = wpl.`id_wkpos_payment` AND wpl.`id_lang` = ' . (int) $id_lang;
 
         return Db::getInstance()->executeS($sql);
     }

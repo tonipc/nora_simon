@@ -279,8 +279,8 @@ class WkPosModuleFrontController extends ModuleFrontController
         $posSales = $this->context->link->getModuleLink('wkpos', 'sale');
         $employeeDetails = $this->objEmployee;
         // Customization code start by webkul #1078378 [paytef]
-        // $paymentDetails = WkPosPayment::getActivePaymentDetail();
-        $paymentDetails = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet);
+        // $paymentDetails = WkPosPayment::getActivePaymentDetail($this->context->language->id);
+        $paymentDetails = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet, $this->context->language->id);
         // Customization code end by webkul #1078378 [paytef]
         $posSessionStatus = 0;
         $controlSession = 0;
@@ -661,7 +661,7 @@ class WkPosModuleFrontController extends ModuleFrontController
         // dump($TPV_autopago);
 
 
-        $payments = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet);
+        $payments = WkPosPayment::getActivePaymentDetailOutletWise((int) $this->idWkPosOutlet, $this->context->language->id);
 
         //no le gusta a la hora de generar id_order, lo haremos distinto
         // $translations_payment_first = array();
@@ -748,7 +748,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                     'email' => $employeeDetails->email,
                 ],
                 // Customization code start by webkul #1078378 [paytef]
-                // 'payments' => WkPosPayment::getActivePaymentDetail(),
+                // 'payments' => WkPosPayment::getActivePaymentDetail($this->context->language->id),
                 'payments' => $payments,
                 // Customization code end by webkul #1078378 [paytef]
                 'outlet' => [

@@ -46,12 +46,17 @@ class WkPosOrderPayment extends ObjectModel
         ],
     ];
 
-    public static function getOrderPayment($idWkPosOrder)
+    public static function getOrderPayment($idWkPosOrder, $id_lang = null)
     {
+        if (!$id_lang) {
+            $id_lang = Configuration::get('PS_LANG_DEFAULT');
+        }
+
         return Db::getInstance()->executeS(
-            'SELECT a.*, b.`name`
+            'SELECT a.*, bl.`name`
             FROM `' . _DB_PREFIX_ . 'wkpos_order_payment` a
             LEFT JOIN `' . _DB_PREFIX_ . 'wkpos_payment` b ON (a.`id_wkpos_payment` = b.`id_wkpos_payment`)
+            LEFT JOIN `' . _DB_PREFIX_ . 'wkpos_payment_lang` bl ON b.`id_wkpos_payment` = bl.`id_wkpos_payment` AND bl.`id_lang` = ' . (int) $id_lang . '
             WHERE `id_wkpos_order` = ' . (int) $idWkPosOrder
         );
     }

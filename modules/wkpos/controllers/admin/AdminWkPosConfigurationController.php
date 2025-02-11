@@ -1202,7 +1202,7 @@ class AdminWkPosConfigurationController extends ModuleAdminController
     public function paymentForm()
     {
         $idLang = Context::getContext()->language->id;
-        $paymentDetails = WkPosPayment::getPaymentDetail();
+        $paymentDetails = WkPosPayment::getPaymentDetail(false, $this->context->language->id);
         $refundOptions = array_merge(
             [
                 [

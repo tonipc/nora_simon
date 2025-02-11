@@ -206,7 +206,7 @@ class WkPosRegisterModuleFrontController extends ModuleFrontController
                 'cashMovement' => $this->module->getCashMovement($this->idWkPosRegister),
                 'registerOrders' => $this->module->getRegisterOrder($this->idWkPosRegister),
                 'voucherAmount' => $this->module->getRegisterVouchersAmount($this->idWkPosRegister),
-                'paymentDetails' => WkPosPayment::getActivePaymentDetail(),
+                'paymentDetails' => WkPosPayment::getActivePaymentDetail($this->context->language->id),
                 'posUsers' => $this->module->getAllUsers(),
             ];
         }
