@@ -37,7 +37,7 @@ class WkPosPayment extends ObjectModel
             'date_upd' => ['type' => self::TYPE_DATE, 'validate' => 'isDateFormat', 'required' => true],
 
             /* Lang fields */
-            'name' => ['type' => self::TYPE_STRING, 'required' => true, 'lang' => true, 'validate' => 'isName', 'size' => 50],
+            'name' => ['type' => self::TYPE_STRING, 'required' => true, 'lang' => true, 'validate' => 'isCatalogName', 'size' => 50],
         ],
     ];
 
