@@ -97,7 +97,7 @@ class AdminWkPosPaymentsController extends ModuleAdminController
             'input' => [
                 [
                     'type' => 'text',
-                    'label' => $this->l('Centro'),
+                    'label' => $this->l('Nombre método de pago'),
                     'name' => 'name',
                     'lang' => true,
                     'required' => true,
