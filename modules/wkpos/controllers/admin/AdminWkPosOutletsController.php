@@ -784,7 +784,7 @@ class AdminWkPosOutletsController extends ModuleAdminController
         $this->className = 'WkPosOutletProduct';
         $this->identifier = 'id_wkpos_outlet_product';
         $this->_select = ' image_shop.`id_image` AS id_image , pl.`link_rewrite`, pl.`name`,
-            p.`cache_default_attribute`, pl.`id_shop`, p.`price`, p.`active` as prestashop_active';
+            p.`cache_default_attribute`, pl.`id_shop`, p.`price`, product_shop.`active` as prestashop_active';
         $this->_join = 'LEFT JOIN `' . _DB_PREFIX_ . 'product` p
             ' . Shop::addSqlAssociation('product', 'p') . ' ON (p.`id_product` = a.`id_product`)';
         $this->_join .= ' LEFT JOIN `' . _DB_PREFIX_ . 'product_lang` pl
