@@ -33,9 +33,7 @@ class nora_vistaempleados extends Module
     public $output = '';
     public $configs = [
         'EMPLEADOS_VISTACLIENTE',
-        'EMPLEADOS_AUTOPAGO_CAFETERIAS',
-        // 'EMPLEADOS_TAKEAWAY',
-        // 'EMPLEADOS_MOSTRAR_CERRAR_SESION'
+        // 'EMPLEADOS_AUTOPAGO_CAFETERIAS'
     ];
 	public function __construct() 
 	{
@@ -57,7 +55,7 @@ class nora_vistaempleados extends Module
             return $this->displayError($this->l('You cannot add/edit elements from \"All Shops\" or \"Group Shop\".'));
         } 
         else {
-
+        
             if (Tools::isSubmit('submitAll')) {
                 $this->postProcess();
                 $this->output .= $this->displayConfirmation($this->l('Lista de varias vistas empleados actualizada.'));
@@ -116,7 +114,7 @@ class nora_vistaempleados extends Module
         $fields = array();
         $fields[0]['form'] = array(
             'legend' => array(
-                'title' => $this->l('Configuración de empleados con AUTOPAGO'),
+                'title' => $this->l('Configuración de empleados con AUTOPAGO otras tiendas'),
                 'icon' => 'icon-cogs',
             ),
             'input' => array(
@@ -124,7 +122,7 @@ class nora_vistaempleados extends Module
                     'type' => 'select',
                     'multiple' => true,
                     'class' => 'chosen',
-                    'label' => $this->l('Empleados con vista SÓLO MENUS + EXTRAS'),
+                    'label' => $this->l('Empleados con vista autopago'),
                     'name' => 'EMPLEADOS_VISTACLIENTE',
                     'options' => array(
                         'query' => $employees,
@@ -132,36 +130,12 @@ class nora_vistaempleados extends Module
                         'name' => 'name',
                     ),
                 ),
-                array(
-                    'type' => 'select',
-                    'multiple' => true,
-                    'class' => 'chosen',
-                    'label' => $this->l('Empleados con vista SÓLO DESAYUNOS'),
-                    'name' => 'EMPLEADOS_AUTOPAGO_CAFETERIAS',
-                    'options' => array(
-                        'query' => $employees,
-                        'id' => 'id_employee',
-                        'name' => 'name',
-                    ),
-                ),
                 // array(
                 //     'type' => 'select',
                 //     'multiple' => true,
                 //     'class' => 'chosen',
-                //     'label' => $this->l('Empleados con vista SÓLO TAKE AWAY'),
-                //     'name' => 'EMPLEADOS_TAKEAWAY',
-                //     'options' => array(
-                //         'query' => $employees,
-                //         'id' => 'id_employee',
-                //         'name' => 'name',
-                //     ),
-                // ),
-                // array(
-                //     'type' => 'select',
-                //     'multiple' => true,
-                //     'class' => 'chosen',
-                //     'label' => $this->l('Empleados con visibilidad del boton de CERRAR SESION'),
-                //     'name' => 'EMPLEADOS_MOSTRAR_CERRAR_SESION',
+                //     'label' => $this->l('Empleados con vista SÓLO DESAYUNOS'),
+                //     'name' => 'EMPLEADOS_AUTOPAGO_CAFETERIAS',
                 //     'options' => array(
                 //         'query' => $employees,
                 //         'id' => 'id_employee',
