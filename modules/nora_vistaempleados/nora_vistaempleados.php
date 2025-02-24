@@ -53,12 +53,18 @@ class nora_vistaempleados extends Module
 
     public function getContent()
     {
-        if (Tools::isSubmit('submitAll')) {
-            $this->postProcess();
-            $this->output .= $this->displayConfirmation($this->l('Lista de varias vistas empleados actualizada.'));
-        }
+        if (Shop::getContext() == Shop::CONTEXT_GROUP || Shop::getContext() == Shop::CONTEXT_ALL) {
+            return $this->displayError($this->l('You cannot add/edit elements from \"All Shops\" or \"Group Shop\".'));
+        } 
+        else {
 
-        return $this->output . $this->displayForm();
+            if (Tools::isSubmit('submitAll')) {
+                $this->postProcess();
+                $this->output .= $this->displayConfirmation($this->l('Lista de varias vistas empleados actualizada.'));
+            }
+
+            return $this->output . $this->displayForm();
+        }
     }
 
     public function postProcess()
@@ -110,7 +116,7 @@ class nora_vistaempleados extends Module
         $fields = array();
         $fields[0]['form'] = array(
             'legend' => array(
-                'title' => $this->l('Configuración de empleados con AUTOPAGO + TAKEAWAY'),
+                'title' => $this->l('Configuración de empleados con AUTOPAGO'),
                 'icon' => 'icon-cogs',
             ),
             'input' => array(
