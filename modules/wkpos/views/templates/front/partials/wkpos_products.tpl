@@ -98,8 +98,10 @@
 
                                 <div class="clearfix">
                                     {* <!-- ko if: $root.navigatorOnline() --> *}
-                                    <img src="" class="img-responsive" data-id-product=""
-                                        data-bind="attr: { src: imagePath, alt: name }">
+                                    <div class="product-image">
+                                        <img src="" class="img-responsive" data-id-product=""
+                                            data-bind="attr: { src: imagePath, alt: name }">
+                                    </div>
                                     {* <!-- /ko -->
                                         <!-- ko if: $root.navigatorOnline() == false -->
                                             <span data-bind="text: name"></span>

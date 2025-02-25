@@ -343,6 +343,12 @@ body {
   box-shadow: 4px 4px 11px 0 var(--wkpos-box-shadow);
 }
 
+.product-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
 .product-detail {
   /* height: 50px; */
   height: max-content;
