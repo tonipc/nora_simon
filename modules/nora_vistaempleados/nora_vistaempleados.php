@@ -114,7 +114,7 @@ class nora_vistaempleados extends Module
         $fields = array();
         $fields[0]['form'] = array(
             'legend' => array(
-                'title' => $this->l('Configuración de empleados con AUTOPAGO otras tiendas'),
+                'title' => $this->l('Configuración de empleados con AUTOPAGO tienda ').$this->context->shop->id,
                 'icon' => 'icon-cogs',
             ),
             'input' => array(
@@ -155,6 +155,12 @@ class nora_vistaempleados extends Module
 
     private function getEmployees()
     {
-        return Db::getInstance()->executeS('SELECT CONCAT(firstname, " ", lastname, " (", email, ")") as name, id_employee FROM ' . _DB_PREFIX_ . 'employee');
+        // No vale la pena, lo diferenciamos por el dominio del correo
+        // $sql =   'SELECT CONCAT(e.firstname, " ", e.lastname, " (", e.email, ")") as name, e.id_employee 
+        // FROM ' . _DB_PREFIX_ . 'employee e
+        // left join ' . _DB_PREFIX_ . 'employee_shop sh on sh.id_employee = e.id_employee
+        // where sh.id_shop = '.$this->context->shop->id;
+        
+        return Db::getInstance()->executeS('SELECT CONCAT(firstname, " ", lastname, " (", email, ")") as name, id_employee FROM ' . _DB_PREFIX_ . 'employee WHERE active = 1');
     }
 }
