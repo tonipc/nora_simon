@@ -222,6 +222,9 @@ class WkPosPayTef extends Module
 
     public function getContent()
     {
+        if (Shop::getContext() == Shop::CONTEXT_GROUP || Shop::getContext() == Shop::CONTEXT_ALL) {
+            return $this->displayError($this->l('You cannot add/edit elements from \"All Shops\" or \"Group Shop\".'));
+        }
         $this->output .= $this->displayInformation($this->l('Need to configure the device IP, device Port and pin.pad from empoyeed add/edit page.'));
         $this->postProcess();
 
