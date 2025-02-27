@@ -75,7 +75,7 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
         );
         $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/onscan.js');
         $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/fuse.js');
-        $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/bundle.js?6.3');
+        $this->posAddJs(_MODULE_DIR_ . 'wkpos/views/js/bundle.js?7.6');
     }
 
     /**
@@ -128,31 +128,32 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
             );
             // dump($productDetails['products']);
 
-            // $autopago_menus_users = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
-            // if(!$autopago_menus_users){
-            //     $autopago_menus_users = [];
-            // }
-            // $only_packs = [];
-            // foreach ($productDetails['products'] as $key => $product){
-            //     if(in_array($this->context->cookie->id_employee, $autopago_menus_users) && ($product['id_category_default'] == 16 || $product['id_category_default'] == 17 || $product['id_category_default'] == 18)){
-            //         $only_packs[$key] = $product;
-            //     }
-            // }
-            // if(!empty($only_packs))
-            //     $productDetails['products'] = $only_packs;
 
-            // $autopago_cafeterias_users = json_decode(Configuration::get('EMPLEADOS_AUTOPAGO_CAFETERIAS'), true);
-            // if(!$autopago_cafeterias_users){
-            //     $autopago_cafeterias_users = [];
-            // } 
-            // $only_cafeteria = [];
-            // foreach ($productDetails['products'] as $key => $product){
-            //     if(in_array($this->context->cookie->id_employee, $autopago_cafeterias_users) && ($product['id_category_default'] == 19 || $product['id_category_default'] == 6 || $product['id_category_default'] == 9)){
-            //         $only_cafeteria[$key] = $product;
-            //     }
-            // }
-            // if(!empty($only_cafeteria))
-            //     $productDetails['products'] = $only_cafeteria;
+            $autopago_menus_users = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
+            if(!$autopago_menus_users){
+                $autopago_menus_users = [];
+            }
+            $only_packs = [];
+            foreach ($productDetails['products'] as $key => $product){
+                if(in_array($this->context->cookie->id_employee, $autopago_menus_users) && ($product['id_category_default'] == 16 || $product['id_category_default'] == 17 || $product['id_category_default'] == 18)){
+                    $only_packs[$key] = $product;
+                }
+            }
+            if(!empty($only_packs))
+                $productDetails['products'] = $only_packs;
+
+            $autopago_cafeterias_users = json_decode(Configuration::get('EMPLEADOS_AUTOPAGO_CAFETERIAS'), true);
+            if(!$autopago_cafeterias_users){
+                $autopago_cafeterias_users = [];
+            } 
+            $only_cafeteria = [];
+            foreach ($productDetails['products'] as $key => $product){
+                if(in_array($this->context->cookie->id_employee, $autopago_cafeterias_users) && ($product['id_category_default'] == 19 || $product['id_category_default'] == 6 || $product['id_category_default'] == 9)){
+                    $only_cafeteria[$key] = $product;
+                }
+            }
+            if(!empty($only_cafeteria))
+                $productDetails['products'] = $only_cafeteria;
     
             $productDetails['count_products'] = count($productDetails['products']);
             $productDetails['next_page'] = (int) Tools::getValue('page') + 1;
@@ -275,14 +276,14 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
         if (Module::isEnabled('ps_mainmenu')) {
             $menu_items = $this->getMenuItems();
 
-            // $autopago_menus_users = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
-            // if(!$autopago_menus_users){
-            //     $autopago_menus_users = [];
-            // }
-            // $autopago_cafeterias_users = json_decode(Configuration::get('EMPLEADOS_AUTOPAGO_CAFETERIAS'), true);
-            // if(!$autopago_cafeterias_users){
-            //     $autopago_cafeterias_users = [];
-            // }
+            $autopago_menus_users = json_decode(Configuration::get('EMPLEADOS_VISTACLIENTE'), true);
+            if(!$autopago_menus_users){
+                $autopago_menus_users = [];
+            }
+            $autopago_cafeterias_users = json_decode(Configuration::get('EMPLEADOS_AUTOPAGO_CAFETERIAS'), true);
+            if(!$autopago_cafeterias_users){
+                $autopago_cafeterias_users = [];
+            }
 
 
             $this->_menu = [];
@@ -291,13 +292,13 @@ class WkPosSaleModuleFrontController extends WkPosModuleFrontController
                     continue;
                 }
                 //Autopago menus
-                // if(in_array($this->context->cookie->id_outlet_employee, $autopago_menus_users) && ($item != 'CAT16' && $item != 'CAT17' && $item != 'CAT18')){
-                //     continue;
-                // }
-                // //Autopago cafeterias
-                // if(in_array($this->context->cookie->id_outlet_employee, $autopago_cafeterias_users) && ($item != 'CAT19' && $item != 'CAT6' && $item != 'CAT9')){
-                //     continue;
-                // }
+                if(in_array($this->context->cookie->id_outlet_employee, $autopago_menus_users) && ($item != 'CAT16' && $item != 'CAT17' && $item != 'CAT18')){
+                    continue;
+                }
+                //Autopago cafeterias
+                if(in_array($this->context->cookie->id_outlet_employee, $autopago_cafeterias_users) && ($item != 'CAT19' && $item != 'CAT6' && $item != 'CAT9')){
+                    continue;
+                }
 
                 preg_match($this->pattern, $item, $value);
                 $id = (int) Tools::substr($item, Tools::strlen($value[1]), Tools::strlen($item));
