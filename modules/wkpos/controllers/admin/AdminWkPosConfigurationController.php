@@ -489,6 +489,7 @@ class AdminWkPosConfigurationController extends ModuleAdminController
         Configuration::updateValue('WKPOS_PRINT_TYPE', Tools::getValue('WKPOS_PRINT_TYPE'));
         Configuration::updateValue('WKPOS_PRINTER_NAME', Tools::getValue('printer_name'));
         Configuration::updateValue('WKPOS_PRINTER_ENCODING', Tools::getValue('printer_encoding'));
+        Configuration::updateValue('WKPOS_PAPER_CUTTING', Tools::getValue('paper_cutting'));
         Configuration::updateValue('WKPOS_ORDER_CONFIRMATION_EMAIL', Tools::getValue('WKPOS_ORDER_CONFIRMATION_EMAIL'));
         Configuration::updateValue('WKPOS_DISPLAY_PRODUCT_DISCOUNT', Tools::getValue('display_product_discount'));
         Configuration::updateValue('WKPOS_PRINTER_AUTO_CONNECT', Tools::getValue('WKPOS_PRINTER_AUTO_CONNECT'));
@@ -1332,6 +1333,16 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                 'name' => $this->l('HTML printing'),
             ],
         ];
+        $cuttingType = [
+            [
+                'id_type' => 1,
+                'name' => $this->l('Partial Cut'),
+            ],
+            [
+                'id_type' => 2,
+                'name' => $this->l('Full Cut'),
+            ],
+        ];
         $this->fields_form = [
             'legend' => [
                 'title' => $this->l('Order receipt'),
@@ -1364,6 +1375,18 @@ class AdminWkPosConfigurationController extends ModuleAdminController
                     'form_group_class' => 'raw_print',
                     'required' => true,
                     'desc' => $this->l('Deafult encoding is Cp850, you can fill supported code page for your printer.'),
+                ],
+                [
+                    'type' => 'select',
+                    'label' => $this->l('Paper cutting type'),
+                    'name' => 'paper_cutting',
+                    'class' => 'fixed-width-xl',
+                    'form_group_class' => 'raw_print',
+                    'options' => [
+                        'query' => $cuttingType,
+                        'id' => 'id_type',
+                        'name' => 'name',
+                    ],
                 ],
                 // array(
                 //     'type' => 'text',
@@ -1506,6 +1529,10 @@ class AdminWkPosConfigurationController extends ModuleAdminController
             'printer_encoding' => Tools::getValue(
                 'printer_encoding',
                 Configuration::get('WKPOS_PRINTER_ENCODING')
+            ),
+            'paper_cutting' => Tools::getValue(
+                'paper_cutting',
+                Configuration::get('WKPOS_PAPER_CUTTING')
             ),
             'WKPOS_ORDER_CONFIRMATION_EMAIL' => Tools::getValue(
                 'WKPOS_ORDER_CONFIRMATION_EMAIL',

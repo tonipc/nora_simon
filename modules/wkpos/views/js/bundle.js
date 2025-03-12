@@ -14872,10 +14872,23 @@
             orderBill.push(rowforpayment + '\x0A');
         });
 
-        orderDetails = [
-            '\x0A' + '\x0A' + '\x0A' + '\x0A' + '\x0A',
-            '\x1B' + '\x69',          // cut paper
-        ];
+        if (paperCuttingType == 2) {
+            orderDetails = [
+                '\x0A' + '\x0A' + '\x0A' + '\x0A' + '\x0A',
+                '\x1B' + '\x69',          // cut paper
+            ];
+        } else if (paperCuttingType == 1){
+            orderDetails = [
+                '\x0A' + '\x0A' + '\x0A' + '\x0A' + '\x0A',
+                '\x1D' + '\x56' + '\x01',          // partial paper cutting
+            ];
+        } else {
+            orderDetails = [
+                '\x0A' + '\x0A' + '\x0A' + '\x0A' + '\x0A',
+                '\x1B' + '\x69',          // cut paper
+            ];
+        }
+
         if (openCashDrawer == 1) {
             // Generate Pulse to kick-out cash drawer**
             orderDetails.push('\x10' + '\x14' + '\x01' + '\x00' + '\x05');
@@ -15016,10 +15029,25 @@
             ];
             creditSlip = creditSlip.concat(orderDetails);
         }
-        orderDetails = [
-            '\x0A' + '\x0A' + '\x0A' + '\x0A' + '\x0A',
-            '\x1B' + '\x69',          // cut paper
-        ];
+        // PAPER_FULL_CUT  = '\x1d\x56\x00' # Full cut paper
+        // PAPER_PART_CUT  = '\x1d\x56\x01' # Partial cut paper
+        if (paperCuttingType == 2) {
+            orderDetails = [
+                '\x0A' + '\x0A' + '\x0A' + '\x0A' + '\x0A',
+                '\x1B' + '\x69',          // cut paper
+            ];
+        } else if (paperCuttingType == 1){
+            orderDetails = [
+                '\x0A' + '\x0A' + '\x0A' + '\x0A' + '\x0A',
+                '\x1D' + '\x56' + '\x01',          // partial paper cutting
+            ];
+        } else {
+            orderDetails = [
+                '\x0A' + '\x0A' + '\x0A' + '\x0A' + '\x0A',
+                '\x1B' + '\x69',          // cut paper
+            ];
+        }
+
         if (openCashDrawer == 1) {
             // Generate Pulse to kick-out cash drawer**
             orderDetails.push('\x10' + '\x14' + '\x01' + '\x00' + '\x05');

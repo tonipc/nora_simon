@@ -418,6 +418,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'signOnOrderListing' => Configuration::get('WKPOS_DIGITAL_SIGN_ON_PS_ORDER_LISTING') ?
                 Configuration::get('WKPOS_DIGITAL_SIGN_ON_PS_ORDER_LISTING') : 0,
                 'printerEncoding' => Configuration::get('WKPOS_PRINTER_ENCODING'),
+                'paperCuttingType' => Configuration::get('WKPOS_PAPER_CUTTING'),
                 'showPriceWithoutReduction' => Configuration::get('WKPOS_SHOW_ORIGINAL_PRICE') ? 1 : 0,
                 'showStockLocation' => Configuration::get('WKPOS_SHOW_STOCK_LOCATION') ? 1 : 0,
                 'displayProductDiscount' => Configuration::get('WKPOS_DISPLAY_PRODUCT_DISCOUNT') ? 1 : 0,
