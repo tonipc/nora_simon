@@ -1941,3 +1941,23 @@ div.customer-details:hover,
 div.wkpos-order-detail:hover {
   background: #E7E7E7 !important;
 }
+
+
+
+/* GLOVO DESCUENTO */
+
+.discount-glovo {
+  margin-left: 30px;
+    color: red;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.9;
+    text-align: center;
+    /* background: red; */
+    /* padding: 1rem 2rem; */
+    border-radius: 50px;
+    position: absolute;
+    /* top: 10px; */
+    z-index: 1;
+    transform: rotate(356deg);
+}

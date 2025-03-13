@@ -34,6 +34,7 @@
                     <span style="font-size: 26px; line-height: 1.9;">{$wkposHeading|escape:'htmlall':'UTF-8'}</span>
                 </div>
                 {/block}
+                
                 {block name='pos_product_search'}
                 <div class="col-xs-4 col-sm-4 pull-right col-md-offset-1 wk-pos-features" id="wkpos-product-search">
                     <div class="input-group">

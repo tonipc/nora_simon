@@ -773,6 +773,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'num_pedidos' => $fecha_para_total_dia ? $num_pedidos : null,
                 'TPV_autopago' => $TPV_autopago,
                 // 'mostrar_cerrar_sesion' => $mostrar_cerrar_sesion,
+                'glovo_dia_descuento' => date('w') == 3,
             ]
         );
     }
