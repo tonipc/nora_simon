@@ -14705,8 +14705,8 @@
                 if (product['reduction_percent'] != undefined
                     && product['reduction_percent'] > 0
                     && displayProductDiscount == 1) {
-                    productName += ' ' + beforeDiscountMessage + product['reduction_percent'] + afterDiscountMessage;
-                    // productDetails += ' ' + beforeDiscountMessage + product['reduction_percent'] + afterDiscountMessage;
+                    productName += ' ' + beforeDiscountMessage + ' ' + product['reduction_percent'] + afterDiscountMessage;
+                    // productDetails += ' ' + beforeDiscountMessage + ' ' + product['reduction_percent'] + afterDiscountMessage;
                 }
                 var productNameArray = chunkString(productName, 14);
                 jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(productNameArray, function (index, name) {
@@ -16676,8 +16676,8 @@
                 && product['reduction_percent'] > 0
                 && displayProductDiscount == 1
             ) {
-                productName += ' ' + beforeDiscountMessage + product['reduction_percent'] + afterDiscountMessage;
-                // productDetails += ' ' + beforeDiscountMessage + product['reduction_percent'] + afterDiscountMessage;
+                productName += ' ' + beforeDiscountMessage + ' ' + product['reduction_percent'] + afterDiscountMessage;
+                // productDetails += ' ' + beforeDiscountMessage + ' ' + product['reduction_percent'] + afterDiscountMessage;
             }
             html += '<tr style="' + dflex + '">';
             html += '<td style="' + flex8 + padding10 + '">' + productName + '</td>';
