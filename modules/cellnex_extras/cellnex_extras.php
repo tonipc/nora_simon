@@ -40,7 +40,6 @@ use PrestaShop\PrestaShop\Core\Grid\Column\ColumnCollection;
 class cellnex_extras extends Module
 {
     public $output = '';
-    // private $tab_module = 'nora_address_extra';
 
     public function __construct()
     {
@@ -121,20 +120,20 @@ class cellnex_extras extends Module
         return $result;
     }
 
-    public function getContent() {
-        // $this->installHooks();
-        return 'AAA';
-    }
+    // public function getContent() {
+    //     // $this->installHooks();
+    //     return 'AAA';
+    // }
 
-    public function saveExtraData(array $params)
-    {
+    // public function saveExtraData(array $params)
+    // {
 
-    }
+    // }
 
-    public function hookActionProductSave(array $params)
-    {
+    // public function hookActionProductSave(array $params)
+    // {
 
-    }
+    // }
 
     public function hookDisplayAdminProductsMainStepLeftColumnMiddle(array $params)
     {
@@ -191,11 +190,10 @@ class cellnex_extras extends Module
         );
     }
 
-    public function hookActionProductGridDataModifier(array $params)
-    {
+    // public function hookActionProductGridDataModifier(array $params)
+    // {
 
-    }
-
+    // }
 
     public function hookActionProductGridQueryBuilderModifier(array $params)
     {
@@ -238,8 +236,10 @@ class cellnex_extras extends Module
         }
     }
 
-    public function hookActionAdminProductsListingResultsModifier(array $params)
-    {
+    
+    // public function hookActionAdminProductsListingResultsModifier(array $params)
+    // {
         
-    }
+    // }
+
 }
