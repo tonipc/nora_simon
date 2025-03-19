@@ -33,7 +33,7 @@
                 <div class="col-xs-12 col-sm-3 wk-flex-grow title">
                     <span style="font-size: 26px; line-height: 1.9;">{$wkposHeading|escape:'htmlall':'UTF-8'}</span>
                     {if $glovo_dia_descuento}
-                        <span class="discount-glovo">{l s='50% DE DESCUENTO' mod='wkpos'}</span>
+                        <span class="discount-glovo">{l s='50% DTE EN COMIDAS' mod='wkpos'}</span>
                     {/if}
                 </div>
                 {/block}
@@ -195,7 +195,7 @@
                 <!-- ko ifnot: $root.sessionStatus() == 1 -->
                 {* {if $mostrar_cerrar_sesion} *}
                 <a href="{$wkposLogin|escape:'htmlall':'UTF-8'}">
-                    <div class=" pull-right wk-pos-features" title="{l s='Sign out' mod='wkpos'}">
+                    <div class=" pull-right wk-pos-features sign-out" title="{l s='Sign out' mod='wkpos'}">
                         <i class="fa fa-sign-out"></i>
                         </div>
                     </a>
