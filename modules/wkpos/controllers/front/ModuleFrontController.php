@@ -469,7 +469,7 @@ class WkPosModuleFrontController extends ModuleFrontController
                 'displayShippingMsg' => $this->module->l('Shipping cost : ', 'modulefrontcontroller'),
                 'invalidOrderDiscount' => $this->module->l('Invalid order discount', 'modulefrontcontroller'),
                 'beforeDiscountMessage' => $this->module->l('With a ', 'modulefrontcontroller'),
-                'afterDiscountMessage' => $this->module->l('% Discount', 'modulefrontcontroller'),
+                'afterDiscountMessage' => $this->module->l('% Dto', 'modulefrontcontroller'),
                 'networkError' => $this->module->l('No internet connection', 'modulefrontcontroller'),
                 'invalidProductQuantity' => $this->module->l('Invalid product quantity.', 'modulefrontcontroller'),
                 'invalidAddress1' => $this->module->l('Invalid address1', 'modulefrontcontroller'),

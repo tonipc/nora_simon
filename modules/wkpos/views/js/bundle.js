@@ -14488,6 +14488,7 @@
         'en': 'Cp850',
         'fr': 'Cp850',
         'es': 'Cp850',
+        'ca': 'Cp850',
         'it': 'Cp850',
         'pt': 'Cp850',
         'de': 'Cp850',
@@ -14499,11 +14500,14 @@
     };
 
     function printOrderBill(printer) {
-        var encoding = {};
+        // var encoding = {};
+        var params = {
+            colorType: 'blackwhite'
+        };
         if (typeof languageEncoding[langIsoCode] != 'undefined') {
-            encoding = { encoding: printerEncoding };
+            params.encoding = printerEncoding;
             if (printerEncoding == '') {
-                encoding = { encoding: languageEncoding[langIsoCode] };
+                params.encoding = languageEncoding[langIsoCode];
             }
         }
         var posOrder;
@@ -14516,8 +14520,8 @@
 
 
         createOrderBill(posOrder[viewModel.selectedOrderId()]['order'], posOrder[viewModel.selectedOrderId()]['product']);
-        if (typeof encoding.encoding != 'undefined') {
-            var config = qz.configs.create(printer, encoding);       // Create a default config for the found printer
+        if (typeof params.encoding != 'undefined') {
+            var config = qz.configs.create(printer, params);       // Create a default config for the found printer
         } else {
             var config = qz.configs.create(printer);       // Create a default config for the found printer
         }
@@ -14567,7 +14571,6 @@
             var orderSubTotal = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_2__["makeTotalProductCaculation"])(order['total_products_wt']);
             var orderShipping = Object(_wkformatcurrency_js__WEBPACK_IMPORTED_MODULE_2__["makeTotalProductCaculation"])(order['shipping_cost_tax_incl']);
         }
-
         var orderDetails = [];
         if (order.id_wkpos_payment == 4 && typeof order.installment != 'undefined') {
             if (isNaN(order.installment.paidAmount)) {
@@ -14581,23 +14584,29 @@
             }
         }
         // order['customer_name'];
-        var shopNameArray = getShopName(shopName, 42);
+        // var shopNameArray = getShopName(shopName, 42);
         orderBill = [
-            { type: 'raw', format: 'image', flavor: 'file', data: invoice_logo, options: { language: "ESCPOS", dotDensity: 'double' } },
-            '\x1B' + '\x40',          // init
-            '\x1B' + '\x45' + '\x0D', // bold on
+            {
+                type: 'raw',
+                format: 'image',
+                flavor: 'file',
+                data: invoice_logo,
+                options: { language: "ESCPOS", dotDensity: 'double' }
+            },
+            // '\x1B' + '\x40',          // init
+            // '\x1B' + '\x45' + '\x0D', // bold on
             '\x1B' + '\x61' + '\x31', // center align
         ];
-        jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(shopNameArray, function (index, shop) {
-            orderBill.push(shop + '\x0A');
-        });
+        // jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(shopNameArray, function (index, shop) {
+        //     orderBill.push(shop + '\x0A');
+        // });
         //autopago cafeterias
         if (printer_autopago_cafeterias) {
             orderBill.push('ACAFETERIA' + '\x0A'); 
         }
-        if (outletAddress1.length > 1) {
-            orderBill.push(outletAddress1);
-        }
+        // if (outletAddress1.length > 1) {
+        //     orderBill.push(outletAddress1);
+        // }
         // if (outletAddress2.length > 1) {
         //     orderBill.push(', ' + outletAddress2 + '\x0A');
         // } else {
@@ -14627,7 +14636,7 @@
         var productNameHeading2 = productNameHeading;
         if (productNameHeading2.length < 14) {
             var length = productNameHeading2.length;
-            for (var i = 0; i < (16 - length); i++) {
+            for (var i = 0; i < (21 - length); i++) {
                 productNameHeading2 += ' ';
             }
         } else {
@@ -14637,7 +14646,7 @@
         var qtyHeading2 = qtyHeading;
         if (qtyHeading2.length < 3) {
             var length = qtyHeading2.length;
-            for (var i = 0; i < (5 - length); i++) {
+            for (var i = 0; i < (10 - length); i++) {
                 qtyHeading2 += ' ';
             }
         } else {
@@ -14646,11 +14655,11 @@
         var priceHeading2 = priceHeading;
         if (priceHeading2.length < 8) {
             var length = priceHeading2.length;
-            for (var i = 0; i < (10 - length); i++) {
+            for (var i = 0; i < (12 - length); i++) {
                 priceHeading2 += ' ';
             }
         } else {
-            priceHeading2 = priceHeading2.substr(0, 8) + '  ';
+            priceHeading2 = priceHeading2.substr(0, 8) + '   ';
         }
         var totalHeading2 = totalHeading;
         if (totalHeading2.length > 8) {
@@ -14660,7 +14669,7 @@
             order['order_date'] + '\x0A',
             '\x1B' + '\x45' + '\x0A', // bold off
             // '\x0A',                   // line break
-            displayUser + employeeName + '\x0A',
+            // displayUser + employeeName + '\x0A',
             outletAddress2 + '\x0A',
             // '\x0A',                   // line break
             displayOrder + '#' + order['reference'] + '\x0A',
@@ -14705,17 +14714,18 @@
                 if (product['reduction_percent'] != undefined
                     && product['reduction_percent'] > 0
                     && displayProductDiscount == 1) {
-                    productName += ' ' + beforeDiscountMessage + ' ' + product['reduction_percent'] + afterDiscountMessage;
+                    productName += ' ' + Math.round(product['reduction_percent']) + afterDiscountMessage;
                     // productDetails += ' ' + beforeDiscountMessage + ' ' + product['reduction_percent'] + afterDiscountMessage;
                 }
-                var productNameArray = chunkString(productName, 14);
+                var productNameArray = chunkString(productName, 19);
                 jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(productNameArray, function (index, name) {
                     productDetails += name;
                     // productDetails += '\x0A' + '\x1B' + '\x61' + '\x32';
+
                     if (index == 0) {
-                        if (name.length <= 14) {
+                        if (name.length <= 19) {
                             var length = name.length;
-                            for (var i = 0; i < (16 - length); i++) {
+                            for (var i = 0; i < (21 - length); i++) {
                                 name += ' ';
                             }
                         }
@@ -14744,6 +14754,7 @@
                     } else {
                         name += '\x0A';
                     }
+
                     orderBill.push(name);
                 })
 
@@ -14792,15 +14803,15 @@
             if (taax.tax_amount > 0) {
                 orderDetails = [
                     taax.tax_rate + ' ',
-                    displayTax + ' ',
-                    taax.tax_amount + ' EUR',
+                    displayTax,
+                    (Math.round(taax.tax_amount * 100) / 100) + ' €',
                     '\x0A',
                 ];
                 orderBill = orderBill.concat(orderDetails);
             }
         });
 
-        if (parseInt(displayOrderDiscountWk) == 1) {
+        if (parseInt(displayOrderDiscountWk) == 1 && order['total_discounts_value'] > 0) {
             orderDetails = [
                 '\x1B' + '\x61' + '\x32',
                 displayDiscount,
@@ -14818,7 +14829,7 @@
             '\x1B' + '\x61' + '\x30', // left align
             '-----------------------------------------------' + '\x0A',
             '\x1B' + '\x61' + '\x31', // center align
-            displayCustomerName + order['customer_name'] + '\x0A',
+            // displayCustomerName + order['customer_name'] + '\x0A',
         ];
         orderBill = orderBill.concat(orderDetails);
 
@@ -14863,7 +14874,7 @@
                 orderBill = orderBill.concat(orderDetails);
             }
         }
-        orderBill.push('\x0A');
+        // orderBill.push('\x0A');
         var rowforpaymenthead = paymentTypeWk.padEnd(17, ' ')+paymentAmountWk.padEnd(12, ' ')+paymentTenderedWk.padEnd(12, ' ')/*+paymentChangeWk.padEnd(12, ' ')*/;
         orderBill.push(rowforpaymenthead + '\x0A');
 
@@ -14897,21 +14908,22 @@
         orderBill = orderBill.concat(orderDetails);
 
         /*  In case sign not print comment below to print it as text */
-            var orderReplacedEuro = orderBill;
-            orderBill = [];
-            var items = [];
-            orderReplacedEuro.forEach((orderBil, key) => {
-                if (key != 0) {
-                    var itemsx = orderBil.replaceAll(" €", "EUR");
-                    itemsx = itemsx.replaceAll(" €\n", "EUR\n");
-                    itemsx = itemsx.replaceAll("€", "EUR");
-                    itemsx = itemsx.replaceAll("€\n", "EUR\n");
-                    items[key] = itemsx.replaceAll("false\n", "");
-                } else {
-                    items[key] = orderBil;
-                }
-            });
-            orderBill = items;
+        var orderReplacedEuro = orderBill;
+        var euroReplace = 'EUR';
+        orderBill = [];
+        var items = [];
+        orderReplacedEuro.forEach((orderBil, key) => {
+            if (key != 0) {
+                var itemsx = orderBil.replaceAll(" €", ' ' + euroReplace);
+                itemsx = itemsx.replaceAll(" €\n", ' ' + euroReplace + '\n');
+                itemsx = itemsx.replaceAll("€", euroReplace);
+                itemsx = itemsx.replaceAll("€\n", euroReplace + '\n');
+                items[key] = itemsx.replaceAll("false\n", "");
+            } else {
+                items[key] = orderBil;
+            }
+        });
+        orderBill = items;
     }
 
     /* Connect the printer at run time */
