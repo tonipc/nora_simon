@@ -1963,3 +1963,7 @@ div.wkpos-order-detail:hover {
     z-index: 1;
     transform: rotate(356deg);
 }
+
+.wk-products .product-detail .product-name {
+  font-size: 30px;
+}

@@ -107,7 +107,7 @@
                                             <span data-bind="text: name"></span>
                                         <!-- /ko --> *}
                                     <div class="col-xs-12 product-detail">
-                                        <span data-bind="text: displayName"></span><br>
+                                        <span class="product-name" data-bind="text: displayName"></span><br>
                                         {* <!-- ko if: showPrice == 1 --> *}
                                         <b data-bind="attr: { 'product-price': price }, text: displayPrice"></b>
                                         <!-- ko if: $root.contentModel.showPriceWithoutReduction() == 1 -->
