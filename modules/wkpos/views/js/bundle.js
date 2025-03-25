@@ -14486,6 +14486,7 @@
     var orderBill = [];
     var languageEncoding = {
         'en': 'Cp850',
+        'gb': 'Cp850',
         'fr': 'Cp850',
         'es': 'Cp850',
         'ca': 'Cp850',
@@ -14517,7 +14518,6 @@
         ) {
             posOrder = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.parseJSON(localStorage.pos_orders);
         }
-
 
         createOrderBill(posOrder[viewModel.selectedOrderId()]['order'], posOrder[viewModel.selectedOrderId()]['product']);
         if (typeof params.encoding != 'undefined') {
@@ -19650,7 +19650,6 @@
                         posOrder[viewModel.selectedOrderId()]['product']
                     );
                 } else {
-
                     self.printerConnected(qz.websocket.isActive());
                     if (qz.websocket.isActive()) {
                         Object(_wkprintinvoice_js__WEBPACK_IMPORTED_MODULE_10__["printOrderBill"])(self.selectedPrinter());

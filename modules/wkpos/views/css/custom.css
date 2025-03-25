@@ -1945,9 +1945,7 @@ div.wkpos-order-detail:hover {
 }
 
 
-
 /* GLOVO DESCUENTO */
-
 .discount-glovo {
   margin-left: 30px;
     color: red;
@@ -1965,5 +1963,5 @@ div.wkpos-order-detail:hover {
 }
 
 .wk-products .product-detail .product-name {
-  font-size: 24px;
+  font-size: 20px;
 }
