@@ -33,7 +33,7 @@
                 <div class="col-xs-12 col-sm-3 wk-flex-grow title">
                     <span style="font-size: 26px; line-height: 1.9;">{$wkposHeading|escape:'htmlall':'UTF-8'}</span>
                     {if $glovo_dia_descuento}
-                        <span class="discount-glovo">{l s='50% DTE EN COMIDAS' mod='wkpos'}</span>
+                        <span class="discount-glovo">{l s='50% OFF IN MEALS' mod='wkpos'}</span>
                     {/if}
                 </div>
                 {/block}
