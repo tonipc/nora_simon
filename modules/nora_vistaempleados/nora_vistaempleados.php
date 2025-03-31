@@ -33,7 +33,7 @@ class nora_vistaempleados extends Module
     public $output = '';
     public $configs = [
         'EMPLEADOS_VISTACLIENTE',
-        // 'EMPLEADOS_AUTOPAGO_CAFETERIAS'
+        'EMPLEADOS_AUTOPAGO_CAFETERIAS'
     ];
 	public function __construct() 
 	{
@@ -55,7 +55,7 @@ class nora_vistaempleados extends Module
             return $this->displayError($this->l('You cannot add/edit elements from \"All Shops\" or \"Group Shop\".'));
         } 
         else {
-        
+
             if (Tools::isSubmit('submitAll')) {
                 $this->postProcess();
                 $this->output .= $this->displayConfirmation($this->l('Lista de varias vistas empleados actualizada.'));
@@ -114,7 +114,7 @@ class nora_vistaempleados extends Module
         $fields = array();
         $fields[0]['form'] = array(
             'legend' => array(
-                'title' => $this->l('Configuración de empleados con AUTOPAGO tienda ').$this->context->shop->id,
+                'title' => $this->l('Configuración de empleados con AUTOPAGO'),
                 'icon' => 'icon-cogs',
             ),
             'input' => array(
@@ -122,7 +122,7 @@ class nora_vistaempleados extends Module
                     'type' => 'select',
                     'multiple' => true,
                     'class' => 'chosen',
-                    'label' => $this->l('Empleados con vista autopago'),
+                    'label' => $this->l('Empleados con vista SÓLO MENUS + EXTRAS'),
                     'name' => 'EMPLEADOS_VISTACLIENTE',
                     'options' => array(
                         'query' => $employees,
@@ -130,18 +130,18 @@ class nora_vistaempleados extends Module
                         'name' => 'name',
                     ),
                 ),
-                // array(
-                //     'type' => 'select',
-                //     'multiple' => true,
-                //     'class' => 'chosen',
-                //     'label' => $this->l('Empleados con vista SÓLO DESAYUNOS'),
-                //     'name' => 'EMPLEADOS_AUTOPAGO_CAFETERIAS',
-                //     'options' => array(
-                //         'query' => $employees,
-                //         'id' => 'id_employee',
-                //         'name' => 'name',
-                //     ),
-                // ),
+                array(
+                    'type' => 'select',
+                    'multiple' => true,
+                    'class' => 'chosen',
+                    'label' => $this->l('Empleados con vista SÓLO DESAYUNOS'),
+                    'name' => 'EMPLEADOS_AUTOPAGO_CAFETERIAS',
+                    'options' => array(
+                        'query' => $employees,
+                        'id' => 'id_employee',
+                        'name' => 'name',
+                    ),
+                ),
             ),
             'submit' => array(
                 'title' => $this->l('Update settings'),
@@ -155,12 +155,6 @@ class nora_vistaempleados extends Module
 
     private function getEmployees()
     {
-        // No vale la pena, lo diferenciamos por el dominio del correo
-        // $sql =   'SELECT CONCAT(e.firstname, " ", e.lastname, " (", e.email, ")") as name, e.id_employee 
-        // FROM ' . _DB_PREFIX_ . 'employee e
-        // left join ' . _DB_PREFIX_ . 'employee_shop sh on sh.id_employee = e.id_employee
-        // where sh.id_shop = '.$this->context->shop->id;
-        
-        return Db::getInstance()->executeS('SELECT CONCAT(firstname, " ", lastname, " (", email, ")") as name, id_employee FROM ' . _DB_PREFIX_ . 'employee WHERE active = 1');
+        return Db::getInstance()->executeS('SELECT CONCAT(firstname, " ", lastname, " (", id_employee, " - " ,email, ")") as name, id_employee FROM ' . _DB_PREFIX_ . 'employee');
     }
 }
