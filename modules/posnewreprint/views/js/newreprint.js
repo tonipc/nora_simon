@@ -51,7 +51,7 @@ function enviaEmail(form, url_action_reprint) {
 
                 setTimeout(function() {
                     $('.wkpos-payment-panel .wkpos-btn.next').click();
-                }, 5000);
+                }, 3500);
                 
                 // $('#reprintModal #email-reprint').val('');
             }
