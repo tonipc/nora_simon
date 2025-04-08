@@ -45,6 +45,12 @@ function enviaEmail(form, url_action_reprint) {
             if(data.status){
                 console.log('status ' +data.status);
                 showSuccessMsg(data.status);
+
+                setTimeout(function() {
+                    $('#reprintModal').modal('hide');
+                }, 3000);
+                
+                // $('#reprintModal #email-reprint').val('');
             }
             
         })

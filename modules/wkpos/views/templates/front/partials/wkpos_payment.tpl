@@ -247,6 +247,29 @@
                 <div class="col-md-12 col-sm-8" data-bind="if: ($root.contentModel.idOrder() !== 0)">
                     <div class="col-md-3"></div>
                     <div class="col-md-6 invoice clearfix wkpos-scrollbar">
+                        {* <div class="reprint" data-bind="attr: { 'data-idorder': orderReference }"> *}
+                        
+                        <div class="text-center">
+                            <button type="button" class="wkpos-reprint-modal-button" data-toggle="modal" data-target="#reprintModal">
+                                {l s='Enviar por correo' mod='wkpos'}
+                            </button>
+                        </div>
+
+                        <div class="modal fade" id="reprintModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <div class="reprint" data-bind="attr: { 'data-idorder': $root.contentModel.selectedOrderReference() }">
+                                            {hook h='displayWkPosReprint'}
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="print_invoice text-center">
                          {* Customization code start by Webkul #1078378 [paytef] *}
                             <a class="btn wkpos-payment-customer"

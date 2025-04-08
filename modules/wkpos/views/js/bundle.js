@@ -13295,6 +13295,7 @@
                                 /* Generate order Receipt */
                                 viewModel.orderReceipt(order[order.id_order]);
                                 viewModel.selectedOrderId(order.id_order);
+                                viewModel.selectedOrderReference(order[order.id_order]['order']['reference']);
                                 posOrders[order.id_order] = order[order.id_order];
                                 /* Display Barcode if applicable */
                                 if (displayBarcode == 1) {
@@ -13318,6 +13319,11 @@
                                 viewModel.selectedIdCarrierCost(0);
                                 viewModel.appliedVouchers([]);
                                 viewModel.orderMessage('');
+
+                                /* Show reprint form on payment */
+                                $('#wk-pos-payment-panel .formReprint').show();
+                                $('#wk-pos-payment-panel .formReprint .orderId').val(order.id_order);
+                                $('#wk-pos-payment-panel #email-reprint').attr('autocomplete', 'off');
                             }
                             viewModel.selectedPaymentOption(defaultPaymentMethod);
                             viewModel.selectedCarrierName(noCarrier);

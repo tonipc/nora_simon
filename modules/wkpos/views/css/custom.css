@@ -1965,3 +1965,18 @@ div.wkpos-order-detail:hover {
 .wk-products .product-detail .product-name {
   font-size: 20px;
 }
+
+#wk-pos-payment-panel #reprintModal .modal-body .close { 
+  padding-bottom: 2rem; 
+} 
+ 
+#wk-pos-payment-panel .wkpos-reprint-modal-button { 
+  padding: 10px 20px; 
+  font-size: 18px; 
+  border: 2px solid black; 
+  margin: 25px 0; 
+  color: white; 
+  background: black; 
+  border-radius: 5px; 
+  cursor: pointer; 
+}
