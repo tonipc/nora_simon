@@ -45,10 +45,13 @@ function enviaEmail(form, url_action_reprint) {
             if(data.status){
                 console.log('status ' +data.status);
                 showSuccessMsg(data.status);
-
                 setTimeout(function() {
                     $('#reprintModal').modal('hide');
                 }, 3000);
+
+                setTimeout(function() {
+                    $('.wkpos-payment-panel .wkpos-btn.next').click();
+                }, 5000);
                 
                 // $('#reprintModal #email-reprint').val('');
             }
