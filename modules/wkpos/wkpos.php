@@ -69,6 +69,7 @@ class WkPos extends Module
     public function getContent()
     {
         // $this->installTab('AdminWkPosPayments', 'Payments', 'AdminPOSManage');
+
         Tools::redirectAdmin($this->context->link->getAdminLink('AdminWkPosConfiguration'));
     }
 
@@ -87,9 +88,9 @@ class WkPos extends Module
      *
      * @param [$list] [Containing the array of sql command operation]
      */
+    //YA NO SE USA
     public function hookActionAdminOrdersListingFieldsModifier($list)
     {
-        $optionsOrderStatus = [1 => 'POS', 2 => 'Web'];
         // if (isset($list['select'])) {
         //     // $list['select'] .= ', wko.`active` AS `type`, a.`reference`';
         //     $list['select'] .= ', IF(wko.`active` = 1, 1, 0) AS wkpos_type, a.`reference`';
@@ -99,12 +100,31 @@ class WkPos extends Module
         //     $list['join'] .= ' LEFT JOIN `'._DB_PREFIX_.'wkpos_order` wko'.
         //     ' ON (wko.`id_order` = a.`id_order`)';
         // }
+
+        /*
+        $optionsOrderStatus = [1 => 'POS', 2 => 'Web'];
+        $optionsTpv = [1 => 'Cellnex', 2 => 'Dfactory',  2 => 'SEDE'];
+
+
         if (isset($list['join'])) {
-            $list['join'] .= ' LEFT JOIN (SELECT wkotest.id_order, (CASE WHEN wkot.active IS NULL THEN 2
+            $list['join'] .= ' LEFT JOIN 
+            (SELECT wkotest.id_order, (
+            CASE WHEN wkot.active IS NULL THEN 2
             WHEN wkot.active=1 THEN 1
-            WHEN wkot.active=0 THEN 0 END) as wkpos_type FROM ' . _DB_PREFIX_ . 'orders wkotest LEFT JOIN
-            ' . _DB_PREFIX_ . 'wkpos_order wkot ON(wkotest.id_order=wkot.id_order)) wko' .
-            ' ON (wko.id_order = a.id_order)';
+            WHEN wkot.active=0 THEN 0 END) as wkpos_type 
+            FROM ' . _DB_PREFIX_ . 'orders wkotest 
+            LEFT JOIN ' . _DB_PREFIX_ . 'wkpos_order wkot ON(wkotest.id_order = wkot.id_order)) wko' . ' ON (wko.id_order = a.id_order)
+            ';
+        }
+        if (isset($list['join'])) {
+            $list['join'] .= ' LEFT JOIN 
+            (SELECT wkpos_tpv.id_wkpos_outlet, (
+            CASE WHEN wkpos.active IS NULL THEN 2
+            WHEN wkpos.active=1 THEN 1
+            WHEN wkpos.active=0 THEN 0 END) as wkpos_tpv
+            FROM ' . _DB_PREFIX_ . 'orders o 
+            LEFT JOIN ' . _DB_PREFIX_ . 'wkpos_order wkpos ON(o.id_order = wkpos.id_order)) wkonew' . ' ON (wkonew.id_order = a.id_order)
+            ';
         }
 
         $list['fields']['wkpos_type'] = [
@@ -114,9 +134,21 @@ class WkPos extends Module
             'callback' => 'callPosOrder',
             'orderby' => false,
             'type' => 'select',
-            'list' => $optionsOrderStatus,
+            'list' => $optionsOrderStatus, 
             'callback_object' => Module::getInstanceByName($this->name),
         ];
+
+        $list['fields']['wkpos_tpv'] = [
+            'title' => $this->l('Id tpv'),
+            'align' => 'text-center',
+            'filter_key' => 'wko!wkpos_tpv',
+            'callback' => 'callPosTpv',
+            'orderby' => false,
+            'type' => 'select',
+            'list' => $optionsTpv, 
+            'callback_object' => Module::getInstanceByName($this->name),
+        ];
+        */
     }
 
     public function callPosOrder($col)
@@ -125,6 +157,19 @@ class WkPos extends Module
             return $this->l('Web');
         } else {
             return $this->l('POS');
+        }
+    }
+
+    public function callPosTpv($id)
+    {
+        if ($id == 1) {
+            return $this->l('Cellnex');
+        } 
+        elseif ($id == 2) {
+            return $this->l('Dfactory');
+        } 
+        else {
+            return $this->l('SEDE');
         }
     }
 
@@ -1697,6 +1742,31 @@ class WkPos extends Module
                 ])
                 ->setAssociatedColumn('order_type')
         );
+
+        //id_tpv
+        $definition
+        ->getColumns()
+        ->addAfter(
+            'osname',
+            (new DataColumn('id_wkpos_outlet'))
+                ->setName($this->l('Id tpv'))
+                ->setOptions([
+                    'field' => 'id_wkpos_outlet',
+                ])
+        );
+        // For search filter
+        $definition->getFilters()->add(
+        (new Filter('id_wkpos_outlet', YesAndNoChoiceType::class))
+            ->setTypeOptions([
+                'choices' => [
+                    $this->l('Cellnex') => 1,
+                    $this->l('Dfactory') => 2,
+                    $this->l('SEDE') => 3,
+                ],
+                'required' => false,
+            ])
+            ->setAssociatedColumn('id_wkpos_outlet')
+        );
     }
 
     /**
@@ -1723,9 +1793,24 @@ class WkPos extends Module
             'wko',
             'wko.`id_order` = o.`id_order`'
         );
-        // if ('order_type' === $searchCriteria->getOrderBy()) {
-        //     $searchQueryBuilder->orderBy('wko.`order_type`', $searchCriteria->getOrderWay());
-        // }
+        if ('order_type' === $searchCriteria->getOrderBy()) {
+            $searchQueryBuilder->orderBy('wko.`order_type`', $searchCriteria->getOrderWay());
+        }
+
+        //id_tpv
+        $searchQueryBuilder->addSelect(
+            'wko2.id_wkpos_outlet'
+            );
+        $searchQueryBuilder->leftJoin(
+            'o',
+            pSQL(_DB_PREFIX_) . 'wkpos_order',
+            'wko2',
+            'wko2.id_order = o.id_order'
+        );
+        if ('order_type' === $searchCriteria->getOrderBy()) {
+            $searchQueryBuilder->orderBy('wko2.`id_wkpos_outlet`', $searchCriteria->getOrderWay());
+        }
+
         foreach ($searchCriteria->getFilters() as $filterName => $filterValue) {
             if ('order_type' === $filterName) {
                 $searchQueryBuilder->andWhere('wko.`active` = :active');
@@ -1735,7 +1820,16 @@ class WkPos extends Module
                     $searchQueryBuilder->orWhere('wko.`active` IS NULL');
                 }
             }
+            if ('id_wkpos_outlet' === $filterName) {
+                $searchQueryBuilder->andWhere('wko2.`id_wkpos_outlet` = :id_wkpos_outlet');
+                $searchQueryBuilder->setParameter('id_wkpos_outlet', $filterValue);
+
+                if (!$filterValue) {
+                    $searchQueryBuilder->orWhere('wko2.`id_wkpos_outlet` IS NULL');
+                }
+            }
         }
+    
     }
 
     // added new hook for addon modules
