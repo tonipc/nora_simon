@@ -1,5 +1,5 @@
 
-$(document).on('click', '.wk-order-detail', function() {
+$(document).on('click', '.wk-order-detail, .wkpos-reprint-modal-button', function() {
 
     $('.formReprint').show();
 

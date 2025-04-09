@@ -21,7 +21,7 @@ class posnewreprint extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('Reimprime el pedido');
+        $this->displayName = $this->l('Reimprime el pedido con modal después del pago');
         $this->description = $this->l('Reimprime el pedido si lo deseas');
     }
 
