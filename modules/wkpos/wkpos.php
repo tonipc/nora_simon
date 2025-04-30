@@ -957,11 +957,11 @@ class WkPos extends Module
                 }
             }
         }
-        if (isset($this->context->cookie->posOrder)) {
-            WkPosOutletProduct::updateOutletProductQuantity($products, $this->context->cookie->id_outlet_employee);
-        } else {
-            WkPosOutletProduct::updateOutletProductQuantity($products);
-        }
+        // if (isset($this->context->cookie->posOrder)) {
+        //     WkPosOutletProduct::updateOutletProductQuantity($products, $this->context->cookie->id_outlet_employee);
+        // } else {
+        //     WkPosOutletProduct::updateOutletProductQuantity($products);
+        // }
     }
 
     public function hookActionWkUpdateQuantity($params)
