@@ -23,8 +23,8 @@
             <div class="col-xs-12 upper-category">
                 <!-- ko if: $root.bodyPanel() == "products" -->
                 <ul class="wk-flex-10 lower-category"  data-bind="css: $root.contentModel.remainingCategories().length == 0 ? 'wk-flex-10' : 'wk-flex-8'">
-                    <li class="hidden-xs wkpos-category-list" data-bind="foreach: $root.contentModel.categories">
-                        <div class="wk-d-flex wk-pos-category-heading ">
+                    <li class="hidden-xs wkpos-category-list tpv-{$outletDetails.id}" data-bind="foreach: $root.contentModel.categories">
+                        <div class="wk-d-flex wk-pos-category-heading">
                             <div class="wk-cursor-pointer"
                                 data-bind="attr: { 'category-id': idCategory }, css: { 'active': $root.contentModel.selectedCategory() == idCategory }, text: categoryName, click: $root.contentModel.getCategoryWsProduct">
                             </div>
@@ -59,6 +59,7 @@
                     </li>
                     <!-- /ko -->
                 </ul>
+                {* NO SORT
                 <div class="wk-flex-2" data-bind="css: $root.contentModel.remainingCategories().length == 0 ? 'wk-flex-2' : 'wk-flex-4'">
                     <i class="categoryProduct wkcategory fa fa-sort-alpha-asc"
                         data-bind="click: $root.contentModel.sortProductByAsc, css: { 'active': $root.contentModel.selectedSortType() == 'asc' }"
@@ -66,7 +67,8 @@
                     <i class="categoryProduct wkcategory fa fa-sort-alpha-desc"
                         data-bind="click: $root.contentModel.sortProductByDesc, css: { 'active': $root.contentModel.selectedSortType() == 'desc' }"
                         aria-hidden="true"></i>
-                </div>
+                </div> 
+                *}
                 <!-- /ko -->
                 <!-- ko if: $root.bodyPanel() == "customers" -->
                 <div class="col-xs-12">
@@ -107,7 +109,7 @@
                                             <span data-bind="text: name"></span>
                                         <!-- /ko --> *}
                                     <div class="col-xs-12 product-detail">
-                                        <span class="product-name" data-bind="text: displayName"></span><br>
+                                        <span data-bind="text: displayName"></span><br>
                                         {* <!-- ko if: showPrice == 1 --> *}
                                         <b data-bind="attr: { 'product-price': price }, text: displayPrice"></b>
                                         <!-- ko if: $root.contentModel.showPriceWithoutReduction() == 1 -->

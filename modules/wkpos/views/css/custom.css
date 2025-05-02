@@ -309,14 +309,13 @@ body {
   display: flex;
   margin-bottom: 0px;
 }
-/*
 .lower-category li:nth-child(0){
   color: red;
 }
 .lower-category li:nth-child(1){
   color: blue;
 }
-*/
+
 #product-panel {
   line-height: 15px;
   background-color: var(--wkpos-white);
@@ -1622,20 +1621,24 @@ button.active.focus {
 
 .wkpos-category-list > div {
   border-right: 1px solid var(--wkpos-off-white);
-  /* color: red; */
+  color: red;
 }
-/*
 .wkpos-category-list > div .active{
   color: red;
 }
 
+.wkpos-category-list.tpv-2 > div:last-child,
+.wkpos-category-list.tpv-3 > div:last-child 
+{
+  display: none;
+}
 .wkpos-category-list > div:last-child {
   color: blue;
 }
 .wkpos-category-list > div:last-child .active {
   color: blue;
 }
-*/
+
 .wkpos-category-list:last-child {
   border-right: 0px;
 } 
@@ -1857,7 +1860,7 @@ body.client-view .wk-cart-product-details .nav-tabs li:last-child,
 body.client-view .wk-payment .wk-nomargin:last-child > div:first-child > div:first-child,
 body.client-view .wk-payment .wk-nomargin:last-child > div:first-child > div:last-child > div:nth-child(2),
 body.client-view .wk-payment .wk-nomargin:last-child > div:last-child > div:first-child,
-body.client-view header #wkpos-header .sign-out,
+
 /* body.client-view div:not(#wkpos-print) table thead th:last-child,
 body.client-view div:not(#wkpos-print) table tbody td:last-child, */
 /* body.client-view .wkpos-payment-customer, */
@@ -1944,28 +1947,7 @@ div.wkpos-order-detail:hover {
   background: #E7E7E7 !important;
 }
 
-
-/* GLOVO DESCUENTO */
-.discount-glovo {
-  margin-left: 30px;
-    color: red;
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 1.9;
-    text-align: center;
-    /* background: red; */
-    /* padding: 1rem 2rem; */
-    border-radius: 50px;
-    position: absolute;
-    /* top: 10px; */
-    z-index: 1;
-    transform: rotate(356deg);
-}
-
-.wk-products .product-detail .product-name {
-  font-size: 20px;
-}
-
+/*Modal newreprint*/
 #wk-pos-payment-panel #reprintModal .modal-body .close { 
   padding-bottom: 2rem; 
 } 
