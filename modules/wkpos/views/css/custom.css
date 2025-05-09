@@ -1627,11 +1627,11 @@ button.active.focus {
   color: red;
 }
 
-.wkpos-category-list.tpv-2 > div:last-child,
+/* .wkpos-category-list.tpv-2 > div:last-child,
 .wkpos-category-list.tpv-3 > div:last-child 
 {
   display: none;
-}
+} */
 .wkpos-category-list > div:last-child {
   color: blue;
 }
