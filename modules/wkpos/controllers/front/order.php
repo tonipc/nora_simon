@@ -1282,7 +1282,7 @@ class WkPosOrderModuleFrontController extends ModuleFrontController
                 foreach ($orderDetailList as &$product) {
                     $orderDetail = new OrderDetail((int) $product['id_order_detail']);
                     if (Configuration::get('PS_ADVANCED_STOCK_MANAGEMENT')) {
-                        StockAvailable::synchronize($orderDetail->product_id);
+                        // StockAvailable::synchronize($orderDetail->product_id);
                     }
                 }
 
@@ -1558,12 +1558,12 @@ class WkPosOrderModuleFrontController extends ModuleFrontController
         }
 
         // Update product available quantity
-        StockAvailable::updateQuantity(
-            $orderDetail->product_id,
-            $orderDetail->product_attribute_id,
-            $oldQuantity - $orderDetail->product_quantity,
-            $order->id_shop
-        );
+        // StockAvailable::updateQuantity(
+        //     $orderDetail->product_id,
+        //     $orderDetail->product_attribute_id,
+        //     $oldQuantity - $orderDetail->product_quantity,
+        //     $order->id_shop
+        // );
 
         $order = $order->refreshShippingCost();
 
@@ -1889,7 +1889,7 @@ class WkPosOrderModuleFrontController extends ModuleFrontController
             if ($delete) {
                 $orderDetail->delete();
             }
-            StockAvailable::synchronize($id_product);
+            // StockAvailable::synchronize($id_product);
             // WkPosOutletProduct::reinjectQuantity(
             //     $orderDetail->id_order,
             //     $orderDetail->product_id,
@@ -1903,17 +1903,17 @@ class WkPosOrderModuleFrontController extends ModuleFrontController
                 $quantity_to_reinject
             );
         } elseif ($orderDetail->id_warehouse == 0) {
-            StockAvailable::updateQuantity(
-                $orderDetail->product_id,
-                $orderDetail->product_attribute_id,
-                $quantity_to_reinject,
-                $orderDetail->id_shop,
-                true,
-                [
-                    'id_order' => $orderDetail->id_order,
-                    'id_stock_mvt_reason' => Configuration::get('PS_STOCK_CUSTOMER_RETURN_REASON'),
-                ]
-            );
+            // StockAvailable::updateQuantity(
+            //     $orderDetail->product_id,
+            //     $orderDetail->product_attribute_id,
+            //     $quantity_to_reinject,
+            //     $orderDetail->id_shop,
+            //     true,
+            //     [
+            //         'id_order' => $orderDetail->id_order,
+            //         'id_stock_mvt_reason' => Configuration::get('PS_STOCK_CUSTOMER_RETURN_REASON'),
+            //     ]
+            // );
 
             // sync all stock
             (new StockManager())->updatePhysicalProductQuantity(

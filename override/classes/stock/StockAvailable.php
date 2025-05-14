@@ -42,6 +42,7 @@ class StockAvailable extends StockAvailableCore
     * date: 2025-01-13 11:42:46
     * version: 5.3.0
     */
+    /*
     public static function setQuantity(
         $id_product,
         $id_product_attribute,
@@ -106,64 +107,66 @@ class StockAvailable extends StockAvailableCore
                     'quantity' => $stock_available->quantity,
                 ]
             );
-            // Hook::exec(
-            //     'actionWkUpdateQuantity',
-            //     [
-            //         'id_product' => $id_product,
-            //         'id_product_attribute' => $id_product_attribute,
-            //         'quantity' => $stock_available->quantity,
-            //         'delta_qty' => $deltaQty,
-            //     ]
-            // );
-        }
-        Cache::clean('StockAvailable::getQuantityAvailableByProduct_' . (int) $id_product . '*');
-    }
-    /*
-    * module: wkpos
-    * date: 2025-01-13 11:42:46
-    * version: 5.3.0
-    */
-    public static function updateQuantity(
-        $id_product,
-        $id_product_attribute,
-        $delta_quantity,
-        $id_shop = null,
-        $add_movement = false,
-        $params = []
-    ) {
-        $result = parent::updateQuantity(
-            $id_product,
-            $id_product_attribute,
-            $delta_quantity,
-            $id_shop,
-            $add_movement,
-            $params
-        );
-        if ($result) {
-        }
-        return $result;
-    }
-    /*
-    * module: wkpos
-    * date: 2025-01-13 11:42:46
-    * version: 5.3.0
-    */
-    public function updateWs()
-    {
-        $stockAvailable = new StockAvailable($this->id);
-        $deltaQty = $this->quantity - $stockAvailable->quantity;
-        $result = parent::updateWs();
-        if ($result) {
             Hook::exec(
                 'actionWkUpdateQuantity',
                 [
-                    'id_product' => $this->id_product,
-                    'id_product_attribute' => $this->id_product_attribute,
-                    'quantity' => $this->quantity,
+                    'id_product' => $id_product,
+                    'id_product_attribute' => $id_product_attribute,
+                    'quantity' => $stock_available->quantity,
                     'delta_qty' => $deltaQty,
                 ]
             );
         }
-        return $result;
+        Cache::clean('StockAvailable::getQuantityAvailableByProduct_' . (int) $id_product . '*');
     }
+    */
+    
+    /*
+    * module: wkpos
+    * date: 2025-01-13 11:42:46
+    * version: 5.3.0
+    */
+    // public static function updateQuantity(
+    //     $id_product,
+    //     $id_product_attribute,
+    //     $delta_quantity,
+    //     $id_shop = null,
+    //     $add_movement = false,
+    //     $params = []
+    // ) {
+    //     $result = parent::updateQuantity(
+    //         $id_product,
+    //         $id_product_attribute,
+    //         $delta_quantity,
+    //         $id_shop,
+    //         $add_movement,
+    //         $params
+    //     );
+    //     if ($result) {
+    //     }
+    //     return $result;
+    // }
+    /*
+    * module: wkpos
+    * date: 2025-01-13 11:42:46
+    * version: 5.3.0
+    */
+    // public function updateWs()
+    // {
+    //     $stockAvailable = new StockAvailable($this->id);
+    //     $deltaQty = $this->quantity - $stockAvailable->quantity;
+    //     $result = parent::updateWs();
+    //     if ($result) {
+    //         Hook::exec(
+    //             'actionWkUpdateQuantity',
+    //             [
+    //                 'id_product' => $this->id_product,
+    //                 'id_product_attribute' => $this->id_product_attribute,
+    //                 'quantity' => $this->quantity,
+    //                 'delta_qty' => $deltaQty,
+    //             ]
+    //         );
+    //     }
+    //     return $result;
+    // }
 }
