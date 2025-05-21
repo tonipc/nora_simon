@@ -1255,17 +1255,10 @@ class WkPosOrderModuleFrontController extends ModuleFrontController
                     $params['{firstname}'] = $customer->firstname;
                     $params['{id_order}'] = $order->id;
                     $params['{order_name}'] = $order->getUniqReference();
-                    $orderLanguage = new Language((int) $order->id_lang);
-
                     @Mail::Send(
                         (int) $order->id_lang,
                         'credit_slip',
-                        $this->translator->trans(
-                            'New credit slip regarding your order',
-                            [],
-                            'Emails.Subject',
-                            $orderLanguage->locale
-                        ),
+                        Mail::l('New credit slip regarding your order', $order->id_lang),
                         $params,
                         $customer->email,
                         $customer->firstname . ' ' . $customer->lastname,
